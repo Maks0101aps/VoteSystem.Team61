@@ -32,7 +32,11 @@
     <div class="pt-20">
       <main class="p-4 md:p-8 lg:p-12">
         <flash-messages />
-        <slot />
+        <transition name="fly-out" appear>
+          <div :key="$page.url">
+            <slot />
+          </div>
+        </transition>
       </main>
     </div>
   </div>
@@ -60,3 +64,14 @@ export default {
   },
 }
 </script>
+
+<style>
+.fly-out-enter-active {
+  transition: all 0.4s ease-out;
+}
+
+.fly-out-enter-from {
+  transform: translateY(20px);
+  opacity: 0;
+}
+</style>
