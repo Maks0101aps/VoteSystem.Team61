@@ -41,12 +41,13 @@
         </div>
         
         <!-- Петиції з бази даних -->
-        <div v-for="petition in petitions" :key="petition.id" 
+        <div v-for="petition in processedPetitions" :key="petition.id" 
              class="bg-white p-6 rounded-xl shadow-md border-l-4 backdrop-blur-sm bg-opacity-90 hover:shadow-lg transition-all duration-300"
              :class="{'border-green-500': !petition.is_completed, 'border-green-300': petition.is_completed}">
           <div class="flex justify-between items-start mb-4">
             <h2 class="text-2xl font-bold text-green-700">{{ petition.title }}</h2>
-            <span v-if="!petition.is_completed" class="px-3 py-1 bg-amber-100 text-amber-700 rounded-full text-sm font-medium">Збір підписів</span>
+            <span v-if="petition.isExpired" class="px-3 py-1 bg-red-100 text-red-700 rounded-full text-sm font-medium">Термін дії закінчився</span>
+            <span v-else-if="!petition.is_completed" class="px-3 py-1 bg-amber-100 text-amber-700 rounded-full text-sm font-medium">Збір підписів</span>
             <span v-else class="px-3 py-1 bg-green-100 text-green-700 rounded-full text-sm font-medium">Підтримано</span>
           </div>
           <p class="text-green-600 mb-4">
@@ -61,8 +62,9 @@
               <span>Підписів: {{ petition.signatures_count }} з {{ petition.signatures_required }}</span>
               <span class="ml-4">Автор: {{ petition.author }}</span>
               <span class="ml-4">Створено: {{ petition.created_at }}</span>
+              <span class="ml-4">Закінчується: {{ petition.ends_at }}</span>
             </div>
-            <form v-if="!petition.is_signed && !petition.is_completed" @submit.prevent="sign(petition.id)">
+            <form v-if="!petition.is_signed && !petition.is_completed && !petition.isExpired" @submit.prevent="sign(petition.id)">
               <button type="submit" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg transition-colors">
                 Підписати
               </button>
@@ -91,6 +93,9 @@
 import { Head, Link } from '@inertiajs/vue3'
 import Layout from '@/Shared/Layout.vue'
 import { useForm } from '@inertiajs/vue3'
+import dayjs from 'dayjs'
+import customParseFormat from 'dayjs/plugin/customParseFormat'
+dayjs.extend(customParseFormat)
 
 export default {
   components: {
@@ -101,6 +106,15 @@ export default {
   props: {
     title: String,
     petitions: Array,
+  },
+  computed: {
+    processedPetitions() {
+      return this.petitions.map(petition => {
+        const endsAt = dayjs(petition.ends_at, 'DD.MM.YYYY HH:mm');
+        const isExpired = dayjs().isAfter(endsAt);
+        return { ...petition, isExpired };
+      });
+    }
   },
   methods: {
     sign(petitionId) {

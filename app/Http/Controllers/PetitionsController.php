@@ -24,6 +24,8 @@ class PetitionsController extends Controller
                     'description' => $petition->description,
                     'signatures_required' => $petition->signatures_required,
                     'signatures_count' => $petition->signatures_count,
+                    'duration' => $petition->duration,
+                    'ends_at' => $petition->ends_at->format('d.m.Y H:i'),
                     'created_at' => $petition->created_at->format('d.m.Y'),
                     'author' => $petition->user->name,
                     'is_signed' => $petition->signatures->contains('user_id', Auth::id()),
@@ -50,6 +52,7 @@ class PetitionsController extends Controller
             'title' => ['required', 'max:100'],
             'description' => ['required'],
             'signatures_required' => ['required', 'integer', 'min:10'],
+            'duration' => ['required', 'integer', 'in:24,48,72'],
         ]);
 
         $petition = Petition::create([
@@ -57,6 +60,7 @@ class PetitionsController extends Controller
             'description' => $request->description,
             'signatures_required' => $request->signatures_required,
             'user_id' => Auth::id(),
+            'duration' => $request->duration,
         ]);
 
         return Redirect::route('petitions')->with('success', 'Петиція успішно створена.');
@@ -79,4 +83,4 @@ class PetitionsController extends Controller
         
         return Redirect::back()->with('error', 'Ви вже підписали цю петицію.');
     }
-} 
+}

@@ -47,6 +47,20 @@
             min="10"
           />
         </div>
+
+        <div class="mb-8">
+          <label class="block text-green-700 font-medium mb-2" for="duration">Тривалість петиції (годин)</label>
+          <select
+            id="duration"
+            v-model="form.duration"
+            :error="form.errors.duration"
+            class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+          >
+            <option value="24">24 години</option>
+            <option value="48">48 годин</option>
+            <option value="72">72 години</option>
+          </select>
+        </div>
         
         <div class="flex items-center justify-end">
           <Link href="/petitions" class="text-green-700 hover:text-green-900 mr-4">Скасувати</Link>
@@ -90,6 +104,7 @@ export default {
       title: '',
       description: '',
       signatures_required: 100,
+      duration: 24,
     })
 
     function submit() {

@@ -87,13 +87,9 @@ Run the dev server:
 php artisan serve
 ```
 
-Default admin credentials:
-- **Username:** admin@votesystem.com
-- **Password:** secret
-
-Тестові облікові дані адміністратора:
-- **Логін:** johndoe@example.com
-- **Пароль:** secret
+Default admin credentials / Тестові облікові дані адміністратора:
+- **Email / Пошта:** johndoe@example.com
+- **Password / Пароль:** secret
 
 ## Running Tests / Запуск тестів
 

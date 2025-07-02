@@ -14,6 +14,7 @@ class Petition extends Model
         'description',
         'signatures_required',
         'user_id',
+        'duration',
     ];
 
     public function user()
@@ -24,5 +25,10 @@ class Petition extends Model
     public function signatures()
     {
         return $this->hasMany(PetitionSignature::class);
+    }
+
+    public function getEndsAtAttribute()
+    {
+        return $this->created_at->addHours($this->duration);
     }
 } 
