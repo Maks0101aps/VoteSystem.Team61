@@ -16,79 +16,63 @@
 
       <!-- Кнопка створення нової петиції -->
       <div class="mb-6 flex justify-end">
-        <button class="bg-green-500 hover:bg-green-600 text-white px-5 py-2 rounded-lg transition-colors flex items-center">
+        <Link href="/petitions/create" class="bg-green-500 hover:bg-green-600 text-white px-5 py-2 rounded-lg transition-colors flex items-center">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
             <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
           </svg>
           Створити петицію
-        </button>
+        </Link>
       </div>
 
       <!-- Список петицій -->
       <div class="space-y-6">
-        <!-- Петиція 1 (приклад) -->
-        <div class="bg-white p-6 rounded-xl shadow-md border-l-4 border-green-500 backdrop-blur-sm bg-opacity-90 hover:shadow-lg transition-all duration-300">
-          <div class="flex justify-between items-start mb-4">
-            <h2 class="text-2xl font-bold text-green-700">Оновлення шкільної їдальні</h2>
-            <span class="px-3 py-1 bg-amber-100 text-amber-700 rounded-full text-sm font-medium">Збір підписів</span>
-          </div>
-          <p class="text-green-600 mb-4">
-            Пропозиція щодо оновлення меню в шкільній їдальні та додавання більш здорових опцій харчування.
-          </p>
-          <div class="mb-4 bg-gray-100 rounded-full h-2">
-            <div class="bg-green-500 h-2 rounded-full" style="width: 45%"></div>
-          </div>
-          <div class="flex justify-between items-center">
-            <div class="text-sm text-gray-500">
-              <span>Підписів: 45 з 100</span>
-            </div>
-            <button class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg transition-colors">
-              Підписати
-            </button>
-          </div>
+        <div v-if="petitions.length === 0" class="bg-white p-8 rounded-xl shadow-md backdrop-blur-sm bg-opacity-90 text-center">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto text-green-300 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+          </svg>
+          <h3 class="text-xl font-medium text-green-700 mb-2">Наразі немає активних петицій</h3>
+          <p class="text-green-600 mb-6">Створіть першу петицію, щоб почати збирати підписи</p>
+          <Link href="/petitions/create" class="inline-flex items-center bg-green-500 hover:bg-green-600 text-white px-5 py-2 rounded-lg transition-colors">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
+            </svg>
+            Створити петицію
+          </Link>
         </div>
-
-        <!-- Петиція 2 (приклад) -->
-        <div class="bg-white p-6 rounded-xl shadow-md border-l-4 border-green-500 backdrop-blur-sm bg-opacity-90 hover:shadow-lg transition-all duration-300">
+        
+        <!-- Петиції з бази даних -->
+        <div v-for="petition in petitions" :key="petition.id" 
+             class="bg-white p-6 rounded-xl shadow-md border-l-4 backdrop-blur-sm bg-opacity-90 hover:shadow-lg transition-all duration-300"
+             :class="{'border-green-500': !petition.is_completed, 'border-green-300': petition.is_completed}">
           <div class="flex justify-between items-start mb-4">
-            <h2 class="text-2xl font-bold text-green-700">Встановлення велостоянки</h2>
-            <span class="px-3 py-1 bg-amber-100 text-amber-700 rounded-full text-sm font-medium">Збір підписів</span>
+            <h2 class="text-2xl font-bold text-green-700">{{ petition.title }}</h2>
+            <span v-if="!petition.is_completed" class="px-3 py-1 bg-amber-100 text-amber-700 rounded-full text-sm font-medium">Збір підписів</span>
+            <span v-else class="px-3 py-1 bg-green-100 text-green-700 rounded-full text-sm font-medium">Підтримано</span>
           </div>
           <p class="text-green-600 mb-4">
-            Пропозиція встановити велосипедну стоянку біля головного входу в школу для зручності учнів.
+            {{ petition.description }}
           </p>
           <div class="mb-4 bg-gray-100 rounded-full h-2">
-            <div class="bg-green-500 h-2 rounded-full" style="width: 65%"></div>
+            <div class="bg-green-500 h-2 rounded-full" 
+                 :style="{width: Math.min(100, (petition.signatures_count / petition.signatures_required) * 100) + '%'}"></div>
           </div>
           <div class="flex justify-between items-center">
             <div class="text-sm text-gray-500">
-              <span>Підписів: 65 з 100</span>
+              <span>Підписів: {{ petition.signatures_count }} з {{ petition.signatures_required }}</span>
+              <span class="ml-4">Автор: {{ petition.author }}</span>
+              <span class="ml-4">Створено: {{ petition.created_at }}</span>
             </div>
-            <button class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg transition-colors">
-              Підписати
-            </button>
-          </div>
-        </div>
-
-        <!-- Петиція 3 (приклад) -->
-        <div class="bg-white p-6 rounded-xl shadow-md border-l-4 border-green-300 backdrop-blur-sm bg-opacity-90 hover:shadow-lg transition-all duration-300">
-          <div class="flex justify-between items-start mb-4">
-            <h2 class="text-2xl font-bold text-green-700">Додаткові гуртки з робототехніки</h2>
-            <span class="px-3 py-1 bg-green-100 text-green-700 rounded-full text-sm font-medium">Підтримано</span>
-          </div>
-          <p class="text-green-600 mb-4">
-            Пропозиція організувати додаткові гуртки з робототехніки для учнів середньої та старшої школи.
-          </p>
-          <div class="mb-4 bg-gray-100 rounded-full h-2">
-            <div class="bg-green-500 h-2 rounded-full" style="width: 100%"></div>
-          </div>
-          <div class="flex justify-between items-center">
-            <div class="text-sm text-gray-500">
-              <span>Підписів: 100 з 100</span>
-            </div>
-            <button class="bg-gray-300 text-white px-4 py-2 rounded-lg cursor-not-allowed">
+            <form v-if="!petition.is_signed && !petition.is_completed" @submit.prevent="sign(petition.id)">
+              <button type="submit" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg transition-colors">
+                Підписати
+              </button>
+            </form>
+            <button v-else-if="petition.is_signed" class="bg-gray-300 text-white px-4 py-2 rounded-lg cursor-not-allowed">
               Підписано
             </button>
+            <span v-else class="bg-green-100 text-green-700 px-4 py-2 rounded-lg">
+              Виконано
+            </span>
           </div>
         </div>
       </div>
@@ -104,16 +88,30 @@
 </template>
 
 <script>
-import { Head } from '@inertiajs/vue3'
+import { Head, Link } from '@inertiajs/vue3'
 import Layout from '@/Shared/Layout.vue'
+import { useForm } from '@inertiajs/vue3'
 
 export default {
   components: {
     Head,
+    Link,
   },
   layout: Layout,
   props: {
-    title: String
+    title: String,
+    petitions: Array,
+  },
+  methods: {
+    sign(petitionId) {
+      const form = useForm({})
+      form.post(`/petitions/${petitionId}/sign`, {
+        preserveScroll: true,
+        onSuccess: () => {
+          // Success is handled by the flash messages
+        },
+      })
+    }
   }
 }
 </script>

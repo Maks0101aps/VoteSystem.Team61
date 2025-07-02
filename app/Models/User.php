@@ -106,4 +106,19 @@ class User extends Authenticatable
             }
         });
     }
+
+    public function account()
+    {
+        return $this->belongsTo(Account::class);
+    }
+
+    public function petitions()
+    {
+        return $this->hasMany(Petition::class);
+    }
+
+    public function signatures()
+    {
+        return $this->hasMany(PetitionSignature::class);
+    }
 }

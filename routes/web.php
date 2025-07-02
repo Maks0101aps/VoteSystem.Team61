@@ -60,6 +60,18 @@ Route::get('petitions', [PetitionsController::class, 'index'])
     ->name('petitions')
     ->middleware('auth');
 
+Route::get('petitions/create', [PetitionsController::class, 'create'])
+    ->name('petitions.create')
+    ->middleware('auth');
+
+Route::post('petitions', [PetitionsController::class, 'store'])
+    ->name('petitions.store')
+    ->middleware('auth');
+
+Route::post('petitions/{petition}/sign', [PetitionsController::class, 'sign'])
+    ->name('petitions.sign')
+    ->middleware('auth');
+
 // Users
 
 Route::get('users', [UsersController::class, 'index'])
