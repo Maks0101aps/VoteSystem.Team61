@@ -26,6 +26,8 @@ class User extends Authenticatable
         'email',
         'password',
         'role',
+        'school',
+        'class',
     ];
 
     /**
@@ -54,8 +56,6 @@ class User extends Authenticatable
     {
         return $this->where($field ?? 'id', $value)->withTrashed()->firstOrFail();
     }
-
-
 
     public function getNameAttribute()
     {
