@@ -69,10 +69,18 @@ class UsersController extends Controller
                 'id' => $user->id,
                 'first_name' => $user->first_name,
                 'last_name' => $user->last_name,
+                'middle_name' => $user->middle_name,
                 'email' => $user->email,
                 'owner' => $user->owner,
+                'role' => $user->role,
                 'photo' => $user->photo_path ? URL::route('image', ['path' => $user->photo_path, 'w' => 60, 'h' => 60, 'fit' => 'crop']) : null,
                 'deleted_at' => $user->deleted_at,
+                'school' => $user->school,
+                'class' => $user->class,
+                'class_letter' => $user->class_letter,
+                'region' => $user->region,
+                'city' => $user->city,
+                'district' => $user->district,
             ],
         ]);
     }
@@ -86,13 +94,21 @@ class UsersController extends Controller
         Request::validate([
             'first_name' => ['required', 'max:50'],
             'last_name' => ['required', 'max:50'],
+            'middle_name' => ['nullable', 'max:50'],
             'email' => ['required', 'max:50', 'email', Rule::unique('users')->ignore($user->id)],
             'password' => ['nullable'],
             'owner' => ['required', 'boolean'],
+            'role' => ['required', 'string', 'max:50'],
             'photo' => ['nullable', 'image'],
+            'school' => ['nullable', 'string', 'max:255'],
+            'class' => ['nullable', 'string', 'max:255'],
+            'class_letter' => ['nullable', 'string', 'max:1'],
+            'region' => ['nullable', 'string', 'max:255'],
+            'city' => ['nullable', 'string', 'max:255'],
+            'district' => ['nullable', 'string', 'max:255'],
         ]);
 
-        $user->update(Request::only('first_name', 'last_name', 'email', 'owner'));
+        $user->update(Request::only('first_name', 'last_name', 'middle_name', 'email', 'owner', 'role', 'school', 'class', 'class_letter', 'region', 'city', 'district'));
 
         if (Request::file('photo')) {
             $user->update(['photo_path' => Request::file('photo')->store('users')]);

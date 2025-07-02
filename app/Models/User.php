@@ -28,6 +28,10 @@ class User extends Authenticatable
         'role',
         'school',
         'class',
+        'class_letter',
+        'region',
+        'city',
+        'district',
     ];
 
     /**

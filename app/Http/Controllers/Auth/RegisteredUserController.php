@@ -24,16 +24,28 @@ class RegisteredUserController extends Controller
             'email' => ['required', 'string', 'email', 'max:50', 'unique:users'],
             'password' => ['required', 'string', 'min:8'],
             'role' => ['required', 'in:student,parent,teacher,director'],
+            'school' => ['nullable', 'string', 'max:255'],
+            'class' => ['nullable', 'string', 'max:255'],
+            'class_letter' => ['nullable', 'string', 'max:1'],
+            'region' => ['nullable', 'string', 'max:255'],
+            'city' => ['nullable', 'string', 'max:255'],
+            'district' => ['nullable', 'string', 'max:255'],
         ]);
 
-        $user = User::create([
-            'first_name' => $request->first_name,
-            'last_name' => $request->last_name,
-            'middle_name' => $request->middle_name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'role' => $request->role,
-        ]);
+        $user = new User();
+        $user->first_name = $request->first_name;
+        $user->last_name = $request->last_name;
+        $user->middle_name = $request->middle_name;
+        $user->email = $request->email;
+        $user->password = Hash::make($request->password);
+        $user->role = $request->role;
+        $user->school = $request->school;
+        $user->class = $request->class;
+        $user->class_letter = $request->class_letter;
+        $user->region = $request->region;
+        $user->city = $request->city;
+        $user->district = $request->district;
+        $user->save();
 
         Auth::login($user);
 

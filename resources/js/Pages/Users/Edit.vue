@@ -18,6 +18,10 @@
           <text-input v-model="form.role" :error="form.errors.role" class="pb-8 pr-6 w-full lg:w-1/2" label="Role" />
           <text-input v-model="form.school" :error="form.errors.school" class="pb-8 pr-6 w-full lg:w-1/2" label="School" />
           <text-input v-model="form.class" :error="form.errors.class" class="pb-8 pr-6 w-full lg:w-1/2" label="Class" />
+          <text-input v-model="form.class_letter" :error="form.errors.class_letter" class="pb-8 pr-6 w-full lg:w-1/2" label="Class Letter" />
+          <text-input v-model="form.region" :error="form.errors.region" class="pb-8 pr-6 w-full lg:w-1/2" label="Region" />
+          <text-input v-model="form.city" :error="form.errors.city" class="pb-8 pr-6 w-full lg:w-1/2" label="City" />
+          <text-input v-model="form.district" :error="form.errors.district" class="pb-8 pr-6 w-full lg:w-1/2" label="District" />
         </div>
         <div class="flex items-center px-8 py-4 bg-gray-50 border-t border-gray-100">
           <button v-if="!user.deleted_at" class="text-red-600 hover:underline" tabindex="-1" type="button" @click="destroy">Delete User</button>
@@ -60,6 +64,10 @@ export default {
         role: this.user.role,
         school: this.user.school,
         class: this.user.class,
+        class_letter: this.user.class_letter,
+        region: this.user.region,
+        city: this.user.city,
+        district: this.user.district,
       }),
     }
   },
