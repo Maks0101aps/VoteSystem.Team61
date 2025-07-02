@@ -8,6 +8,8 @@ use App\Http\Controllers\ImagesController;
 use App\Http\Controllers\OrganizationsController;
 use App\Http\Controllers\ReportsController;
 use App\Http\Controllers\UsersController;
+use App\Http\Controllers\VotingController;
+use App\Http\Controllers\PetitionsController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -44,7 +46,18 @@ Route::delete('logout', [AuthenticatedSessionController::class, 'destroy'])
 // Dashboard
 
 Route::get('/', [DashboardController::class, 'index'])
-    ->name('dashboard')
+    ->name('dashboard');
+
+// Voting
+
+Route::get('voting', [VotingController::class, 'index'])
+    ->name('voting')
+    ->middleware('auth');
+
+// Petitions
+
+Route::get('petitions', [PetitionsController::class, 'index'])
+    ->name('petitions')
     ->middleware('auth');
 
 // Users
