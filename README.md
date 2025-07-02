@@ -1,17 +1,37 @@
-# Ping CRM
+# VoteSystem.Team61
 
-A demo application to illustrate how Inertia.js works.
+A voting system application built with Laravel and Inertia.js.
 
-![](https://raw.githubusercontent.com/inertiajs/pingcrm/master/screenshot.png)
+## Installation / Встановлення
 
-## Installation
+### All Platforms / Всі платформи
 
 Clone the repo locally:
 
 ```sh
-git clone https://github.com/inertiajs/pingcrm.git pingcrm
-cd pingcrm
+git clone https://github.com/Maks0101aps/VoteSystem.Team61.git votesystem
+cd votesystem
 ```
+
+### Windows
+
+1. Install PHP (8.1+ recommended) from [windows.php.net](https://windows.php.net/download/)
+2. Install Composer from [getcomposer.org](https://getcomposer.org/)
+3. Install Node.js from [nodejs.org](https://nodejs.org/)
+4. Run in PowerShell:
+```powershell
+composer install
+npm ci
+copy .env.example .env
+php artisan key:generate
+# For SQLite:
+New-Item -Type File database/database.sqlite
+php artisan migrate
+php artisan db:seed
+php -S 127.0.0.1:8000 -t public
+```
+
+### Mac/Linux
 
 Install PHP dependencies:
 
@@ -43,7 +63,7 @@ Generate application key:
 php artisan key:generate
 ```
 
-Create an SQLite database. You can also use another database (MySQL, Postgres), simply update your configuration accordingly.
+Create database (SQLite example):
 
 ```sh
 touch database/database.sqlite
@@ -61,21 +81,22 @@ Run database seeder:
 php artisan db:seed
 ```
 
-Run the dev server (the output will give the address):
+Run the dev server:
 
 ```sh
 php artisan serve
 ```
 
-You're ready to go! Visit Ping CRM in your browser, and login with:
-
-- **Username:** johndoe@example.com
+Default admin credentials:
+- **Username:** admin@votesystem.com
 - **Password:** secret
 
-## Running tests
+Тестові облікові дані адміністратора:
+- **Логін:** johndoe@example.com
+- **Пароль:** secret
 
-To run the Ping CRM tests, run:
+## Running Tests / Запуск тестів
 
-```
-phpunit
+```sh
+php artisan test
 ```
