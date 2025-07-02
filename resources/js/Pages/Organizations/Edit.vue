@@ -32,11 +32,14 @@
     <h2 class="mt-12 text-2xl font-bold">Contacts</h2>
     <div class="mt-6 bg-white rounded shadow overflow-x-auto">
       <table class="w-full whitespace-nowrap">
+        <thead>
         <tr class="text-left font-bold">
           <th class="pb-4 pt-6 px-6">Name</th>
           <th class="pb-4 pt-6 px-6">City</th>
           <th class="pb-4 pt-6 px-6" colspan="2">Phone</th>
         </tr>
+        </thead>
+        <tbody>
         <tr v-for="contact in organization.contacts" :key="contact.id" class="hover:bg-gray-100 focus-within:bg-gray-100">
           <td class="border-t">
             <Link class="flex items-center px-6 py-4 focus:text-indigo-500" :href="`/contacts/${contact.id}/edit`">
@@ -63,6 +66,7 @@
         <tr v-if="organization.contacts.length === 0">
           <td class="px-6 py-4 border-t" colspan="4">No contacts found.</td>
         </tr>
+        </tbody>
       </table>
     </div>
   </div>

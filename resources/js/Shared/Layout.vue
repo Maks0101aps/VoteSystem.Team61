@@ -7,7 +7,7 @@
           <main-menu class="hidden md:flex w-full" />
         </div>
         <div class="flex items-center ml-4">
-          <dropdown class="mt-1" placement="bottom-end">
+          <dropdown v-if="auth.user" class="mt-1" placement="bottom-end">
             <template #default>
               <div class="group flex items-center cursor-pointer select-none">
                 <div class="mr-1 text-gray-700 group-hover:text-green-600 focus:text-green-600 whitespace-nowrap">
