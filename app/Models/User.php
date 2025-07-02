@@ -20,9 +20,12 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
+        'first_name',
+        'last_name',
+        'middle_name',
         'email',
         'password',
+        'role',
     ];
 
     /**
@@ -43,7 +46,6 @@ class User extends Authenticatable
     protected function casts(): array
     {
         return [
-            'owner' => 'boolean',
             'email_verified_at' => 'datetime',
         ];
     }
@@ -53,10 +55,7 @@ class User extends Authenticatable
         return $this->where($field ?? 'id', $value)->withTrashed()->firstOrFail();
     }
 
-    public function account(): BelongsTo
-    {
-        return $this->belongsTo(Account::class);
-    }
+
 
     public function getNameAttribute()
     {
@@ -80,9 +79,8 @@ class User extends Authenticatable
 
     public function scopeWhereRole($query, $role)
     {
-        switch ($role) {
-            case 'user': return $query->where('owner', false);
-            case 'owner': return $query->where('owner', true);
+        if (in_array($role, ['student', 'parent', 'teacher', 'director'])) {
+            $query->where('role', $role);
         }
     }
 
