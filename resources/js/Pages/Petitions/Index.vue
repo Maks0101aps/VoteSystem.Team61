@@ -93,12 +93,22 @@
         <path fill="rgba(52, 211, 153, 0.2)" fill-opacity="1" d="M0,128L48,138.7C96,149,192,171,288,154.7C384,139,480,85,576,85.3C672,85,768,139,864,165.3C960,192,1056,192,1152,165.3C1248,139,1344,85,1392,58.7L1440,32L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
       </svg>
     </div>
+    <ConfirmationModal 
+      :show="showConfirmation" 
+      @confirm="confirmDelete" 
+      @cancel="cancelDelete"
+      title="Видалити петицію"
+      message="Ви дійсно хочете видалити цю петицію? Цю дію неможливо буде скасувати."
+      confirmButtonText="Так, видалити"
+      cancelButtonText="Скасувати"
+    />
   </div>
 </template>
 
 <script>
 import { Head, Link, usePage, useForm, router } from '@inertiajs/vue3'
 import Layout from '@/Shared/Layout.vue'
+import ConfirmationModal from '@/Shared/ConfirmationModal.vue';
 
 import dayjs from 'dayjs'
 import customParseFormat from 'dayjs/plugin/customParseFormat'
@@ -108,11 +118,18 @@ export default {
   components: {
     Head,
     Link,
+    ConfirmationModal,
   },
   layout: Layout,
   props: {
     title: String,
     petitions: Array,
+  },
+  data() {
+    return {
+      showConfirmation: false,
+      petitionToDelete: null,
+    };
   },
   computed: {
     processedPetitions() {
@@ -134,10 +151,23 @@ export default {
       })
     },
     destroy(petitionId) {
-      console.log(`Attempting to delete petition with ID: ${petitionId}`);
-      router.delete(`/petitions/${petitionId}`, {
-        preserveScroll: true,
-      });
+      this.petitionToDelete = petitionId;
+      this.showConfirmation = true;
+    },
+    confirmDelete() {
+      if (this.petitionToDelete) {
+        router.delete(`/petitions/${this.petitionToDelete}`, {
+          preserveScroll: true,
+          onFinish: () => {
+            this.showConfirmation = false;
+            this.petitionToDelete = null;
+          },
+        });
+      }
+    },
+    cancelDelete() {
+      this.showConfirmation = false;
+      this.petitionToDelete = null;
     }
   }
 }
