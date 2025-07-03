@@ -19,6 +19,8 @@ return new class extends Migration
             $table->string('title', 100);
             $table->text('description');
             $table->integer('signatures_required');
+            $table->integer('duration');
+            $table->string('target_class')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

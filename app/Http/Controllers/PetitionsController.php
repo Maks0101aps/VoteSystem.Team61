@@ -43,6 +43,10 @@ class PetitionsController extends Controller
 
     public function create()
     {
+        if (Auth::user()->role !== 'student') {
+                        return Redirect::route('petitions')->with('error', 'Тільки учні можуть створювати петиції.');
+        }
+
         return Inertia::render('Petitions/Create', [
             'title' => 'Створити петицію',
         ]);
@@ -50,6 +54,10 @@ class PetitionsController extends Controller
 
     public function store(Request $request)
     {
+        if (Auth::user()->role !== 'student') {
+            abort(403, 'Тільки учні можуть створювати петиції.');
+        }
+
         $request->validate([
             'title' => ['required', 'max:100'],
             'description' => ['required'],
@@ -72,6 +80,10 @@ class PetitionsController extends Controller
 
     public function sign(Petition $petition)
     {
+        if (Auth::user()->role !== 'student') {
+            return Redirect::back()->with('error', 'Тільки учні можуть підписувати петиції.');
+        }
+
         // Check if user already signed
         $exists = PetitionSignature::where('petition_id', $petition->id)
             ->where('user_id', Auth::id())

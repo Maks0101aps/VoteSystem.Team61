@@ -87,6 +87,17 @@ Run the dev server:
 php artisan serve
 ```
 
+## Test Accounts / Тестові акаунти
+
+The system includes these test accounts (password for all is `secret`):
+
+| Email                | Role      | Name          |
+|----------------------|-----------|---------------|
+| johndoe@example.com  | director  | John Doe      |
+| teacher@example.com  | teacher   | Jane Smith    |
+| parent@example.com   | parent    | Peter Jones   |
+| student@example.com  | student   | Sam Wilson    |
+
 Default admin credentials / Тестові облікові дані адміністратора:
 - **Email / Пошта:** johndoe@example.com
 - **Password / Пароль:** secret
@@ -95,4 +106,3 @@ Default admin credentials / Тестові облікові дані адмін�
 
 ```sh
 php artisan test
-```

@@ -16,7 +16,7 @@
 
       <!-- Кнопка створення нової петиції -->
       <div class="mb-6 flex justify-end">
-        <Link href="/petitions/create" class="bg-green-500 hover:bg-green-600 text-white px-5 py-2 rounded-lg transition-colors flex items-center">
+        <Link v-if="$page.props.auth.user.role === 'student'" href="/petitions/create" class="bg-green-600 hover:bg-green-700 text-white px-5 py-2 rounded-lg transition-colors flex items-center">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
             <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
           </svg>
@@ -31,8 +31,8 @@
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
           </svg>
           <h3 class="text-xl font-medium text-green-700 mb-2">Наразі немає активних петицій</h3>
-          <p class="text-green-600 mb-6">Створіть першу петицію, щоб почати збирати підписи</p>
-          <Link href="/petitions/create" class="inline-flex items-center bg-green-500 hover:bg-green-600 text-white px-5 py-2 rounded-lg transition-colors">
+          <p v-if="$page.props.auth.user.role === 'student'" class="text-green-600 mb-6">Створіть першу петицію, щоб почати збирати підписи</p>
+          <Link v-if="$page.props.auth.user.role === 'student'" href="/petitions/create" class="inline-flex items-center bg-green-600 hover:bg-green-700 text-white px-5 py-2 rounded-lg transition-colors">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
               <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
             </svg>
@@ -65,7 +65,7 @@
               <span class="ml-4">Закінчується: {{ petition.ends_at }}</span>
               <span v-if="petition.target_class" class="ml-4">Клас: {{ petition.target_class }}</span>
             </div>
-            <form v-if="!petition.is_signed && !petition.is_completed && !petition.isExpired" @submit.prevent="sign(petition.id)">
+            <form v-if="$page.props.auth.user.role === 'student' && !petition.is_signed && !petition.is_completed && !petition.isExpired" @submit.prevent="sign(petition.id)">
               <button type="submit" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg transition-colors">
                 Підписати
               </button>
