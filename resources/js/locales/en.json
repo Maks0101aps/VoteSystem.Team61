@@ -1,0 +1,91 @@
+{
+  "main_menu": {
+    "home": "Home",
+    "petitions": "Petitions",
+    "users": "Users",
+    "profile": "Profile",
+    "logout": "Logout",
+    "voting": "Voting",
+    "reports": "Reports",
+    "switch_language": "Switch Language"
+  },
+  "petitions_page": {
+    "title": "Petitions",
+    "active_petitions": "Active Petitions",
+    "create_petition": "Create Petition",
+    "no_active_petitions": "No active petitions at the moment",
+    "create_first_petition": "Create the first petition to start collecting signatures",
+    "signatures": "Signatures",
+    "from": "from",
+    "author": "Author",
+    "created": "Created",
+    "ends": "Ends",
+    "class": "Class",
+    "sign": "Sign",
+    "signed": "Signed",
+    "completed": "Completed",
+    "delete": "Delete",
+    "in_progress": "In Progress",
+    "expired": "Expired",
+    "supported": "Supported",
+    "confirmation_modal": {
+      "title": "Delete petition",
+      "message": "Are you sure you want to delete this petition? This action cannot be undone.",
+      "confirm_button": "Yes, delete",
+      "cancel_button": "Cancel"
+    }
+  },
+  "dashboard_page": {
+    "title": "Home",
+    "platform_title": "School Voting Platform",
+    "greeting": "Hello, {name}!",
+    "guest_greeting": "Hello, guest!",
+    "about_system": "About the system",
+    "about_system_text": "Welcome to the school voting platform! This system allows students and teachers to participate in votes and create petitions on important school life issues. Every vote counts, and together we can make our school environment better.",
+    "how_to_use": "How to use",
+    "step1_title": "View active votes",
+    "step1_text": "Visit the voting section to see all current votes and petitions",
+    "step2_title": "Participate in voting",
+    "step2_text": "Familiarize yourself with the topic, choose an answer, and confirm your choice",
+    "step3_title": "Create petitions",
+    "step3_text": "Propose your own ideas for solving school issues and gather support",
+    "transparency": "Transparency",
+    "security": "Security",
+    "community": "Community",
+    "impact": "Impact"
+  },
+  "voting_page": {
+    "title": "Voting",
+    "active_votings": "Active Votings",
+    "election_title": "School Government President Election",
+    "election_description": "Voting for candidates for the position of president of the school government for the 2023-2024 academic year.",
+    "status_active": "Active",
+    "ends_in": "Ends in: {time}",
+    "days": "days",
+    "vote_button": "Vote",
+    "holiday_theme_title": "School Holiday Theme",
+    "holiday_theme_description": "Vote for the theme of the next school holiday. Choose one of the proposed options."
+  },
+  "reports_page": {
+    "title": "Reports"
+  },
+  "users_page": {
+    "title": "Users",
+    "search_filter": {
+      "role": "Role:",
+      "user": "User",
+      "owner": "Owner",
+      "trashed": "Trashed:",
+      "with_trashed": "With Trashed",
+      "only_trashed": "Only Trashed"
+    },
+    "create_user": "Create User",
+    "create": "Create",
+    "table": {
+      "name": "Name",
+      "email": "Email",
+      "role": "Role"
+    },
+    "no_users_found": "No users found."
+  }
+}
