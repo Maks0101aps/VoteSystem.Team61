@@ -27,7 +27,7 @@ class User extends Authenticatable
         'password',
         'role',
         'school',
-        'class',
+        'school_class_id',
         'class_letter',
         'region',
         'city',
@@ -107,7 +107,12 @@ class User extends Authenticatable
         });
     }
 
-    public function account()
+    public function schoolClass(): BelongsTo
+    {
+        return $this->belongsTo(SchoolClass::class);
+    }
+
+    public function account(): BelongsTo
     {
         return $this->belongsTo(Account::class);
     }

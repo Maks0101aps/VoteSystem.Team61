@@ -63,14 +63,52 @@
         </div>
 
         <div class="mb-6">
-          <label class="block text-green-700 font-medium mb-2" for="target_class">Клас (необов'язково)</label>
-          <TextInput
-            id="target_class"
-            v-model="form.target_class"
-            :error="form.errors.target_class"
-            class="w-full"
-            autocomplete="off"
-          />
+          <label class="block text-green-700 font-medium mb-2">Цільова аудиторія</label>
+          <div class="flex items-center space-x-4">
+            <label class="flex items-center">
+              <input type="radio" v-model="form.target_type" value="school" class="form-radio h-4 w-4 text-green-600 transition duration-150 ease-in-out">
+              <span class="ml-2 text-gray-700">Для всієї школи</span>
+            </label>
+            <label class="flex items-center">
+              <input type="radio" v-model="form.target_type" value="class" class="form-radio h-4 w-4 text-green-600 transition duration-150 ease-in-out">
+              <span class="ml-2 text-gray-700">Для класу</span>
+            </label>
+          </div>
+        </div>
+
+        <div v-if="form.target_type === 'class'" class="mb-6 p-4 bg-green-50 rounded-lg border border-green-200">
+          <label class="block text-green-700 font-medium mb-2">Вкажіть клас</label>
+          <div class="flex items-start space-x-4">
+            <div class="flex-1">
+              <select
+                id="class_number"
+                v-model="form.class_number"
+                class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+                :class="{ 'border-red-500': form.errors.class_number }"
+              >
+                <option :value="''" disabled>Номер</option>
+                <option v-for="number in Object.keys(classData)" :key="number" :value="number">
+                  {{ number }}
+                </option>
+              </select>
+              <div v-if="form.errors.class_number" class="text-red-500 text-sm mt-1">{{ form.errors.class_number }}</div>
+            </div>
+            <div class="flex-1">
+              <select
+                id="class_letter"
+                v-model="form.class_letter"
+                class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+                :class="{ 'border-red-500': form.errors.class_letter }"
+                :disabled="!form.class_number"
+              >
+                <option :value="''" disabled>Буква</option>
+                <option v-for="letter in availableLetters" :key="letter" :value="letter">
+                  {{ letter }}
+                </option>
+              </select>
+              <div v-if="form.errors.class_letter" class="text-red-500 text-sm mt-1">{{ form.errors.class_letter }}</div>
+            </div>
+          </div>
         </div>
         
         <div class="flex items-center justify-end">
@@ -104,27 +142,45 @@ export default {
     Link,
     TextInput,
     TextareaInput,
-    LoadingButton
+    LoadingButton,
   },
   layout: Layout,
   props: {
-    title: String
+    title: String,
+    classData: Object,
   },
-  setup() {
-    const form = useForm({
-      title: '',
-      description: '',
-      signatures_required: 100,
-      duration: 24,
-      target_class: '',
-    })
-
-    function submit() {
-      form.post('/petitions')
+  remember: 'form',
+  data() {
+    return {
+      form: this.$inertia.form({
+        title: '',
+        description: '',
+        signatures_required: 10,
+        duration: 24,
+        target_type: 'school',
+        class_number: '',
+        class_letter: '',
+      }),
     }
-
-    return { form, submit }
-  }
+  },
+  computed: {
+    availableLetters() {
+      if (this.form.class_number && this.classData) {
+        return this.classData[this.form.class_number] || []
+      }
+      return []
+    },
+  },
+  watch: {
+    'form.class_number'() {
+      this.form.class_letter = ''
+    },
+  },
+  methods: {
+    submit() {
+      this.form.post('/petitions')
+    },
+  },
 }
 </script>
 

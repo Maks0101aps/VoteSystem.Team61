@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Petition;
 use App\Models\PetitionSignature;
+use App\Models\SchoolClass;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
@@ -13,7 +14,7 @@ class PetitionsController extends Controller
 {
     public function index()
     {
-        $petitions = Petition::with(['signatures', 'user'])
+        $petitions = Petition::with(['signatures', 'user', 'schoolClass'])
             ->withCount('signatures')
             ->latest()
             ->get()
@@ -30,7 +31,7 @@ class PetitionsController extends Controller
                     'author' => $petition->user->name,
                     'is_signed' => $petition->signatures->contains('user_id', Auth::id()),
                     'is_completed' => $petition->signatures_count >= $petition->signatures_required,
-                    'target_class' => $petition->target_class,
+                    'target_class' => $petition->schoolClass ? $petition->schoolClass->name : 'Вся школа',
                     'user_id' => $petition->user_id,
                 ];
             });
@@ -47,8 +48,13 @@ class PetitionsController extends Controller
                         return Redirect::route('petitions')->with('error', 'Тільки учні можуть створювати петиції.');
         }
 
+        $classData = SchoolClass::all()->groupBy('class_number')->map(function ($group) {
+            return $group->pluck('class_letter');
+        });
+
         return Inertia::render('Petitions/Create', [
             'title' => 'Створити петицію',
+            'classData' => $classData,
         ]);
     }
 
@@ -63,8 +69,22 @@ class PetitionsController extends Controller
             'description' => ['required'],
             'signatures_required' => ['required', 'integer', 'min:10'],
             'duration' => ['required', 'integer', 'in:24,48,72'],
-            'target_class' => ['nullable', 'string', 'max:255'],
+            'target_type' => ['required', 'string', 'in:school,class'],
+            'class_number' => ['required_if:target_type,class', 'integer', 'max:11'],
+            'class_letter' => ['required_if:target_type,class', 'string', 'size:1'],
         ]);
+
+        $school_class_id = null;
+        if ($request->target_type === 'class') {
+            $schoolClass = SchoolClass::where('class_number', $request->class_number)
+                ->where('class_letter', $request->class_letter)
+                ->first();
+
+            if (!$schoolClass) {
+                return back()->withErrors(['class_letter' => 'Клас не знайдено.'])->withInput();
+            }
+            $school_class_id = $schoolClass->id;
+        }
 
         $petition = Petition::create([
             'title' => $request->title,
@@ -72,7 +92,7 @@ class PetitionsController extends Controller
             'signatures_required' => $request->signatures_required,
             'user_id' => Auth::id(),
             'duration' => $request->duration,
-            'target_class' => $request->target_class,
+            'school_class_id' => $school_class_id,
         ]);
 
         return Redirect::route('petitions')->with('success', 'Петиція успішно створена.');
