@@ -61,6 +61,17 @@
             <option value="72">72 години</option>
           </select>
         </div>
+
+        <div class="mb-6">
+          <label class="block text-green-700 font-medium mb-2" for="target_class">Клас (необов'язково)</label>
+          <TextInput
+            id="target_class"
+            v-model="form.target_class"
+            :error="form.errors.target_class"
+            class="w-full"
+            autocomplete="off"
+          />
+        </div>
         
         <div class="flex items-center justify-end">
           <Link href="/petitions" class="text-green-700 hover:text-green-900 mr-4">Скасувати</Link>
@@ -105,6 +116,7 @@ export default {
       description: '',
       signatures_required: 100,
       duration: 24,
+      target_class: '',
     })
 
     function submit() {

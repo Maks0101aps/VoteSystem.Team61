@@ -72,6 +72,10 @@ Route::post('petitions/{petition}/sign', [PetitionsController::class, 'sign'])
     ->name('petitions.sign')
     ->middleware('auth');
 
+Route::delete('petitions/{petition}', [PetitionsController::class, 'destroy'])
+    ->name('petitions.destroy')
+    ->middleware('auth');
+
 // Users
 
 Route::get('users', [UsersController::class, 'index'])

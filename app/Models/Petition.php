@@ -15,6 +15,7 @@ class Petition extends Model
         'signatures_required',
         'user_id',
         'duration',
+        'target_class',
     ];
 
     public function user()

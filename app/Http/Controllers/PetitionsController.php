@@ -30,6 +30,8 @@ class PetitionsController extends Controller
                     'author' => $petition->user->name,
                     'is_signed' => $petition->signatures->contains('user_id', Auth::id()),
                     'is_completed' => $petition->signatures_count >= $petition->signatures_required,
+                    'target_class' => $petition->target_class,
+                    'user_id' => $petition->user_id,
                 ];
             });
 
@@ -53,6 +55,7 @@ class PetitionsController extends Controller
             'description' => ['required'],
             'signatures_required' => ['required', 'integer', 'min:10'],
             'duration' => ['required', 'integer', 'in:24,48,72'],
+            'target_class' => ['nullable', 'string', 'max:255'],
         ]);
 
         $petition = Petition::create([
@@ -61,6 +64,7 @@ class PetitionsController extends Controller
             'signatures_required' => $request->signatures_required,
             'user_id' => Auth::id(),
             'duration' => $request->duration,
+            'target_class' => $request->target_class,
         ]);
 
         return Redirect::route('petitions')->with('success', 'Петиція успішно створена.');
@@ -82,5 +86,16 @@ class PetitionsController extends Controller
         }
         
         return Redirect::back()->with('error', 'Ви вже підписали цю петицію.');
+    }
+
+    public function destroy(Petition $petition)
+    {
+        if (Auth::id() !== $petition->user_id) {
+            return Redirect::back()->with('error', 'Ви не можете видалити цю петицію.');
+        }
+
+        $petition->delete();
+
+        return Redirect::route('petitions')->with('success', 'Петиція успішно видалена.');
     }
 }

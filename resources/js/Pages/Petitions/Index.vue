@@ -63,6 +63,7 @@
               <span class="ml-4">Автор: {{ petition.author }}</span>
               <span class="ml-4">Створено: {{ petition.created_at }}</span>
               <span class="ml-4">Закінчується: {{ petition.ends_at }}</span>
+              <span v-if="petition.target_class" class="ml-4">Клас: {{ petition.target_class }}</span>
             </div>
             <form v-if="!petition.is_signed && !petition.is_completed && !petition.isExpired" @submit.prevent="sign(petition.id)">
               <button type="submit" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg transition-colors">
@@ -75,6 +76,12 @@
             <span v-else class="bg-green-100 text-green-700 px-4 py-2 rounded-lg">
               Виконано
             </span>
+            <button v-if="$page.props.auth.user.id === petition.user_id" @click="destroy(petition.id)" class="inline-flex items-center bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg transition-colors ml-4">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" />
+                </svg>
+                Видалити
+              </button>
           </div>
         </div>
       </div>
@@ -90,9 +97,9 @@
 </template>
 
 <script>
-import { Head, Link } from '@inertiajs/vue3'
+import { Head, Link, usePage, useForm, router } from '@inertiajs/vue3'
 import Layout from '@/Shared/Layout.vue'
-import { useForm } from '@inertiajs/vue3'
+
 import dayjs from 'dayjs'
 import customParseFormat from 'dayjs/plugin/customParseFormat'
 dayjs.extend(customParseFormat)
@@ -125,6 +132,12 @@ export default {
           // Success is handled by the flash messages
         },
       })
+    },
+    destroy(petitionId) {
+      console.log(`Attempting to delete petition with ID: ${petitionId}`);
+      router.delete(`/petitions/${petitionId}`, {
+        preserveScroll: true,
+      });
     }
   }
 }
