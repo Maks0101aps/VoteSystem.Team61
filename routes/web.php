@@ -55,6 +55,11 @@ Route::get('voting', [VotingController::class, 'index'])
     ->name('voting')
     ->middleware('auth');
 
+Route::get('votings/create', [VotingController::class, 'create'])
+    ->name('votings.create')
+    ->middleware('auth');
+
+
 // Petitions
 
 Route::get('petitions', [PetitionsController::class, 'index'])

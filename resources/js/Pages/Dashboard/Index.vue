@@ -6,13 +6,13 @@
     <div class="absolute -bottom-8 left-40 w-72 h-72 bg-green-100 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-blob animation-delay-4000"></div>
     
     <div class="container mx-auto px-4 relative z-10 max-w-4xl">
-      <Head title="Головна" />
+      <Head :title="$t('dashboard_page.title')" />
       
       <div class="text-center mb-10">
-        <h1 class="text-4xl font-bold text-green-800 mb-2">Платформа шкільного голосування</h1>
+        <h1 class="text-4xl font-bold text-green-800 mb-2">{{ $t('dashboard_page.platform_title') }}</h1>
         <div class="h-1 w-24 bg-green-500 mx-auto mb-4 rounded-full"></div>
-        <p class="text-xl text-green-700" v-if="!guestUser">Привіт, {{ $page.props.auth.user.first_name }}!</p>
-        <p class="text-xl text-green-700" v-else>Привіт, гість!</p>
+        <p class="text-xl text-green-700" v-if="!guestUser">{{ $t('dashboard_page.greeting', { name: $page.props.auth.user.first_name }) }}</p>
+        <p class="text-xl text-green-700" v-else>{{ $t('dashboard_page.guest_greeting') }}</p>
       </div>
 
       <!-- Короткий опис системи -->
@@ -21,12 +21,10 @@
           <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
           </svg>
-          Про систему
+          {{ $t('dashboard_page.about_system') }}
         </h2>
         <p class="text-green-600">
-          Ласкаво просимо до платформи шкільного голосування! Ця система дозволяє учням та вчителям 
-          брати участь у голосуваннях та створювати петиції з важливих питань шкільного життя.
-          Кожен голос важливий, і разом ми можемо зробити наше шкільне середовище кращим.
+          {{ $t('dashboard_page.about_system_text') }}
         </p>
       </div>
 
@@ -36,30 +34,30 @@
           <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
           </svg>
-          Як користуватись
+          {{ $t('dashboard_page.how_to_use') }}
         </h2>
         <div class="space-y-3">
           <div class="flex items-start p-3 bg-green-50 rounded-lg hover:bg-green-100 transition-colors">
             <div class="bg-green-500 text-white font-bold rounded-full w-7 h-7 flex items-center justify-center mr-3 flex-shrink-0">1</div>
             <div>
-              <h3 class="font-bold text-base text-green-800">Переглядайте активні голосування</h3>
-              <p class="text-green-600 text-sm">Відвідайте розділ голосувань, щоб побачити всі поточні голосування та петиції</p>
+              <h3 class="font-bold text-base text-green-800">{{ $t('dashboard_page.step1_title') }}</h3>
+              <p class="text-green-600 text-sm">{{ $t('dashboard_page.step1_text') }}</p>
             </div>
           </div>
           
           <div class="flex items-start p-3 bg-green-50 rounded-lg hover:bg-green-100 transition-colors">
             <div class="bg-green-500 text-white font-bold rounded-full w-7 h-7 flex items-center justify-center mr-3 flex-shrink-0">2</div>
             <div>
-              <h3 class="font-bold text-base text-green-800">Прийміть участь у голосуванні</h3>
-              <p class="text-green-600 text-sm">Ознайомтеся з темою, виберіть відповідь та підтвердіть свій вибір</p>
+              <h3 class="font-bold text-base text-green-800">{{ $t('dashboard_page.step2_title') }}</h3>
+              <p class="text-green-600 text-sm">{{ $t('dashboard_page.step2_text') }}</p>
             </div>
           </div>
           
           <div class="flex items-start p-3 bg-green-50 rounded-lg hover:bg-green-100 transition-colors">
             <div class="bg-green-500 text-white font-bold rounded-full w-7 h-7 flex items-center justify-center mr-3 flex-shrink-0">3</div>
             <div>
-              <h3 class="font-bold text-base text-green-800">Створюйте петиції</h3>
-              <p class="text-green-600 text-sm">Пропонуйте власні ідеї для вирішення шкільних питань та збирайте підтримку</p>
+              <h3 class="font-bold text-base text-green-800">{{ $t('dashboard_page.step3_title') }}</h3>
+              <p class="text-green-600 text-sm">{{ $t('dashboard_page.step3_text') }}</p>
             </div>
           </div>
         </div>
@@ -74,7 +72,7 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
             </div>
-            <p class="text-green-700 text-sm font-medium">Прозорість</p>
+            <p class="text-green-700 text-sm font-medium">{{ $t('dashboard_page.transparency') }}</p>
           </div>
           <div class="text-center">
             <div class="inline-block p-3 bg-green-100 rounded-full text-green-600 mb-2">
@@ -82,7 +80,7 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
               </svg>
             </div>
-            <p class="text-green-700 text-sm font-medium">Безпека</p>
+            <p class="text-green-700 text-sm font-medium">{{ $t('dashboard_page.security') }}</p>
           </div>
           <div class="text-center">
             <div class="inline-block p-3 bg-green-100 rounded-full text-green-600 mb-2">
@@ -90,7 +88,7 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
               </svg>
             </div>
-            <p class="text-green-700 text-sm font-medium">Спільнота</p>
+            <p class="text-green-700 text-sm font-medium">{{ $t('dashboard_page.community') }}</p>
           </div>
           <div class="text-center">
             <div class="inline-block p-3 bg-green-100 rounded-full text-green-600 mb-2">
@@ -98,7 +96,7 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z" />
               </svg>
             </div>
-            <p class="text-green-700 text-sm font-medium">Вплив</p>
+            <p class="text-green-700 text-sm font-medium">{{ $t('dashboard_page.impact') }}</p>
           </div>
         </div>
       </div>
