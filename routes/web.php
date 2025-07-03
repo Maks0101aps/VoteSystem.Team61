@@ -52,13 +52,16 @@ Route::get('/', [DashboardController::class, 'index'])
 // Voting
 
 Route::get('voting', [VotingController::class, 'index'])
-    ->name('voting')
+    ->name('voting.index')
     ->middleware('auth');
 
 Route::get('votings/create', [VotingController::class, 'create'])
-    ->name('votings.create')
+    ->name('voting.create')
     ->middleware('auth');
 
+Route::post('votings', [VotingController::class, 'store'])
+    ->name('voting.store')
+    ->middleware('auth');
 
 // Petitions
 

@@ -64,7 +64,10 @@
     "days": "дні",
     "vote_button": "Голосувати",
     "holiday_theme_title": "Тематика шкільного свята",
-    "holiday_theme_description": "Голосування за тематику наступного шкільного свята. Виберіть один з запропонованих варіантів."
+    "holiday_theme_description": "Голосування за тему наступного шкільного свята. Оберіть один із запропонованих варіантів.",
+    "create_vote": "Створити голосування",
+    "no_active_votings": "Немає активних голосувань",
+    "be_the_first": "Будьте першим, хто створить голосування."
   },
   "reports_page": {
     "title": "Звіти"
@@ -87,5 +90,21 @@
       "role": "Роль"
     },
     "no_users_found": "Користувачів не знайдено."
+  },
+  "voting_create_page": {
+    "title": "Створення нового голосування",
+    "form_title": "Створення нового голосування",
+    "vote_title_label": "Назва голосування",
+    "vote_title_placeholder": "Введіть назву...",
+    "description_label": "Опис",
+    "description_placeholder": "Додайте детальний опис...",
+    "roles_label": "Для кого голосування",
+    "for_all_label": "Голосування для всіх",
+    "class_label": "Клас",
+    "class_placeholder": "Виберіть клас",
+    "class_letter_label": "Буква класу",
+    "class_letter_placeholder": "Виберіть букву",
+    "cancel_button": "Скасувати",
+    "create_button": "Створити"
   }
 }

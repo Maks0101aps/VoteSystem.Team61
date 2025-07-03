@@ -14,7 +14,7 @@
     "active_petitions": "Active Petitions",
     "create_petition": "Create Petition",
     "no_active_petitions": "No active petitions at the moment",
-    "create_first_petition": "Create the first petition to start collecting signatures",
+    "create_first_petition": "Create a new petition to gather support for your cause.",
     "signatures": "Signatures",
     "from": "from",
     "author": "Author",
@@ -64,7 +64,10 @@
     "days": "days",
     "vote_button": "Vote",
     "holiday_theme_title": "School Holiday Theme",
-    "holiday_theme_description": "Vote for the theme of the next school holiday. Choose one of the proposed options."
+    "holiday_theme_description": "Vote for the theme of the next school holiday. Choose one of the proposed options.",
+    "create_vote": "Create Vote",
+    "no_active_votings": "No active votings",
+    "be_the_first": "Be the first to create a vote."
   },
   "reports_page": {
     "title": "Reports"
@@ -87,5 +90,21 @@
       "role": "Role"
     },
     "no_users_found": "No users found."
+  },
+  "voting_create_page": {
+    "title": "Create a new vote",
+    "form_title": "Creating a new vote",
+    "vote_title_label": "Vote Title",
+    "vote_title_placeholder": "Enter title...",
+    "description_label": "Description",
+    "description_placeholder": "Add a detailed description...",
+    "roles_label": "Vote for",
+    "for_all_label": "Vote for all",
+    "class_label": "Class",
+    "class_placeholder": "Select class",
+    "class_letter_label": "Class Letter",
+    "class_letter_placeholder": "Select letter",
+    "cancel_button": "Cancel",
+    "create_button": "Create"
   }
 }
