@@ -2,7 +2,7 @@
   <Head title="Register" />
 
   <div class="flex items-center justify-center min-h-screen bg-orange-100">
-    <div class="w-full max-w-md p-8 bg-white rounded-lg shadow-lg">
+    <div class="w-full max-w-xl p-8 bg-white rounded-lg shadow-lg">
       <h1 class="text-3xl font-bold text-center text-gray-800 mb-6">Create Account</h1>
       <form @submit.prevent="register">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
