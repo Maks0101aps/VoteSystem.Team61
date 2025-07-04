@@ -1,5 +1,7 @@
 <?php
 
+use Inertia\Inertia;
+
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\ContactsController;
@@ -180,6 +182,10 @@ Route::put('contacts/{contact}/restore', [ContactsController::class, 'restore'])
 Route::get('reports', [ReportsController::class, 'index'])
     ->name('reports')
     ->middleware('auth');
+
+Route::get('messages', function () {
+    return Inertia::render('Messages/Index');
+})->name('messages')->middleware(['auth', 'role:director']);
 
 // Images
 

@@ -9,6 +9,7 @@
   <svg v-else-if="name === 'users'" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M7 8a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm0 1c2.15 0 4.2.4 6.1 1.09L12 16h-1.25L10 20H4l-.75-4H2L.9 10.09A17.93 17.93 0 0 1 7 9zm8.31.17c1.32.18 2.59.48 3.8.92L18 16h-1.25L16 20h-3.96l.37-2h1.25l1.65-8.83zM13 0a4 4 0 1 1-1.33 7.76 5.96 5.96 0 0 0 0-7.52C12.1.1 12.53 0 13 0z" /></svg>
   <svg v-else-if="name === 'vote'" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M4 4h16v2H4V4zm0 4h16v2H4V8zm0 4h16v2H4v-2zm0 4h10v2H4v-2z" /></svg>
   <svg v-else-if="name === 'petition'" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9 4a3 3 0 013 3v1h4a2 2 0 012 2v10a2 2 0 01-2 2H6a2 2 0 01-2-2V10a2 2 0 012-2h4V7a3 3 0 013-3zm1 7v1.5a.5.5 0 00.5.5h1a.5.5 0 00.5-.5V11a.5.5 0 00-.5-.5h-1a.5.5 0 00-.5.5zm-2-7a1 1 0 00-1 1v1h2V7a1 1 0 00-1-1z" /></svg>
+  <svg v-else-if="name === 'messages'" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" /></svg>
   <svg v-else-if="name === 'protest'" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
     <path d="M3 3h14v14H3V3zm2 2v10h10V5H5zm2 2h6v1H7V7zm0 2h6v1H7V9zm0 2h6v1H7v-1zm0 2h4v1H7v-1z" />
     <path d="M13 11.5L12 9l-1 2.5h2z" />

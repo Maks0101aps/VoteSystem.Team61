@@ -20,6 +20,9 @@
       <Link class="flex items-center justify-center w-10 h-10 rounded-full hover:bg-gray-200/80 transition-colors duration-200" :title="$t('main_menu.reports')" href="/reports">
         <icon name="printer" class="w-5 h-5" :class="isUrl('reports') ? 'fill-green-600' : 'fill-gray-500 group-hover:fill-green-500'" />
       </Link>
+            <Link v-if="$page.props.auth.user.role === 'director'" class="flex items-center justify-center w-10 h-10 rounded-full hover:bg-gray-200/80 transition-colors duration-200" :title="$t('main_menu.messages')" href="/messages">
+        <icon name="messages" class="w-5 h-5" :class="isUrl('messages') ? 'fill-green-600' : 'fill-gray-500 group-hover:fill-green-500'" />
+      </Link>
     </div>
     
     <!-- Language Switcher -->
