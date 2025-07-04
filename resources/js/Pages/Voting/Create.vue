@@ -28,7 +28,7 @@
           <div class="mb-6" v-if="!form.for_all">
             <label for="roles" class="block mb-2 text-sm font-medium text-green-700">{{ $t('voting_create_page.roles_label') }}</label>
             <select multiple id="roles" v-model="form.roles" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2.5">
-              <option v-for="role in roles" :key="role" :value="role">{{ role }}</option>
+              <option v-for="(translatedRole, roleKey) in roles" :key="roleKey" :value="roleKey">{{ translatedRole }}</option>
             </select>
           </div>
 
@@ -76,7 +76,7 @@ export default {
   layout: Layout,
   props: {
     title: String,
-    roles: Array,
+    roles: Object,
     classes: Array,
     class_letters: Array,
   },

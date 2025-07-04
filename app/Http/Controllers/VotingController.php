@@ -14,8 +14,8 @@ class VotingController extends Controller
     public function create()
     {
         return Inertia::render('Voting/Create', [
-            'title' => 'Створення голосування',
-            'roles' => ['student', 'parent', 'teacher'],
+            'title' => __('voting.create_title'),
+            'roles' => collect(['student', 'parent', 'teacher'])->mapWithKeys(fn ($role) => [$role => __('roles.'.$role)]),
             'classes' => range(1, 11),
             'class_letters' => ['а', 'б', 'в', 'г'],
         ]);
@@ -62,9 +62,36 @@ class VotingController extends Controller
 
     public function index()
     {
+        $user = Auth::user();
+
+        $votingsQuery = Voting::query();
+
+        $votingsQuery->whereHas('visibilities', function ($query) use ($user) {
+            $query->where('role', $user->role);
+
+            if ($user->role === 'student') {
+                $query->where(function ($q) use ($user) {
+                    $q->whereNull('class_number')
+                        ->orWhere(function ($q2) use ($user) {
+                            $q2->where('class_number', $user->school_class_id)
+                                ->where('class_letter', $user->class_letter);
+                        });
+                });
+            }
+        });
+
         return Inertia::render('Voting/Index', [
             'title' => 'Голосування',
-            'votings' => [], // Pass an empty array for now
+            'votings' => $votingsQuery->with('user')
+                ->latest()
+                ->get()
+                ->map(fn (Voting $voting) => [
+                    'id' => $voting->id,
+                    'title' => $voting->title,
+                    'description' => $voting->description,
+                    'user' => $voting->user ? $voting->user->only('id', 'first_name', 'last_name') : null,
+                    'created_at' => $voting->created_at->diffForHumans(),
+                ]),
         ]);
     }
 
