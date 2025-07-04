@@ -12,6 +12,7 @@ use App\Http\Controllers\ReportsController;
 use App\Http\Controllers\UsersController;
 use App\Http\Controllers\VotingController;
 use App\Http\Controllers\PetitionsController;
+use App\Http\Controllers\DirectorController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -86,6 +87,19 @@ Route::post('petitions/{petition}/sign', [PetitionsController::class, 'sign'])
 Route::delete('petitions/{petition}', [PetitionsController::class, 'destroy'])
     ->name('petitions.destroy')
     ->middleware('auth');
+
+// Director
+
+Route::middleware(['auth', 'role:director'])->group(function () {
+    Route::get('director/petitions', [DirectorController::class, 'index'])
+        ->name('director.petitions.index');
+
+    Route::post('director/petitions/{petition}/approve', [DirectorController::class, 'approve'])
+        ->name('director.petitions.approve');
+
+    Route::post('director/petitions/{petition}/reject', [DirectorController::class, 'reject'])
+        ->name('director.petitions.reject');
+});
 
 // Users
 

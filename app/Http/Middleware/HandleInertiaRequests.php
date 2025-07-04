@@ -46,6 +46,12 @@ class HandleInertiaRequests extends Middleware
                     ] : null,
                 ];
             },
+            'pending_petitions_count' => function () use ($request) {
+                if ($request->user() && $request->user()->role === 'director') {
+                    return \App\Models\Petition::where('status', 'pending_review')->count();
+                }
+                return 0;
+            },
             'flash' => function () use ($request) {
                 return [
                     'success' => $request->session()->get('success'),

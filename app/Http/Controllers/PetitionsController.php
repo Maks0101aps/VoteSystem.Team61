@@ -30,7 +30,7 @@ class PetitionsController extends Controller
                     'created_at' => $petition->created_at->format('d.m.Y'),
                     'author' => $petition->user->name,
                     'is_signed' => $petition->signatures->contains('user_id', Auth::id()),
-                    'is_completed' => $petition->signatures_count >= $petition->signatures_required,
+                    'status' => $petition->status,
                     'target_class' => $petition->schoolClass ? $petition->schoolClass->name : 'Вся школа',
                     'user_id' => $petition->user_id,
                 ];
@@ -67,7 +67,7 @@ class PetitionsController extends Controller
         $request->validate([
             'title' => ['required', 'max:100'],
             'description' => ['required'],
-            'signatures_required' => ['required', 'integer', 'min:10'],
+            'signatures_required' => ['required', 'integer', 'min:1'],
             'duration' => ['required', 'integer', 'in:24,48,72'],
             'target_type' => ['required', 'string', 'in:school,class'],
             'class_number' => ['required_if:target_type,class', 'integer', 'max:11'],

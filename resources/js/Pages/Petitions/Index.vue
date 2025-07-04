@@ -43,12 +43,13 @@
         <!-- Петиції з бази даних -->
         <div v-for="petition in processedPetitions" :key="petition.id" 
              class="bg-white p-6 rounded-xl shadow-md border-l-4 backdrop-blur-sm bg-opacity-90 hover:shadow-lg transition-all duration-300"
-             :class="{'border-orange-500': !petition.is_completed, 'border-orange-300': petition.is_completed}">
+             :class="statusBorderClass(petition.status)">
           <div class="flex justify-between items-start mb-4">
             <h2 class="text-2xl font-bold text-orange-700">{{ petition.title }}</h2>
-            <span v-if="petition.isExpired" class="px-3 py-1 bg-red-100 text-red-700 rounded-full text-sm font-medium">{{ $t('petitions_page.expired') }}</span>
-            <span v-else-if="!petition.is_completed" class="px-3 py-1 bg-amber-100 text-amber-700 rounded-full text-sm font-medium">{{ $t('petitions_page.in_progress') }}</span>
-            <span v-else class="px-3 py-1 bg-orange-100 text-orange-700 rounded-full text-sm font-medium">{{ $t('petitions_page.supported') }}</span>
+            <span v-if="petition.isExpired && petition.status === 'active'" class="px-3 py-1 bg-red-100 text-red-700 rounded-full text-sm font-medium">{{ $t('petitions_page.expired') }}</span>
+            <span v-else :class="statusBadgeClass(petition.status)" class="px-3 py-1 rounded-full text-sm font-medium whitespace-nowrap">
+              {{ statusText(petition.status) }}
+            </span>
           </div>
           <p class="text-orange-600 mb-4">
             {{ petition.description }}
@@ -72,17 +73,14 @@
               <span class="ml-4">{{ $t('petitions_page.ends') }}: {{ petition.ends_at }}</span>
               <span v-if="petition.target_class" class="ml-4">{{ $t('petitions_page.class') }}: {{ petition.target_class }}</span>
             </div>
-            <form v-if="$page.props.auth.user.role === 'student' && !petition.is_signed && !petition.is_completed && !petition.isExpired" @submit.prevent="sign(petition.id)">
+            <form v-if="$page.props.auth.user.role === 'student' && petition.status === 'active' && !petition.is_signed && !petition.isExpired" @submit.prevent="sign(petition.id)">
               <button type="submit" class="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-lg transition-colors">
                 {{ $t('petitions_page.sign') }}
               </button>
             </form>
-            <button v-else-if="petition.is_signed" class="bg-gray-300 text-white px-4 py-2 rounded-lg cursor-not-allowed">
+            <button v-else-if="petition.is_signed" class="bg-gray-300 text-gray-500 px-4 py-2 rounded-lg cursor-not-allowed">
               {{ $t('petitions_page.signed') }}
             </button>
-            <span v-else class="bg-orange-100 text-orange-700 px-4 py-2 rounded-lg">
-              {{ $t('petitions_page.completed') }}
-            </span>
             <button v-if="$page.props.auth.user.id === petition.user_id" @click="destroy(petition.id)" class="inline-flex items-center bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg transition-colors ml-4">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" viewBox="0 0 20 20" fill="currentColor">
                   <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" />
@@ -149,6 +147,33 @@ export default {
     }
   },
   methods: {
+    statusText(status) {
+        const statuses = {
+            active: 'В процессе',
+            pending_review: 'На рассмотрении',
+            approved: 'Принята',
+            rejected: 'Отклонена',
+        };
+        return statuses[status] || 'Неизвестно';
+    },
+    statusBadgeClass(status) {
+        const classes = {
+            active: 'bg-amber-100 text-amber-800',
+            pending_review: 'bg-blue-100 text-blue-800',
+            approved: 'bg-green-100 text-green-800',
+            rejected: 'bg-red-100 text-red-800',
+        };
+        return classes[status] || 'bg-gray-100 text-gray-800';
+    },
+    statusBorderClass(status) {
+        const classes = {
+            active: 'border-amber-500',
+            pending_review: 'border-blue-500',
+            approved: 'border-green-500',
+            rejected: 'border-red-500',
+        };
+        return classes[status] || 'border-gray-500';
+    },
     sign(petitionId) {
       const form = useForm({})
       form.post(`/petitions/${petitionId}/sign`, {

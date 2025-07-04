@@ -44,7 +44,7 @@
             :error="form.errors.signatures_required"
             class="w-full"
             type="number"
-            min="10"
+            min="1"
           />
         </div>
 
@@ -155,7 +155,7 @@ export default {
       form: this.$inertia.form({
         title: '',
         description: '',
-        signatures_required: 10,
+        signatures_required: 1,
         duration: 24,
         target_type: 'school',
         class_number: '',
