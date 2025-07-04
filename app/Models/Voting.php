@@ -24,4 +24,14 @@ class Voting extends Model
     {
         return $this->hasMany(VotingVisibility::class);
     }
+
+    public function options(): HasMany
+    {
+        return $this->hasMany(VoteOption::class);
+    }
+
+    public function user_votes(): HasMany
+    {
+        return $this->hasMany(UserVote::class);
+    }
 }

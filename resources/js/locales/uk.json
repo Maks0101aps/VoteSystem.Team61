@@ -70,7 +70,14 @@
     "be_the_first": "Будьте першим, хто створить голосування."
   },
   "reports_page": {
-    "title": "Звіти"
+    "title": "Звіти",
+    "statistics_title": "Статистика",
+    "petitions_last_month": "Петиції (за останній місяць)",
+    "acceptance_percentage": "Прийняті петиції",
+    "total_votings": "Всього голосувань",
+    "no_votings": "Немає голосувань для відображення.",
+    "votes": "Голосів",
+    "no_options": "Для цього голосування немає варіантів."
   },
   "users_page": {
     "title": "Користувачі",

@@ -70,7 +70,14 @@
     "be_the_first": "Be the first to create a vote."
   },
   "reports_page": {
-    "title": "Reports"
+    "title": "Reports",
+    "statistics_title": "Statistics",
+    "petitions_last_month": "Petitions (Last Month)",
+    "acceptance_percentage": "Petition Acceptance",
+    "total_votings": "Total Votings",
+    "no_votings": "No votings to display.",
+    "votes": "Votes",
+    "no_options": "No options available for this voting."
   },
   "users_page": {
     "title": "Users",

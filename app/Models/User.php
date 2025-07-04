@@ -112,6 +112,11 @@ class User extends Authenticatable
         return $this->belongsTo(SchoolClass::class);
     }
 
+    public function user_votes()
+    {
+        return $this->hasMany(UserVote::class);
+    }
+
     public function account(): BelongsTo
     {
         return $this->belongsTo(Account::class);
