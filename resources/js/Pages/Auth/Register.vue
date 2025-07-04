@@ -1,7 +1,7 @@
 <template>
   <Head title="Register" />
 
-  <div class="flex items-center justify-center min-h-screen bg-green-200">
+  <div class="flex items-center justify-center min-h-screen bg-orange-100">
     <div class="w-full max-w-md p-8 bg-white rounded-lg shadow-lg">
       <h1 class="text-3xl font-bold text-center text-gray-800 mb-6">Create Account</h1>
       <form @submit.prevent="register">
@@ -75,10 +75,10 @@
         </div>
 
         <div class="flex items-center justify-between">
-          <loading-button :loading="form.processing" class="w-full btn-green" type="submit">Register</loading-button>
+          <loading-button :loading="form.processing" class="w-full btn-orange" type="submit">Register</loading-button>
         </div>
         <div class="mt-6 text-center">
-            <Link class="text-sm text-gray-600 hover:text-green-500" href="/login">
+            <Link class="text-sm text-gray-600 hover:text-orange-500" href="/login">
                 Already registered?
             </Link>
         </div>

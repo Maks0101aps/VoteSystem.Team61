@@ -1,5 +1,5 @@
 <template>
-  <div class="relative min-h-screen bg-gradient-to-br from-green-50 to-emerald-100 py-8">
+  <div class="relative min-h-screen bg-gradient-to-br from-orange-50 to-orange-100 py-8">
     <div class="container mx-auto px-4 relative z-10 max-w-2xl">
       <Head :title="title" />
       

@@ -6,7 +6,7 @@ export default {
   theme: {
     extend: {
       colors: {
-        green: colors.green,
+        green: colors.orange,
       },
       fontFamily: {
         sans: ['"Cerebri Sans"', ...defaultTheme.fontFamily.sans],

@@ -1,6 +1,6 @@
 <template>
   <Head title="Login" />
-  <div class="flex items-center justify-center min-h-screen bg-green-200">
+  <div class="flex items-center justify-center min-h-screen bg-orange-100">
     <div class="w-full max-w-md">
       <h1 class="text-3xl font-bold text-center text-white">VoteSystem.Team61</h1>
       <form class="mt-8 bg-white rounded-lg shadow-xl overflow-hidden" @submit.prevent="login">
@@ -15,8 +15,8 @@
           </label>
         </div>
                 <div class="flex items-center justify-between px-10 py-4 bg-gray-100 border-t border-gray-100">
-            <a href="/register" class="btn-green">Register</a>
-            <loading-button :loading="form.processing" class="btn-green" type="submit">Login</loading-button>
+            <a href="/register" class="btn-orange">Register</a>
+            <loading-button :loading="form.processing" class="btn-orange" type="submit">Login</loading-button>
         </div>
       </form>
     </div>

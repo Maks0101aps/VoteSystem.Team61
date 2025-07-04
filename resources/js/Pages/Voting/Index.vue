@@ -1,8 +1,8 @@
 <template>
-  <div class="relative min-h-screen bg-gradient-to-br from-green-50 to-emerald-100 py-8">
+  <div class="relative min-h-screen bg-gradient-to-br from-orange-50 to-orange-100 py-8">
     <!-- Decorative patterns -->
     <div class="absolute top-0 right-0 w-64 h-64 bg-green-200 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-blob"></div>
-    <div class="absolute top-20 -left-10 w-72 h-72 bg-emerald-300 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-blob animation-delay-2000"></div>
+    <div class="absolute top-20 -left-10 w-72 h-72 bg-orange-300 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-blob animation-delay-2000"></div>
     <div class="absolute -bottom-8 left-40 w-72 h-72 bg-green-100 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-blob animation-delay-4000"></div>
     
     <div class="container mx-auto px-4 relative z-10 max-w-4xl">
