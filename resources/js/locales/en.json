@@ -113,5 +113,44 @@
     "class_letter_placeholder": "Select letter",
     "cancel_button": "Cancel",
     "create_button": "Create"
+  },
+  "login_page": {
+    "title": "Login",
+    "welcome_back": "Welcome Back!",
+    "remember_me": "Remember Me",
+    "login_button": "Login",
+    "register_prompt": "Don't have an account?"
+  },
+  "register_page": {
+    "title": "Register",
+    "create_account": "Create Account",
+    "first_name": "First Name",
+    "last_name": "Last Name",
+    "middle_name": "Middle Name (Optional)",
+    "role": "Role",
+    "select_role": "Select a role",
+    "school_number": "School Number",
+    "class_number": "Class Number",
+    "select_number": "Select number",
+    "class_letter": "Class Letter",
+    "select_letter": "Select letter",
+    "region": "Region",
+    "select_region": "Select a region",
+    "city": "City",
+    "select_city": "Select a city",
+    "district": "District",
+    "select_district": "Select a district",
+    "register_button": "Register",
+    "login_prompt": "Already registered?"
+  },
+  "common": {
+    "email": "Email",
+    "password": "Password"
+  },
+  "roles": {
+    "student": "Student",
+    "parent": "Parent",
+    "teacher": "Teacher",
+    "director": "Director"
   }
 }

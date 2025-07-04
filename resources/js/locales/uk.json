@@ -89,6 +89,7 @@
       "with_trashed": "З видаленими",
       "only_trashed": "Тільки видалені"
     },
+    "restore_button": "Відновити користувача",
     "create_user": "Створити користувача",
     "create": "Створити",
     "table": {
@@ -113,5 +114,44 @@
     "class_letter_placeholder": "Виберіть букву",
     "cancel_button": "Скасувати",
     "create_button": "Створити"
+  },
+  "login_page": {
+    "title": "Вхід",
+    "welcome_back": "З поверненням!",
+    "remember_me": "Запам'ятати мене",
+    "login_button": "Увійти",
+    "register_prompt": "Немає акаунту?"
+  },
+  "register_page": {
+    "title": "Реєстрація",
+    "create_account": "Створити акаунт",
+    "first_name": "Ім'я",
+    "last_name": "Прізвище",
+    "middle_name": "По батькові (необов'язково)",
+    "role": "Роль",
+    "select_role": "Оберіть роль",
+    "school_number": "Номер школи",
+    "class_number": "Номер класу",
+    "select_number": "Оберіть номер",
+    "class_letter": "Літера класу",
+    "select_letter": "Оберіть літеру",
+    "region": "Область",
+    "select_region": "Оберіть область",
+    "city": "Місто",
+    "select_city": "Оберіть місто",
+    "district": "Район",
+    "select_district": "Оберіть район",
+    "register_button": "Зареєструватися",
+    "login_prompt": "Вже зареєстровані?"
+  },
+  "common": {
+    "email": "Ел. пошта",
+    "password": "Пароль"
+  },
+  "roles": {
+    "student": "Учень",
+    "parent": "Батько/Мати",
+    "teacher": "Вчитель",
+    "director": "Директор"
   }
 }
