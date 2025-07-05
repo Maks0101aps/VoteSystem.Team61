@@ -86,6 +86,15 @@
         </div>
     </div>
 
+    <!-- Progress Bar -->
+    <div v-if="(voting.votes_for_count + voting.votes_against_count + voting.votes_abstain_count) > 0" class="mb-4">
+        <div class="h-3 rounded-full flex overflow-hidden text-xs">
+            <div :style="{ width: getVotePercentage(voting, 'for') + '%' }" class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-green-500 transition-all duration-500"></div>
+            <div :style="{ width: getVotePercentage(voting, 'against') + '%' }" class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-red-500 transition-all duration-500"></div>
+            <div :style="{ width: getVotePercentage(voting, 'abstain') + '%' }" class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-gray-400 transition-all duration-500"></div>
+        </div>
+    </div>
+
     <div class="flex justify-between items-center">
         <div class="text-sm text-gray-500">
             <span>Автор: {{ voting.user ? `${voting.user.first_name} ${voting.user.last_name}` : 'Анонім' }}</span>
@@ -199,7 +208,23 @@ export default {
     filterVotings(filter) {
       this.currentFilter = filter;
       router.get('/votings', { filter: filter }, { preserveState: true });
-    }
+    },
+    getVotePercentage(voting, choice) {
+      const totalVotes = voting.votes_for_count + voting.votes_against_count + voting.votes_abstain_count;
+      if (totalVotes === 0) {
+        return 0;
+      }
+      switch (choice) {
+        case 'for':
+          return (voting.votes_for_count / totalVotes) * 100;
+        case 'against':
+          return (voting.votes_against_count / totalVotes) * 100;
+        case 'abstain':
+          return (voting.votes_abstain_count / totalVotes) * 100;
+        default:
+          return 0;
+      }
+    },
   },
 }
 </script>
