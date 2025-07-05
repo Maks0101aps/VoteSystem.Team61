@@ -19,6 +19,15 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
+        /**
+     * Accessor appended attributes.
+     *
+     * @var array<int, string>
+     */
+    protected $appends = [
+        'class',
+    ];
+
     protected $fillable = [
         'first_name',
         'last_name',
@@ -105,6 +114,16 @@ class User extends Authenticatable
                 $query->onlyTrashed();
             }
         });
+    }
+
+    /**
+     * Get the class number attribute (legacy).
+     *
+     * @return int|null
+     */
+    public function getClassAttribute(): ?int
+    {
+        return $this->schoolClass?->class_number;
     }
 
     public function schoolClass(): BelongsTo

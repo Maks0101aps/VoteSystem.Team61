@@ -36,10 +36,15 @@
       "unknown": "Unknown"
     },
     "confirmation_modal": {
-      "title": "Delete petition",
+      "title": "Delete Petition",
       "message": "Are you sure you want to delete this petition? This action cannot be undone.",
       "confirm_button": "Yes, delete",
       "cancel_button": "Cancel"
+    },
+    "filters": {
+      "all": "All",
+      "active": "Active",
+      "completed": "Completed"
     }
   },
   "dashboard_page": {

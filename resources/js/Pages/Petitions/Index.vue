@@ -15,7 +15,19 @@
       </div>
 
       <!-- Кнопка створення нової петиції -->
-      <div class="mb-6 flex justify-end">
+      <div class="mb-6 flex justify-between items-center">
+        <div class="flex space-x-2">
+          <button @click="filterPetitions('all')" :class="{ 'bg-orange-600 text-white': currentFilter === 'all', 'bg-white text-orange-600': currentFilter !== 'all' }" class="px-4 py-2 rounded-lg transition-colors border border-orange-600 hover:bg-orange-600 hover:text-white">
+            {{ $t('petitions_page.filters.all') }}
+          </button>
+          <button @click="filterPetitions('active')" :class="{ 'bg-orange-600 text-white': currentFilter === 'active', 'bg-white text-orange-600': currentFilter !== 'active' }" class="px-4 py-2 rounded-lg transition-colors border border-orange-600 hover:bg-orange-600 hover:text-white">
+            {{ $t('petitions_page.filters.active') }}
+          </button>
+          <button @click="filterPetitions('completed')" :class="{ 'bg-orange-600 text-white': currentFilter === 'completed', 'bg-white text-orange-600': currentFilter !== 'completed' }" class="px-4 py-2 rounded-lg transition-colors border border-orange-600 hover:bg-orange-600 hover:text-white">
+            {{ $t('petitions_page.filters.completed') }}
+          </button>
+        </div>
+
         <Link v-if="$page.props.auth.user.role === 'student'" href="/petitions/create" class="bg-orange-600 hover:bg-orange-700 text-white px-5 py-2 rounded-lg transition-colors flex items-center">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
             <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
@@ -129,11 +141,13 @@ export default {
   props: {
     title: String,
     petitions: Array,
+    filters: Object,
   },
   data() {
     return {
       showConfirmation: false,
       petitionToDelete: null,
+      currentFilter: this.filters.filter || 'all',
     };
   },
   computed: {
@@ -195,6 +209,10 @@ export default {
     cancelDelete() {
       this.showConfirmation = false;
       this.petitionToDelete = null;
+    },
+    filterPetitions(filter) {
+      this.currentFilter = filter;
+      router.get('/petitions', { filter: filter }, { preserveState: true });
     }
   }
 }

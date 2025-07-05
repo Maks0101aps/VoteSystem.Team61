@@ -40,8 +40,8 @@
         </div>
         <div v-if="form.role === 'student'" class="mb-6 grid grid-cols-2 gap-4">
           <div>
-            <select-input v-model="form.class_number" :error="form.errors.class_number" :label="$t('register_page.class')">
-              <option :value="null">{{ $t('register_page.select_class') }}</option>
+                        <select-input v-model="form.class_number" :error="form.errors.class_number" :label="$t('register_page.class_number')">
+                            <option :value="null">{{ $t('register_page.select_number') }}</option>
               <option v-for="c in schoolClasses" :key="c" :value="c">{{ c }}</option>
             </select-input>
           </div>

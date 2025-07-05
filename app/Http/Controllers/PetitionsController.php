@@ -12,12 +12,25 @@ use Inertia\Inertia;
 
 class PetitionsController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $petitions = Petition::with(['signatures', 'user', 'schoolClass'])
+        $filters = $request->only('filter');
+        $filterValue = $filters['filter'] ?? 'all';
+
+        $petitionsQuery = Petition::with(['signatures', 'user', 'schoolClass'])
             ->withCount('signatures')
-            ->latest()
-            ->get()
+            ->latest();
+
+        if ($filterValue === 'active') {
+            $petitionsQuery->where('status', 'active')->where('ends_at', '>', now());
+        } elseif ($filterValue === 'completed') {
+            $petitionsQuery->where(function ($query) {
+                $query->whereIn('status', ['pending_review', 'approved', 'rejected'])
+                    ->orWhere('ends_at', '<=', now());
+            });
+        }
+
+        $petitions = $petitionsQuery->get()
             ->map(function ($petition) {
                 return [
                     'id' => $petition->id,
@@ -39,6 +52,7 @@ class PetitionsController extends Controller
         return Inertia::render('Petitions/Index', [
             'title' => 'Петиції',
             'petitions' => $petitions,
+            'filters' => $filters,
         ]);
     }
 
