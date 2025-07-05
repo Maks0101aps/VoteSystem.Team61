@@ -78,9 +78,11 @@ class VotingController extends Controller
         return Redirect::route('voting.index')->with('success', 'Voting created.');
     }
 
-    public function index()
+    public function index(Request $request)
     {
         $user = Auth::user();
+        $filters = $request->only('filter');
+        $filterValue = $filters['filter'] ?? 'all';
 
         $votingsQuery = Voting::query();
 
@@ -104,7 +106,11 @@ class VotingController extends Controller
                 });
         });
 
-
+        if ($filterValue === 'active') {
+            $votingsQuery->where('ends_at', '>', now());
+        } elseif ($filterValue === 'completed') {
+            $votingsQuery->where('ends_at', '<=', now());
+        }
 
         $votings = $votingsQuery->with(['user', 'votes' => fn ($q) => $q->where('user_id', $user->id)])
             ->withCount([
@@ -130,6 +136,7 @@ class VotingController extends Controller
                 'votes_against_count' => $voting->votes_against_count,
                 'votes_abstain_count' => $voting->votes_abstain_count,
             ]),
+            'filters' => $filters,
         ]);
     }
 

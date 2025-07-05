@@ -14,8 +14,19 @@
         <p class="text-xl text-green-700">{{ $t('voting_page.active_votings') }}</p>
       </div>
 
-      <!-- Кнопка створення нового голосування -->
-      <div class="mb-6 flex justify-end">
+      <!-- Фільтри і кнопка створення -->
+      <div class="mb-6 flex justify-between items-center">
+        <div class="flex space-x-2">
+          <button @click="filterVotings('all')" :class="{ 'bg-green-600 text-white': currentFilter === 'all', 'bg-white text-green-600': currentFilter !== 'all' }" class="px-4 py-2 rounded-lg transition-colors border border-green-600 hover:bg-green-600 hover:text-white">
+            {{ $t('petitions_page.filters.all') }}
+          </button>
+          <button @click="filterVotings('active')" :class="{ 'bg-green-600 text-white': currentFilter === 'active', 'bg-white text-green-600': currentFilter !== 'active' }" class="px-4 py-2 rounded-lg transition-colors border border-green-600 hover:bg-green-600 hover:text-white">
+            {{ $t('petitions_page.filters.active') }}
+          </button>
+          <button @click="filterVotings('completed')" :class="{ 'bg-green-600 text-white': currentFilter === 'completed', 'bg-white text-green-600': currentFilter !== 'completed' }" class="px-4 py-2 rounded-lg transition-colors border border-green-600 hover:bg-green-600 hover:text-white">
+            {{ $t('petitions_page.filters.completed') }}
+          </button>
+        </div>
         <Link href="/votings/create" class="bg-green-600 hover:bg-green-700 text-white px-5 py-2 rounded-lg transition-colors flex items-center">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
             <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
@@ -111,7 +122,7 @@
 </template>
 
 <script>
-import { Head, Link, useForm } from '@inertiajs/vue3'
+import { Head, Link, useForm, router } from '@inertiajs/vue3'
 import Layout from '@/Shared/Layout.vue'
 
 export default {
@@ -124,11 +135,13 @@ export default {
     title: String,
     votings: Array,
     server_time: String,
+    filters: Object,
   },
   data() {
     return {
       now: new Date(this.server_time),
       interval: null,
+      currentFilter: this.filters.filter || 'all',
     }
   },
   mounted() {
@@ -183,6 +196,10 @@ export default {
 
       return parts.join(' ');
     },
+    filterVotings(filter) {
+      this.currentFilter = filter;
+      router.get('/voting', { filter: filter }, { preserveState: true });
+    }
   },
 }
 </script>
