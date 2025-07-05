@@ -12,6 +12,9 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        \DB::statement('DELETE FROM users');
+        \DB::statement('UPDATE SQLITE_SEQUENCE SET SEQ=0 WHERE NAME="users"');
+        
         $this->call(SchoolClassSeeder::class);
 
         User::factory()->create([
