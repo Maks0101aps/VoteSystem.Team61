@@ -18,6 +18,15 @@ class VotingController extends Controller
             'roles' => collect(['student', 'parent', 'teacher'])->mapWithKeys(fn ($role) => [$role => __('roles.'.$role)]),
             'classes' => range(1, 11),
             'class_letters' => ['а', 'б', 'в', 'г'],
+            'duration_options' => [
+                2 => '2 хвилини',
+                5 => '5 хвилин',
+                15 => '15 хвилин',
+                30 => '30 хвилин',
+                60 => '1 година',
+                300 => '5 годин',
+                1440 => '1 день',
+            ],
         ]);
     }
 
@@ -26,6 +35,7 @@ class VotingController extends Controller
         $request->validate([
             'title' => ['required', 'max:255'],
             'description' => ['required'],
+            'duration' => ['required', 'integer', 'in:2,5,15,30,60,300,1440'],
             'for_all' => ['required', 'boolean'],
             'roles' => ['required_if:for_all,false', 'array'],
             'roles.*' => ['in:student,parent,teacher'],
@@ -33,28 +43,36 @@ class VotingController extends Controller
             'class_letter' => ['nullable', 'string', 'max:1'],
         ]);
 
+        $ends_at = $request->duration ? now()->addMinutes((int)$request->duration) : null;
+
         $voting = Voting::create([
             'title' => $request->title,
             'description' => $request->description,
             'user_id' => Auth::id(),
+            'ends_at' => $ends_at,
         ]);
 
-        $rolesToStore = $request->for_all ? ['student', 'parent', 'teacher'] : $request->roles;
-
-        if (in_array('student', $rolesToStore)) {
-            $request->validate([
-                'class' => ['required', 'integer'],
-                'class_letter' => ['required', 'string', 'max:1'],
-            ]);
-        }
-
-        foreach ($rolesToStore as $role) {
+        if ($request->for_all) {
             VotingVisibility::create([
                 'voting_id' => $voting->id,
-                'role' => $role,
-                'class_number' => $role === 'student' ? $request->class : null,
-                'class_letter' => $role === 'student' ? $request->class_letter : null,
+                'role' => 'all',
             ]);
+        } else {
+            if (in_array('student', $request->roles)) {
+                $request->validate([
+                    'class' => ['required', 'integer'],
+                    'class_letter' => ['required', 'string', 'max:1'],
+                ]);
+            }
+
+            foreach ($request->roles as $role) {
+                VotingVisibility::create([
+                    'voting_id' => $voting->id,
+                    'role' => $role,
+                    'class_number' => ($role === 'student') ? $request->class : null,
+                    'class_letter' => ($role === 'student') ? $request->class_letter : null,
+                ]);
+            }
         }
 
         return Redirect::route('voting.index')->with('success', 'Voting created.');
@@ -66,33 +84,70 @@ class VotingController extends Controller
 
         $votingsQuery = Voting::query();
 
-        $votingsQuery->whereHas('visibilities', function ($query) use ($user) {
-            $query->where('role', $user->role);
+        $votingsQuery->where(function ($query) use ($user) {
+            $query->where('user_id', $user->id)
+                ->orWhereHas('visibilities', function ($subQuery) use ($user) {
+                    $subQuery->where('role', 'all')
+                        ->orWhere(function ($roleSpecificQuery) use ($user) {
+                            $roleSpecificQuery->where('role', $user->role);
 
-            if ($user->role === 'student') {
-                $query->where(function ($q) use ($user) {
-                    $q->whereNull('class_number')
-                        ->orWhere(function ($q2) use ($user) {
-                            $q2->where('class_number', $user->school_class_id)
-                                ->where('class_letter', $user->class_letter);
+                            if ($user->role === 'student') {
+                                $roleSpecificQuery->where(function ($classQuery) use ($user) {
+                                    $classQuery->whereNull('class_number')
+                                        ->orWhere(function ($specificClassQuery) use ($user) {
+                                            $specificClassQuery->where('class_number', $user->school_class_id)
+                                                               ->where('class_letter', $user->class_letter);
+                                        });
+                                });
+                            }
                         });
                 });
-            }
         });
+
+
+
+        $votings = $votingsQuery->with(['user', 'votes' => fn ($q) => $q->where('user_id', $user->id)])
+            ->withCount([
+                'votes as votes_for_count' => fn ($q) => $q->where('choice', 'for'),
+                'votes as votes_against_count' => fn ($q) => $q->where('choice', 'against'),
+                'votes as votes_abstain_count' => fn ($q) => $q->where('choice', 'abstain'),
+            ])
+            ->latest()
+            ->get();
 
         return Inertia::render('Voting/Index', [
             'title' => 'Голосування',
-            'votings' => $votingsQuery->with('user')
-                ->latest()
-                ->get()
-                ->map(fn (Voting $voting) => [
-                    'id' => $voting->id,
-                    'title' => $voting->title,
-                    'description' => $voting->description,
-                    'user' => $voting->user ? $voting->user->only('id', 'first_name', 'last_name') : null,
-                    'created_at' => $voting->created_at->diffForHumans(),
-                ]),
+            'server_time' => now()->toIso8601String(),
+            'votings' => $votings->map(fn (Voting $voting) => [
+                'id' => $voting->id,
+                'title' => $voting->title,
+                'description' => $voting->description,
+                'user' => $voting->user ? $voting->user->only('id', 'first_name', 'last_name') : null,
+                'created_at' => $voting->created_at->diffForHumans(),
+                'ends_at' => $voting->ends_at ? $voting->ends_at->toIso8601String() : null,
+                'user_vote' => $voting->votes->first()->choice ?? null,
+                'votes_for_count' => $voting->votes_for_count,
+                'votes_against_count' => $voting->votes_against_count,
+                'votes_abstain_count' => $voting->votes_abstain_count,
+            ]),
         ]);
     }
 
+    public function vote(Request $request, Voting $voting)
+    {
+        if ($voting->ends_at && $voting->ends_at->isPast()) {
+            return Redirect::route('voting.index')->with('error', 'Voting has ended.');
+        }
+
+        $request->validate([
+            'choice' => ['required', 'in:for,against,abstain'],
+        ]);
+
+        $voting->votes()->create([
+            'user_id' => Auth::id(),
+            'choice' => $request->choice,
+        ]);
+
+        return Redirect::route('voting.index')->with('success', 'Your vote has been cast.');
+    }
 } 

@@ -58,12 +58,20 @@ Route::get('voting', [VotingController::class, 'index'])
     ->name('voting.index')
     ->middleware('auth');
 
-Route::get('votings/create', [VotingController::class, 'create'])
+Route::get('/votings/create', [VotingController::class, 'create'])
     ->name('voting.create')
     ->middleware('auth');
 
-Route::post('votings', [VotingController::class, 'store'])
+Route::post('/votings', [VotingController::class, 'store'])
     ->name('voting.store')
+    ->middleware('auth');
+
+Route::get('/votings', [VotingController::class, 'index'])
+    ->name('voting.index')
+    ->middleware('auth');
+
+Route::post('/votings/{voting}/vote', [VotingController::class, 'vote'])
+    ->name('voting.vote')
     ->middleware('auth');
 
 // Petitions

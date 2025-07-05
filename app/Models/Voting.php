@@ -13,6 +13,7 @@ class Voting extends Model
         'title',
         'description',
         'user_id',
+        'ends_at',
     ];
 
     public function user(): BelongsTo
@@ -30,8 +31,12 @@ class Voting extends Model
         return $this->hasMany(VoteOption::class);
     }
 
-    public function user_votes(): HasMany
+    protected $casts = [
+        'ends_at' => 'datetime',
+    ];
+
+    public function votes(): HasMany
     {
-        return $this->hasMany(UserVote::class);
+        return $this->hasMany(Vote::class);
     }
 }

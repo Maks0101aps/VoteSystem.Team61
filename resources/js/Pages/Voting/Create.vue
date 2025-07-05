@@ -20,6 +20,13 @@
             <textarea id="description" v-model="form.description" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-green-500 focus:border-green-500" :placeholder="$t('voting_create_page.description_placeholder')"></textarea>
           </div>
 
+          <div class="mb-6">
+            <label for="duration" class="block mb-2 text-sm font-medium text-green-700">Тривалість голосування</label>
+            <select id="duration" v-model="form.duration" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2.5">
+              <option v-for="(label, value) in duration_options" :key="value" :value="value">{{ label }}</option>
+            </select>
+          </div>
+
           <div class="flex items-center mb-6">
             <input id="for_all" type="checkbox" v-model="form.for_all" class="w-4 h-4 text-green-600 bg-gray-100 border-gray-300 rounded focus:ring-green-500">
             <label for="for_all" class="ml-2 text-sm font-medium text-green-700">{{ $t('voting_create_page.for_all_label') }}</label>
@@ -32,7 +39,7 @@
             </select>
           </div>
 
-          <div v-if="form.for_all || form.roles.includes('student')" class="grid grid-cols-2 gap-4 mb-6">
+          <div v-if="!form.for_all && form.roles.includes('student')" class="grid grid-cols-2 gap-4 mb-6">
             <div>
               <label for="class" class="block mb-2 text-sm font-medium text-green-700">{{ $t('voting_create_page.class_label') }}</label>
               <select id="class" v-model="form.class" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2.5">
@@ -79,8 +86,9 @@ export default {
     roles: Object,
     classes: Array,
     class_letters: Array,
+    duration_options: Object,
   },
-  setup() {
+  setup(props) {
     const form = useForm({
       title: '',
       description: '',
@@ -88,6 +96,7 @@ export default {
       class: null,
       class_letter: null,
       for_all: false,
+      duration: Object.keys(props.duration_options)[0] || null,
     })
 
     function submit() {
