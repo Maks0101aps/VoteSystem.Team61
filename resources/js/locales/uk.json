@@ -91,6 +91,11 @@
     "votes": "Голосів",
     "no_options": "Для цього голосування немає варіантів."
   },
+  "votes": {
+    "for": "За",
+    "against": "Проти",
+    "abstain": "Утрималися"
+  },
   "users_page": {
     "title": "Користувачі",
     "search_filter": {

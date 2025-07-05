@@ -58,6 +58,12 @@ class HandleInertiaRequests extends Middleware
                     'error' => $request->session()->get('error'),
                 ];
             },
+            'translations' => function () {
+                return collect(scandir(base_path('lang/'.app()->getLocale())))
+                    ->filter(fn ($file) => pathinfo($file, PATHINFO_EXTENSION) === 'php')
+                    ->mapWithKeys(fn ($file) => [basename($file, '.php') => require base_path('lang/'.app()->getLocale().'/'.$file)])
+                    ->all();
+            },
         ]);
     }
 }
