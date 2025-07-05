@@ -97,6 +97,20 @@
             <div :style="{ width: getVotePercentage(voting, 'against') + '%' }" class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-red-500 transition-all duration-500"></div>
             <div :style="{ width: getVotePercentage(voting, 'abstain') + '%' }" class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-gray-400 transition-all duration-500"></div>
         </div>
+        <div class="flex justify-around text-xs text-gray-600 mt-1.5">
+            <div class="flex items-center space-x-1.5">
+                <div class="w-2.5 h-2.5 rounded-full bg-lime-500"></div>
+                <span class="font-medium text-lime-600">{{ getVotePercentage(voting, 'for').toFixed(1) }}% {{ $t('votes.for') }}</span>
+            </div>
+            <div class="flex items-center space-x-1.5">
+                <div class="w-2.5 h-2.5 rounded-full bg-red-500"></div>
+                <span class="font-medium text-red-600">{{ getVotePercentage(voting, 'against').toFixed(1) }}% {{ $t('votes.against') }}</span>
+            </div>
+            <div class="flex items-center space-x-1.5">
+                <div class="w-2.5 h-2.5 rounded-full bg-gray-400"></div>
+                <span class="font-medium text-gray-500">{{ getVotePercentage(voting, 'abstain').toFixed(1) }}% {{ $t('votes.abstain') }}</span>
+            </div>
+        </div>
     </div>
 
     <div class="flex justify-between items-center">

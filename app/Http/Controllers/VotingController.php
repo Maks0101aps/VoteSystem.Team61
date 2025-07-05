@@ -109,9 +109,12 @@ class VotingController extends Controller
         }
 
         if ($filterValue === 'active') {
-            $votingsQuery->where('ends_at', '>', now());
+            $votingsQuery->where(function ($query) {
+                $query->where('ends_at', '>', now())
+                      ->orWhereNull('ends_at');
+            });
         } elseif ($filterValue === 'completed') {
-            $votingsQuery->where('ends_at', '<=', now());
+            $votingsQuery->whereNotNull('ends_at')->where('ends_at', '<=', now());
         }
 
         $votings = $votingsQuery->with(['user', 'votes' => fn ($q) => $q->where('user_id', $user->id), 'visibilities'])
