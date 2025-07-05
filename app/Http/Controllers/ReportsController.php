@@ -12,12 +12,12 @@ class ReportsController extends Controller
 {
     public function index(): Response
     {
-        $votings = Voting::with(['options' => function ($query) {
+        $votings = Voting::withTrashed()->with(['options' => function ($query) {
             $query->withCount('user_votes');
-        }])->get();
+        }])->where('created_at', '>=', Carbon::now()->subMonth())->get();
 
         $petitionsLastMonth = Petition::where('created_at', '>=', Carbon::now()->subMonth())->count();
-        $allPetitions = Petition::withCount('signatures')->get();
+        $allPetitions = Petition::withCount('signatures')->where('created_at', '>=', Carbon::now()->subMonth())->get();
         $totalPetitions = $allPetitions->count();
         $acceptedPetitions = $allPetitions->filter(function ($petition) {
             return $petition->signatures_count >= $petition->signatures_required;

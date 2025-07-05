@@ -20,7 +20,7 @@
             <icon name="users" class="w-8 h-8 text-orange-500" />
           </div>
           <div>
-            <h3 class="text-gray-500 font-semibold">{{ $t('reports_page.petitions_last_month') }}</h3>
+            <h3 class="text-gray-500 font-semibold">{{ $t('reports_page.petitions_last_month') }} {{ $t('reports_page.last_month_label') }}</h3>
             <p class="text-3xl font-bold text-orange-700">{{ stats.petitionsLastMonth }}</p>
           </div>
         </div>
@@ -29,7 +29,7 @@
             <icon name="dashboard" class="w-8 h-8 text-green-500" />
           </div>
           <div>
-            <h3 class="text-gray-500 font-semibold">{{ $t('reports_page.acceptance_percentage') }}</h3>
+            <h3 class="text-gray-500 font-semibold">{{ $t('reports_page.acceptance_percentage') }} {{ $t('reports_page.last_month_label') }}</h3>
             <p class="text-3xl font-bold text-green-700">{{ stats.acceptancePercentage }}%</p>
           </div>
         </div>
@@ -38,7 +38,7 @@
             <icon name="vote" class="w-8 h-8 text-blue-500" />
           </div>
           <div>
-            <h3 class="text-gray-500 font-semibold">{{ $t('reports_page.total_votings') }}</h3>
+            <h3 class="text-gray-500 font-semibold">{{ $t('reports_page.total_votings') }} {{ $t('reports_page.last_month_label') }}</h3>
             <p class="text-3xl font-bold text-blue-700">{{ stats.totalVotings }}</p>
           </div>
         </div>

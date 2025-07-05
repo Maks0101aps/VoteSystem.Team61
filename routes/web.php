@@ -70,6 +70,10 @@ Route::post('/votings/{voting}/vote', [VotingController::class, 'vote'])
     ->name('voting.vote')
     ->middleware('auth');
 
+Route::delete('/votings/{voting}', [VotingController::class, 'destroy'])
+    ->name('voting.destroy')
+    ->middleware('auth');
+
 // Petitions
 
 Route::get('petitions', [PetitionsController::class, 'index'])

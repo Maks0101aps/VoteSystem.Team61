@@ -114,9 +114,15 @@
     </div>
 
     <div class="flex justify-between items-center">
-        <div class="text-sm text-gray-500">
+        <div class="text-sm text-gray-500 flex items-center">
             <span>Автор: {{ voting.user ? `${voting.user.first_name} ${voting.user.last_name}` : 'Анонім' }}</span>
             <span class="ml-4">{{ voting.created_at }}</span>
+            <button v-if="voting.user && $page.props.auth.user.id === voting.user.id" @click="destroy(voting.id)" class="ml-4 inline-flex items-center bg-red-500 hover:bg-red-600 text-white px-3 py-1.5 rounded-lg transition-colors text-xs font-semibold">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1.5" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" />
+                </svg>
+                {{ $t('petitions_page.delete') }}
+            </button>
         </div>
         
         <!-- Voting buttons or user's vote -->
@@ -146,16 +152,27 @@
       </div>
     </div>
   </div>
+  <ConfirmationModal 
+      :show="showConfirmation" 
+      @confirm="confirmDelete" 
+      @cancel="cancelDelete"
+      :title="$t('voting_page.confirmation_modal.title')"
+      :message="$t('voting_page.confirmation_modal.message')"
+      :confirmButtonText="$t('voting_page.confirmation_modal.confirm_button')"
+      :cancelButtonText="$t('voting_page.confirmation_modal.cancel_button')"
+    />
 </template>
 
 <script>
 import { Head, Link, useForm, router } from '@inertiajs/vue3'
 import Layout from '@/Shared/Layout.vue'
+import ConfirmationModal from '@/Shared/ConfirmationModal.vue';
 
 export default {
   components: {
     Head,
     Link,
+    ConfirmationModal,
   },
   layout: Layout,
   props: {
@@ -169,6 +186,8 @@ export default {
       now: new Date(this.server_time),
       interval: null,
       currentFilter: this.filters.filter || 'all',
+      showConfirmation: false,
+      votingToDelete: null,
     }
   },
   mounted() {
@@ -219,6 +238,25 @@ export default {
     filterVotings(filter) {
       this.currentFilter = filter;
       router.get('/votings', { filter: filter }, { preserveState: true });
+    },
+    destroy(votingId) {
+      this.votingToDelete = votingId;
+      this.showConfirmation = true;
+    },
+    confirmDelete() {
+      if (this.votingToDelete) {
+        router.delete(`/votings/${this.votingToDelete}`, {
+          preserveScroll: true,
+          onFinish: () => {
+            this.showConfirmation = false;
+            this.votingToDelete = null;
+          },
+        });
+      }
+    },
+    cancelDelete() {
+      this.showConfirmation = false;
+      this.votingToDelete = null;
     },
     getVotePercentage(voting, choice) {
       const totalVotes = voting.votes_for_count + voting.votes_against_count + voting.votes_abstain_count;

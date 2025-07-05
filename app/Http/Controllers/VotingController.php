@@ -143,6 +143,7 @@ class VotingController extends Controller
                 'visibility_text' => $this->buildVisibilityText($voting),
             ]),
             'filters' => $filters,
+            'auth' => ['user' => $user->only('id', 'first_name', 'last_name')],
         ]);
     }
 
@@ -162,6 +163,17 @@ class VotingController extends Controller
         ]);
 
         return Redirect::route('voting.index')->with('success', 'Your vote has been cast.');
+    }
+
+    public function destroy(Voting $voting)
+    {
+        if (Auth::id() !== $voting->user_id) {
+            return Redirect::back()->with('error', 'You are not authorized to delete this voting.');
+        }
+
+        $voting->delete();
+
+        return Redirect::route('voting.index')->with('success', 'Voting deleted.');
     }
 
     private function buildVisibilityText(Voting $voting): string
