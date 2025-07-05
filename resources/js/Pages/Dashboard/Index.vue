@@ -28,38 +28,25 @@
         </p>
       </div>
 
-      <!-- Інструкція "Як користуватись" -->
-      <div class="bg-white p-6 rounded-xl shadow-md mb-8 border-l-4 border-orange-500 backdrop-blur-sm bg-opacity-90 hover:shadow-lg transition-all duration-300">
-        <h2 class="text-2xl font-bold text-orange-700 mb-4 flex items-center">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
-          </svg>
-          {{ $t('dashboard_page.how_to_use') }}
-        </h2>
-        <div class="space-y-3">
-          <div class="flex items-start p-3 bg-orange-50 rounded-lg hover:bg-orange-100 transition-colors">
-            <div class="bg-orange-500 text-white font-bold rounded-full w-7 h-7 flex items-center justify-center mr-3 flex-shrink-0">1</div>
-            <div>
-              <h3 class="font-bold text-base text-orange-800">{{ $t('dashboard_page.step1_title') }}</h3>
-              <p class="text-orange-600 text-sm">{{ $t('dashboard_page.step1_text') }}</p>
+      <!-- Секція "Get Started" -->
+      <div class="text-center my-12">
+        <h2 class="text-3xl font-bold text-orange-800 mb-4">{{ $t('dashboard_page.get_started_title') }}</h2>
+        <p class="text-orange-700 max-w-2xl mx-auto mb-8">{{ $t('dashboard_page.get_started_text') }}</p>
+        <div class="flex justify-center gap-4">
+          <Link href="/petitions" class="flex-1 bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 border-l-4 border-orange-500 backdrop-blur-sm bg-opacity-90 text-left">
+            <div class="flex items-center mb-2">
+              <Icon name="petitions" class="w-8 h-8 text-orange-500 mr-3" />
+              <h3 class="text-xl font-bold text-orange-700">{{ $t('dashboard_page.petitions_title') }}</h3>
             </div>
-          </div>
-          
-          <div class="flex items-start p-3 bg-orange-50 rounded-lg hover:bg-orange-100 transition-colors">
-            <div class="bg-orange-500 text-white font-bold rounded-full w-7 h-7 flex items-center justify-center mr-3 flex-shrink-0">2</div>
-            <div>
-              <h3 class="font-bold text-base text-orange-800">{{ $t('dashboard_page.step2_title') }}</h3>
-              <p class="text-orange-600 text-sm">{{ $t('dashboard_page.step2_text') }}</p>
+            <p class="text-orange-600">{{ $t('dashboard_page.petitions_text') }}</p>
+          </Link>
+          <Link href="/votings" class="flex-1 bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 border-l-4 border-green-500 backdrop-blur-sm bg-opacity-90 text-left">
+            <div class="flex items-center mb-2">
+              <Icon name="votings" class="w-8 h-8 text-green-500 mr-3" />
+              <h3 class="text-xl font-bold text-green-700">{{ $t('dashboard_page.votings_title') }}</h3>
             </div>
-          </div>
-          
-          <div class="flex items-start p-3 bg-orange-50 rounded-lg hover:bg-orange-100 transition-colors">
-            <div class="bg-orange-500 text-white font-bold rounded-full w-7 h-7 flex items-center justify-center mr-3 flex-shrink-0">3</div>
-            <div>
-              <h3 class="font-bold text-base text-orange-800">{{ $t('dashboard_page.step3_title') }}</h3>
-              <p class="text-orange-600 text-sm">{{ $t('dashboard_page.step3_text') }}</p>
-            </div>
-          </div>
+            <p class="text-green-600">{{ $t('dashboard_page.votings_text') }}</p>
+          </Link>
         </div>
       </div>
       
@@ -112,12 +99,15 @@
 </template>
 
 <script>
-import { Head } from '@inertiajs/vue3'
+import { Head, Link } from '@inertiajs/vue3'
+import Icon from '@/Shared/Icon.vue'
 import Layout from '@/Shared/Layout.vue'
 
 export default {
   components: {
     Head,
+    Link,
+    Icon,
   },
   layout: Layout,
   props: {

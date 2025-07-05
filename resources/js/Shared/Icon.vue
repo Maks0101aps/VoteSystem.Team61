@@ -14,6 +14,7 @@
     <path d="M3 3h14v14H3V3zm2 2v10h10V5H5zm2 2h6v1H7V7zm0 2h6v1H7V9zm0 2h6v1H7v-1zm0 2h4v1H7v-1z" />
     <path d="M13 11.5L12 9l-1 2.5h2z" />
   </svg>
+  <svg v-else-if="name === 'plus-circle'" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M10 0a10 10 0 1 1 0 20 10 10 0 0 1 0-20zm5 11h-4v4h-2v-4H5v-2h4V5h2v4h4v2z"/></svg>
 </template>
 
 <script>

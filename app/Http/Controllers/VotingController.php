@@ -81,10 +81,14 @@ class VotingController extends Controller
     public function index(Request $request)
     {
         $user = Auth::user();
-        $filters = $request->only('filter');
+        $filters = $request->only('filter', 'trashed');
         $filterValue = $filters['filter'] ?? 'all';
 
         $votingsQuery = Voting::query();
+
+        if (isset($filters['trashed']) && $filters['trashed'] === 'only') {
+            $votingsQuery->onlyTrashed();
+        }
 
         if ($user->role !== 'director') {
             $votingsQuery->where(function ($query) use ($user) {
@@ -141,6 +145,7 @@ class VotingController extends Controller
                 'votes_against_count' => $voting->votes_against_count,
                 'votes_abstain_count' => $voting->votes_abstain_count,
                 'visibility_text' => $this->buildVisibilityText($voting),
+                'deleted_at' => $voting->deleted_at,
             ]),
             'filters' => $filters,
             'auth' => ['user' => $user->only('id', 'first_name', 'last_name')],
@@ -174,6 +179,17 @@ class VotingController extends Controller
         $voting->delete();
 
         return Redirect::route('voting.index')->with('success', 'Voting deleted.');
+    }
+
+    public function restore(Voting $voting)
+    {
+        if (Auth::id() !== $voting->user_id) {
+            return Redirect::back()->with('error', 'You are not authorized to restore this voting.');
+        }
+
+        $voting->restore();
+
+        return Redirect::back()->with('success', 'Voting restored.');
     }
 
     private function buildVisibilityText(Voting $voting): string
