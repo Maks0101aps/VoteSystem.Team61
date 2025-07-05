@@ -28,6 +28,13 @@
     "in_progress": "Збір підписів",
     "expired": "Термін дії закінчився",
     "supported": "Підтримано",
+    "statuses": {
+      "active": "В процесі",
+      "pending_review": "На розгляді",
+      "approved": "Прийнята",
+      "rejected": "Відхилена",
+      "unknown": "Невідомо"
+    },
     "confirmation_modal": {
       "title": "Видалити петицію",
       "message": "Ви дійсно хочете видалити цю петицію? Цю дію неможливо буде скасувати.",
@@ -134,7 +141,7 @@
     "class_number": "Номер класу",
     "select_number": "Оберіть номер",
     "class_letter": "Літера класу",
-    "select_letter": "Оберіть літеру",
+    "select_letter": "Виберіть літеру",
     "region": "Область",
     "select_region": "Оберіть область",
     "city": "Місто",

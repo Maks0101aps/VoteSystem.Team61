@@ -148,13 +148,7 @@ export default {
   },
   methods: {
     statusText(status) {
-        const statuses = {
-            active: 'В процессе',
-            pending_review: 'На рассмотрении',
-            approved: 'Принята',
-            rejected: 'Отклонена',
-        };
-        return statuses[status] || 'Неизвестно';
+      return this.$t(`petitions_page.statuses.${status}`);
     },
     statusBadgeClass(status) {
         const classes = {

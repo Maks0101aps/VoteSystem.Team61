@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Models\SchoolClass;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -25,7 +26,7 @@ class RegisteredUserController extends Controller
             'password' => ['required', 'string', 'min:8'],
             'role' => ['required', 'in:student,parent,teacher,director'],
             'school' => ['nullable', 'string', 'max:255'],
-            'class' => ['nullable', 'string', 'max:255'],
+            'class_number' => ['nullable', 'integer'],
             'class_letter' => ['nullable', 'string', 'max:1'],
             'region' => ['nullable', 'string', 'max:255'],
             'city' => ['nullable', 'string', 'max:255'],
@@ -40,12 +41,19 @@ class RegisteredUserController extends Controller
         $user->password = Hash::make($request->password);
         $user->role = $request->role;
         $user->school = $request->school;
-        $user->class = $request->class;
         $user->class_letter = $request->class_letter;
         $user->region = $request->region;
         $user->city = $request->city;
         $user->district = $request->district;
         $user->save();
+
+        if ($request->class_number && $request->class_letter) {
+            $schoolClass = SchoolClass::firstOrCreate(
+                ['class_number' => $request->class_number, 'class_letter' => $request->class_letter]
+            );
+            $user->school_class_id = $schoolClass->id;
+            $user->save();
+        }
 
         Auth::login($user);
 

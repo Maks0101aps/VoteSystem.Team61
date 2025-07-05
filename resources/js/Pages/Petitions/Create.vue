@@ -175,6 +175,16 @@ export default {
     'form.class_number'() {
       this.form.class_letter = ''
     },
+    'form.target_type'(newValue) {
+      if (newValue === 'school') {
+        // Clear class selections and errors when switching to school-wide petition
+        this.form.class_number = '';
+        this.form.class_letter = '';
+        // Clear any validation errors for class fields
+        delete this.form.errors.class_number;
+        delete this.form.errors.class_letter;
+      }
+    },
   },
   methods: {
     submit() {
@@ -211,4 +221,4 @@ export default {
 .animation-delay-4000 {
   animation-delay: 4s;
 }
-</style> 
+</style>

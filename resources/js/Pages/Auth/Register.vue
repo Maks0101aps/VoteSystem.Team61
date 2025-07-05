@@ -34,15 +34,14 @@
             v-model="form.school" 
             :error="form.errors.school" 
             :label="$t('register_page.school_number')" 
-            type="number" 
-            min="1"
-            pattern="\d*"
+            class="w-full mb-4" 
+            :autocomplete="false"
           />
         </div>
         <div v-if="form.role === 'student'" class="mb-6 grid grid-cols-2 gap-4">
           <div>
-            <select-input v-model="form.class" :error="form.errors.class" :label="$t('register_page.class_number')">
-              <option :value="null">{{ $t('register_page.select_number') }}</option>
+            <select-input v-model="form.class_number" :error="form.errors.class_number" :label="$t('register_page.class')">
+              <option :value="null">{{ $t('register_page.select_class') }}</option>
               <option v-for="c in schoolClasses" :key="c" :value="c">{{ c }}</option>
             </select-input>
           </div>
@@ -115,7 +114,7 @@ export default {
         password: '',
         role: null,
         school: null,
-        class: null,
+        class_number: null,
         class_letter: null,
         region: null,
         city: null,

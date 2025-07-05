@@ -64,17 +64,25 @@ class PetitionsController extends Controller
             abort(403, 'Тільки учні можуть створювати петиції.');
         }
 
+        if ($request->input('target_type') === 'school') {
+            $request->merge([
+                'class_number' => null,
+                'class_letter' => null,
+            ]);
+        }
+
         $request->validate([
             'title' => ['required', 'max:100'],
             'description' => ['required'],
             'signatures_required' => ['required', 'integer', 'min:1'],
             'duration' => ['required', 'integer', 'in:24,48,72'],
             'target_type' => ['required', 'string', 'in:school,class'],
-            'class_number' => ['required_if:target_type,class', 'integer', 'max:11'],
-            'class_letter' => ['required_if:target_type,class', 'string', 'size:1'],
+            'class_number' => ['required_if:target_type,class', 'nullable', 'integer', 'max:11'],
+            'class_letter' => ['required_if:target_type,class', 'nullable', 'string', 'max:1'],
         ]);
 
         $school_class_id = null;
+
         if ($request->target_type === 'class') {
             $schoolClass = SchoolClass::where('class_number', $request->class_number)
                 ->where('class_letter', $request->class_letter)
@@ -108,15 +116,22 @@ class PetitionsController extends Controller
         $exists = PetitionSignature::where('petition_id', $petition->id)
             ->where('user_id', Auth::id())
             ->exists();
-        
+
         if (!$exists) {
             PetitionSignature::create([
                 'petition_id' => $petition->id,
                 'user_id' => Auth::id(),
             ]);
+
+            $signaturesCount = PetitionSignature::where('petition_id', $petition->id)->count();
+
+            if ($signaturesCount >= $petition->signatures_required) {
+                $petition->update(['status' => 'pending_review']);
+            }
+
             return Redirect::back()->with('success', 'Ви успішно підписали петицію.');
         }
-        
+
         return Redirect::back()->with('error', 'Ви вже підписали цю петицію.');
     }
 
