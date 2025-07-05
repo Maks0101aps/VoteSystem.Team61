@@ -70,6 +70,10 @@
         {{ voting.description }}
     </p>
 
+    <div class="text-sm text-gray-500 mb-4" v-if="voting.visibility_text">
+        {{ voting.visibility_text }}
+    </div>
+
     <!-- Vote Counts -->
     <div class="flex justify-around items-center mb-4 p-2 bg-gray-50 rounded-lg">
         <div class="text-center">

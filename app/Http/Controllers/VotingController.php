@@ -114,7 +114,7 @@ class VotingController extends Controller
             $votingsQuery->where('ends_at', '<=', now());
         }
 
-        $votings = $votingsQuery->with(['user', 'votes' => fn ($q) => $q->where('user_id', $user->id)])
+        $votings = $votingsQuery->with(['user', 'votes' => fn ($q) => $q->where('user_id', $user->id), 'visibilities'])
             ->withCount([
                 'votes as votes_for_count' => fn ($q) => $q->where('choice', 'for'),
                 'votes as votes_against_count' => fn ($q) => $q->where('choice', 'against'),
@@ -137,6 +137,7 @@ class VotingController extends Controller
                 'votes_for_count' => $voting->votes_for_count,
                 'votes_against_count' => $voting->votes_against_count,
                 'votes_abstain_count' => $voting->votes_abstain_count,
+                'visibility_text' => $this->buildVisibilityText($voting),
             ]),
             'filters' => $filters,
         ]);
@@ -158,5 +159,22 @@ class VotingController extends Controller
         ]);
 
         return Redirect::route('voting.index')->with('success', 'Your vote has been cast.');
+    }
+
+    private function buildVisibilityText(Voting $voting): string
+    {
+        $parts = $voting->visibilities->map(function ($visibility) {
+            $role = __('roles.' . $visibility->role);
+            if ($visibility->role === 'student' && $visibility->class_number && $visibility->class_letter) {
+                return "{$role} ({$visibility->class_number}-{$visibility->class_letter})";
+            }
+            return $role;
+        });
+
+        if ($parts->isEmpty()) {
+            return '';
+        }
+
+        return __('voting_page.for_whom_prefix') . ' ' . $parts->implode(', ');
     }
 } 
