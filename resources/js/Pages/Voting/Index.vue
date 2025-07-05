@@ -198,7 +198,7 @@ export default {
     },
     filterVotings(filter) {
       this.currentFilter = filter;
-      router.get('/voting', { filter: filter }, { preserveState: true });
+      router.get('/votings', { filter: filter }, { preserveState: true });
     }
   },
 }
