@@ -17,7 +17,7 @@
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
         <div class="bg-white p-6 rounded-lg shadow-md flex items-center backdrop-blur-sm bg-opacity-90">
           <div class="p-3 rounded-full bg-orange-100 mr-4">
-            <icon name="clipboard-list" class="w-8 h-8 text-orange-500" />
+            <icon name="users" class="w-8 h-8 text-orange-500" />
           </div>
           <div>
             <h3 class="text-gray-500 font-semibold">{{ $t('reports_page.petitions_last_month') }}</h3>
@@ -26,7 +26,7 @@
         </div>
         <div class="bg-white p-6 rounded-lg shadow-md flex items-center backdrop-blur-sm bg-opacity-90">
           <div class="p-3 rounded-full bg-green-100 mr-4">
-            <icon name="badge-check" class="w-8 h-8 text-green-500" />
+            <icon name="dashboard" class="w-8 h-8 text-green-500" />
           </div>
           <div>
             <h3 class="text-gray-500 font-semibold">{{ $t('reports_page.acceptance_percentage') }}</h3>
@@ -35,7 +35,7 @@
         </div>
         <div class="bg-white p-6 rounded-lg shadow-md flex items-center backdrop-blur-sm bg-opacity-90">
           <div class="p-3 rounded-full bg-blue-100 mr-4">
-            <icon name="archive" class="w-8 h-8 text-blue-500" />
+            <icon name="vote" class="w-8 h-8 text-blue-500" />
           </div>
           <div>
             <h3 class="text-gray-500 font-semibold">{{ $t('reports_page.total_votings') }}</h3>
