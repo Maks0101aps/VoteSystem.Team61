@@ -89,7 +89,7 @@
     <!-- Progress Bar -->
     <div v-if="(voting.votes_for_count + voting.votes_against_count + voting.votes_abstain_count) > 0" class="mb-4">
         <div class="h-3 rounded-full flex overflow-hidden text-xs">
-            <div :style="{ width: getVotePercentage(voting, 'for') + '%' }" class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-green-500 transition-all duration-500"></div>
+            <div :style="{ width: getVotePercentage(voting, 'for') + '%' }" class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-lime-500 transition-all duration-500"></div>
             <div :style="{ width: getVotePercentage(voting, 'against') + '%' }" class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-red-500 transition-all duration-500"></div>
             <div :style="{ width: getVotePercentage(voting, 'abstain') + '%' }" class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-gray-400 transition-all duration-500"></div>
         </div>
