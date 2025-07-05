@@ -1,7 +1,8 @@
 <?php
 
 return [
-    'student' => 'Ученик',
-    'parent' => 'Родитель',
-    'teacher' => 'Учитель',
+    'student' => 'Студент',
+    'parent'  => 'Родители',
+    'teacher' => 'Учителя',
 ];
+
