@@ -86,25 +86,27 @@ class VotingController extends Controller
 
         $votingsQuery = Voting::query();
 
-        $votingsQuery->where(function ($query) use ($user) {
-            $query->where('user_id', $user->id)
-                ->orWhereHas('visibilities', function ($subQuery) use ($user) {
-                    $subQuery->where('role', 'all')
-                        ->orWhere(function ($roleSpecificQuery) use ($user) {
-                            $roleSpecificQuery->where('role', $user->role);
+        if ($user->role !== 'director') {
+            $votingsQuery->where(function ($query) use ($user) {
+                $query->where('user_id', $user->id)
+                    ->orWhereHas('visibilities', function ($subQuery) use ($user) {
+                        $subQuery->where('role', 'all')
+                            ->orWhere(function ($roleSpecificQuery) use ($user) {
+                                $roleSpecificQuery->where('role', $user->role);
 
-                            if ($user->role === 'student') {
-                                $roleSpecificQuery->where(function ($classQuery) use ($user) {
-                                    $classQuery->whereNull('class_number')
-                                        ->orWhere(function ($specificClassQuery) use ($user) {
-                                            $specificClassQuery->where('class_number', $user->school_class_id)
-                                                               ->where('class_letter', $user->class_letter);
-                                        });
-                                });
-                            }
-                        });
-                });
-        });
+                                if ($user->role === 'student') {
+                                    $roleSpecificQuery->where(function ($classQuery) use ($user) {
+                                        $classQuery->whereNull('class_number')
+                                            ->orWhere(function ($specificClassQuery) use ($user) {
+                                                $specificClassQuery->where('class_number', $user->school_class_id)
+                                                                   ->where('class_letter', $user->class_letter);
+                                            });
+                                    });
+                                }
+                            });
+                    });
+            });
+        }
 
         if ($filterValue === 'active') {
             $votingsQuery->where('ends_at', '>', now());
