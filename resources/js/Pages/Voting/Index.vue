@@ -78,15 +78,15 @@
     <div class="flex justify-around items-center mb-4 p-2 bg-gray-50 rounded-lg">
         <div class="text-center">
             <p class="font-bold text-lg text-green-600">{{ voting.votes_for_count }}</p>
-            <p class="text-sm text-gray-500">За</p>
+            <p class="text-sm text-gray-500">{{ $t('votes.for') }}</p>
         </div>
         <div class="text-center">
             <p class="font-bold text-lg text-red-600">{{ voting.votes_against_count }}</p>
-            <p class="text-sm text-gray-500">Против</p>
+            <p class="text-sm text-gray-500">{{ $t('votes.against') }}</p>
         </div>
         <div class="text-center">
             <p class="font-bold text-lg text-gray-600">{{ voting.votes_abstain_count }}</p>
-            <p class="text-sm text-gray-500">Воздержались</p>
+            <p class="text-sm text-gray-500">{{ $t('votes.abstain') }}</p>
         </div>
     </div>
 
@@ -110,21 +110,21 @@
              <p class="font-semibold text-red-600">Голосування завершено</p>
         </div>
         <div v-else-if="voting.user_vote">
-            <p class="font-semibold text-gray-700">Вы проголосовали: <span class="capitalize" :class="{
+            <p class="font-semibold text-gray-700">{{ $t('votes.you_voted') }}: <span class="capitalize" :class="{
                 'text-green-600': voting.user_vote === 'for',
                 'text-red-600': voting.user_vote === 'against',
                 'text-gray-600': voting.user_vote === 'abstain',
-            }">{{ translateVote(voting.user_vote) }}</span></p>
+            }">{{ $t('votes.' + voting.user_vote) }}</span></p>
         </div>
         <div v-else class="flex space-x-2">
             <button @click="castVote(voting.id, 'for')" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg transition-colors">
-                За
+                {{ $t('votes.for') }}
             </button>
             <button @click="castVote(voting.id, 'against')" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg transition-colors">
-                Против
+                {{ $t('votes.against') }}
             </button>
             <button @click="castVote(voting.id, 'abstain')" class="bg-gray-400 hover:bg-gray-500 text-white px-4 py-2 rounded-lg transition-colors">
-                Воздержусь
+                {{ $t('votes.abstain') }}
             </button>
         </div>
     </div>
@@ -174,14 +174,7 @@ export default {
         preserveScroll: true,
       });
     },
-    translateVote(choice) {
-      const translations = {
-        for: 'За',
-        against: 'Против',
-        abstain: 'Воздержался',
-      };
-      return translations[choice] || choice;
-    },
+
     isEnded(voting) {
       if (!voting.ends_at) return false;
       return new Date(voting.ends_at) < this.now;
