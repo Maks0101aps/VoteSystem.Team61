@@ -103,13 +103,27 @@
     "total_users": "Total Users",
     "total_votings_all_time": "Total Votings",
     "total_petitions_all_time": "Total Petitions",
-    "total_votes_cast": "Total Votes Cast"
+    "total_votes_cast": "Total Votes Cast",
+    "statistics_tab": "Statistics",
+    "history_tab": "History",
+    "history_table": {
+      "title": "Title",
+      "type": "Type",
+      "created_at": "Date",
+      "status": "Status",
+      "no_history": "You have no activity history yet.",
+      "type_voting": "Voting",
+      "type_petition": "Petition"
+    }
   },
   "votes": {
     "for": "For",
     "against": "Against",
     "abstain": "Abstain",
-    "you_voted": "You voted"
+    "you_voted": "You voted",
+    "active": "Active",
+    "closed": "Closed",
+    "archived": "Archived"
   },
   "users_page": {
     "title": "Users",

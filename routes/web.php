@@ -14,6 +14,8 @@ use App\Http\Controllers\VotingController;
 use App\Http\Controllers\PetitionsController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\DirectorController;
+
+
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -213,6 +215,7 @@ Route::put('contacts/{contact}/restore', [ContactsController::class, 'restore'])
 Route::get('reports', [ReportsController::class, 'index'])
     ->name('reports')
     ->middleware('auth');
+
 
 Route::get('messages', function () {
     return Inertia::render('Messages/Index');

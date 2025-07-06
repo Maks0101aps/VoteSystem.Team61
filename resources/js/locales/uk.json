@@ -109,13 +109,27 @@
     "total_users": "Всього користувачів",
     "total_votings_all_time": "Всього голосувань",
     "total_petitions_all_time": "Всього петицій",
-    "total_votes_cast": "Всього голосів віддано"
+    "total_votes_cast": "Всього голосів віддано",
+    "statistics_tab": "Статистика",
+    "history_tab": "Історія",
+    "history_table": {
+      "title": "Назва",
+      "type": "Тип",
+      "created_at": "Дата",
+      "status": "Статус",
+      "no_history": "У вас ще немає історії активності.",
+      "type_voting": "Голосування",
+      "type_petition": "Петиція"
+    }
   },
   "votes": {
     "for": "За",
     "against": "Проти",
     "abstain": "Утриматись",
-    "you_voted": "Ви проголосували"
+    "you_voted": "Ви проголосували",
+    "active": "Активне",
+    "closed": "Завершене",
+    "archived": "Архівоване"
   },
   "users_page": {
     "title": "Користувачі",

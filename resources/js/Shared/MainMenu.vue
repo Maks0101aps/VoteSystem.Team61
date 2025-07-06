@@ -20,6 +20,7 @@
       <Link class="flex items-center justify-center w-10 h-10 rounded-full hover:bg-gray-200/80 transition-colors duration-200" :title="$t('main_menu.reports')" href="/reports">
         <icon name="printer" class="w-5 h-5" :class="isUrl('reports') ? 'fill-green-600' : 'fill-gray-500 group-hover:fill-green-500'" />
       </Link>
+      
             <Link v-if="$page.props.auth.user.role === 'director'" class="relative flex items-center justify-center w-10 h-10 rounded-full hover:bg-gray-200/80 transition-colors duration-200" :title="$t('main_menu.messages')" href="/director/petitions">
         <icon name="messages" class="w-5 h-5" :class="isUrl('director/petitions') ? 'fill-orange-500' : 'fill-gray-500 group-hover:fill-orange-500'" />
         <span v-if="$page.props.pending_petitions_count > 0" class="absolute top-1 right-0 block h-4 w-4 rounded-full bg-red-500 text-white text-[10px] flex items-center justify-center">
