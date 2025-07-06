@@ -101,14 +101,15 @@
   },
   "reports_page": {
     "title": "Звіти",
-    "statistics_title": "Статистика",
-    "last_month_label": "(за останній місяць)",
-    "petitions_last_month": "Петиції",
+    "monthly_activity": "Щомісячна активність",
+    "all_time_stats": "Статистика за весь час",
+    "petitions_last_month": "Створено петицій",
     "acceptance_percentage": "Прийняті петиції",
-    "total_votings": "Всього голосувань",
-    "no_votings": "Немає голосувань для відображення.",
-    "votes": "Голосів",
-    "no_options": "Для цього голосування немає варіантів."
+    "votings_last_month": "Створено голосувань",
+    "total_users": "Всього користувачів",
+    "total_votings_all_time": "Всього голосувань",
+    "total_petitions_all_time": "Всього петицій",
+    "total_votes_cast": "Всього голосів віддано"
   },
   "votes": {
     "for": "За",

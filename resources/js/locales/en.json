@@ -95,14 +95,15 @@
   },
   "reports_page": {
     "title": "Reports",
-    "statistics_title": "Statistics",
-    "last_month_label": "(last month)",
-    "petitions_last_month": "Petitions (Last Month)",
+    "monthly_activity": "Monthly Activity",
+    "all_time_stats": "All-Time Statistics",
+    "petitions_last_month": "Petitions Created",
     "acceptance_percentage": "Petition Acceptance",
-    "total_votings": "Total Votings",
-    "no_votings": "No votings to display.",
-    "votes": "Votes",
-    "no_options": "No options available for this voting."
+    "votings_last_month": "Votings Created",
+    "total_users": "Total Users",
+    "total_votings_all_time": "Total Votings",
+    "total_petitions_all_time": "Total Petitions",
+    "total_votes_cast": "Total Votes Cast"
   },
   "votes": {
     "for": "For",

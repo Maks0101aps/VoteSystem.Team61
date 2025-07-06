@@ -13,33 +13,66 @@
         <div class="h-1 w-24 bg-orange-500 mx-auto mb-4 rounded-full"></div>
       </div>
 
-      <!-- Statistics Section -->
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-        <div class="bg-white p-6 rounded-lg shadow-md flex items-center backdrop-blur-sm bg-opacity-90">
-          <div class="p-3 rounded-full bg-orange-100 mr-4">
-            <icon name="users" class="w-8 h-8 text-orange-500" />
+      <!-- Section: Activity Last Month -->
+      <div class="mb-12">
+        <h2 class="text-2xl font-bold text-orange-700 mb-6 border-b-2 border-orange-200 pb-2">{{ $t('reports_page.monthly_activity') }}</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <!-- Card for petitionsLastMonth -->
+          <div class="bg-white p-6 rounded-lg shadow-md flex items-center backdrop-blur-sm bg-opacity-90">
+            <div class="p-3 rounded-full bg-orange-100 mr-4">
+              <icon name="document-text" class="w-8 h-8 text-orange-500" />
+            </div>
+            <div>
+              <h3 class="text-gray-500 font-semibold">{{ $t('reports_page.petitions_last_month') }}</h3>
+              <p class="text-3xl font-bold text-orange-700">{{ stats.petitionsLastMonth }}</p>
+            </div>
           </div>
-          <div>
-            <h3 class="text-gray-500 font-semibold">{{ $t('reports_page.petitions_last_month') }} {{ $t('reports_page.last_month_label') }}</h3>
-            <p class="text-3xl font-bold text-orange-700">{{ stats.petitionsLastMonth }}</p>
+          <!-- Card for acceptancePercentage -->
+          <div class="bg-white p-6 rounded-lg shadow-md flex items-center backdrop-blur-sm bg-opacity-90">
+            <div class="p-3 rounded-full bg-green-100 mr-4">
+              <icon name="chart-pie" class="w-8 h-8 text-green-500" />
+            </div>
+            <div>
+              <h3 class="text-gray-500 font-semibold">{{ $t('reports_page.acceptance_percentage') }}</h3>
+              <p class="text-3xl font-bold text-green-700">{{ stats.acceptancePercentage }}%</p>
+            </div>
+          </div>
+          <!-- Card for votingsLastMonth -->
+          <div class="bg-white p-6 rounded-lg shadow-md flex items-center backdrop-blur-sm bg-opacity-90">
+            <div class="p-3 rounded-full bg-blue-100 mr-4">
+              <icon name="vote" class="w-8 h-8 text-blue-500" />
+            </div>
+            <div>
+              <h3 class="text-gray-500 font-semibold">{{ $t('reports_page.votings_last_month') }}</h3>
+              <p class="text-3xl font-bold text-blue-700">{{ stats.votingsLastMonth }}</p>
+            </div>
           </div>
         </div>
-        <div class="bg-white p-6 rounded-lg shadow-md flex items-center backdrop-blur-sm bg-opacity-90">
-          <div class="p-3 rounded-full bg-green-100 mr-4">
-            <icon name="dashboard" class="w-8 h-8 text-green-500" />
+      </div>
+
+      <!-- Section: All-Time Statistics -->
+      <div>
+        <h2 class="text-2xl font-bold text-orange-700 mb-6 border-b-2 border-orange-200 pb-2">{{ $t('reports_page.all_time_stats') }}</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <!-- Card for totalUsers -->
+          <div class="bg-white p-6 rounded-lg shadow-md flex items-center backdrop-blur-sm bg-opacity-90">
+            <div class="p-3 rounded-full bg-teal-100 mr-4">
+              <icon name="users" class="w-8 h-8 text-teal-500" />
+            </div>
+            <div>
+              <h3 class="text-gray-500 font-semibold">{{ $t('reports_page.total_users') }}</h3>
+              <p class="text-3xl font-bold text-teal-700">{{ stats.totalUsers }}</p>
+            </div>
           </div>
-          <div>
-            <h3 class="text-gray-500 font-semibold">{{ $t('reports_page.acceptance_percentage') }} {{ $t('reports_page.last_month_label') }}</h3>
-            <p class="text-3xl font-bold text-green-700">{{ stats.acceptancePercentage }}%</p>
-          </div>
-        </div>
-        <div class="bg-white p-6 rounded-lg shadow-md flex items-center backdrop-blur-sm bg-opacity-90">
-          <div class="p-3 rounded-full bg-blue-100 mr-4">
-            <icon name="vote" class="w-8 h-8 text-blue-500" />
-          </div>
-          <div>
-            <h3 class="text-gray-500 font-semibold">{{ $t('reports_page.total_votings') }} {{ $t('reports_page.last_month_label') }}</h3>
-            <p class="text-3xl font-bold text-blue-700">{{ stats.totalVotings }}</p>
+          <!-- Card for totalVotesCast -->
+          <div class="bg-white p-6 rounded-lg shadow-md flex items-center backdrop-blur-sm bg-opacity-90">
+            <div class="p-3 rounded-full bg-amber-100 mr-4">
+              <icon name="check-circle" class="w-8 h-8 text-amber-500" />
+            </div>
+            <div>
+              <h3 class="text-gray-500 font-semibold">{{ $t('reports_page.total_votes_cast') }}</h3>
+              <p class="text-3xl font-bold text-amber-700">{{ stats.totalVotesCast }}</p>
+            </div>
           </div>
         </div>
       </div>
