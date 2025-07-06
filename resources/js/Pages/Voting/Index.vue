@@ -195,6 +195,7 @@ import { Head, Link, useForm, router } from '@inertiajs/vue3';
 import { ref, watch } from 'vue';
 import ConfirmationModal from '@/Shared/ConfirmationModal.vue';
 import Layout from '@/Shared/Layout.vue';
+import Icon from '@/Shared/Icon.vue';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import 'dayjs/locale/uk';
@@ -207,6 +208,7 @@ export default {
     Head,
     Link,
     ConfirmationModal,
+    Icon,
   },
   layout: Layout,
   setup(props) {
@@ -261,9 +263,11 @@ export default {
     return {
       now: new Date(this.server_time),
       interval: null,
-      currentFilter: this.filters.filter || 'all',
+      currentFilter: this.filters.filter || (this.filters.trashed ? 'trashed' : 'all'),
       showConfirmation: false,
       votingToDelete: null,
+      confirmationTitle: '',
+      confirmationMessage: '',
     }
   },
   mounted() {
@@ -328,11 +332,24 @@ export default {
     },
     filterVotings(filter) {
       this.currentFilter = filter;
-      router.get('/votings', { filter: filter }, { preserveState: true });
+      let query = {};
+      if (filter === 'trashed') {
+        query.trashed = 'only';
+      } else {
+        query.filter = filter;
+      }
+      router.get('/votings', query, { preserveState: true, replace: true });
     },
     destroy(votingId) {
       this.votingToDelete = votingId;
+      this.confirmationTitle = this.$t('voting_page.confirmation_modal.trash_title');
+      this.confirmationMessage = this.$t('voting_page.confirmation_modal.trash_message');
       this.showConfirmation = true;
+    },
+    restore(votingId) {
+      router.put(`/votings/${votingId}/restore`, {}, {
+        preserveScroll: true,
+      });
     },
     confirmDelete() {
       if (this.votingToDelete) {

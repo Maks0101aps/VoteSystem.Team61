@@ -75,6 +75,10 @@ Route::delete('/votings/{voting}', [VotingController::class, 'destroy'])
     ->name('voting.destroy')
     ->middleware('auth');
 
+Route::put('/votings/{voting}/restore', [VotingController::class, 'restore'])
+    ->name('voting.restore')
+    ->middleware('auth');
+
 // Petitions
 
 Route::get('petitions', [PetitionsController::class, 'index'])
