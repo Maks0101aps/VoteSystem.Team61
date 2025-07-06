@@ -121,11 +121,12 @@ class VotingController extends Controller
             $votingsQuery->whereNotNull('ends_at')->where('ends_at', '<=', now());
         }
 
-        $votings = $votingsQuery->with(['user', 'votes' => fn ($q) => $q->where('user_id', $user->id), 'visibilities'])
+        $votings = $votingsQuery->with(['user', 'votes' => fn ($q) => $q->where('user_id', $user->id), 'visibilities', 'comments.user'])
             ->withCount([
                 'votes as votes_for_count' => fn ($q) => $q->where('choice', 'for'),
                 'votes as votes_against_count' => fn ($q) => $q->where('choice', 'against'),
                 'votes as votes_abstain_count' => fn ($q) => $q->where('choice', 'abstain'),
+                'comments as comments_count',
             ])
             ->latest()
             ->get();
@@ -144,8 +145,18 @@ class VotingController extends Controller
                 'votes_for_count' => $voting->votes_for_count,
                 'votes_against_count' => $voting->votes_against_count,
                 'votes_abstain_count' => $voting->votes_abstain_count,
+                'comments_count' => $voting->comments_count,
                 'visibility' => $voting->visibilities,
                 'deleted_at' => $voting->deleted_at,
+                'comments' => $voting->comments->map(function ($comment) {
+                    return [
+                        'id' => $comment->id,
+                        'content' => $comment->content,
+                        'created_at' => $comment->created_at->diffForHumans(),
+                        'user_name' => $comment->user->name,
+                    ];
+                }),
+                'commentable_type' => 'App\Models\Voting',
             ]),
             'filters' => $filters,
             'auth' => ['user' => $user->only('id', 'first_name', 'last_name')],

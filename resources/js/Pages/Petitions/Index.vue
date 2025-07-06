@@ -94,7 +94,7 @@
               {{ $t('petitions_page.signed') }}
             </button>
             <button @click="toggleComments(petition.id)" class="text-sm text-orange-600 hover:underline">
-              {{ $t('petitions.comments') }} ({{ petition.comments.length }})
+              {{ $t('comments.comments') }} ({{ petition.comments_count }})
             </button>
             <button v-if="$page.props.auth.user.id === petition.user_id" @click="destroy(petition.id)" class="inline-flex items-center bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg transition-colors ml-4">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" viewBox="0 0 20 20" fill="currentColor">
@@ -106,7 +106,7 @@
 
           <!-- Comments Section -->
           <div v-if="isCommentsVisible(petition.id)" class="mt-4 pt-4 border-t border-gray-200">
-            <h4 class="text-lg font-semibold text-gray-800 mb-2">{{ $t('petitions.comments') }}</h4>
+            <h4 class="text-lg font-semibold text-gray-800 mb-2">{{ $t('comments.comments') }}</h4>
             <div class="space-y-4">
               <div v-for="comment in petition.comments" :key="comment.id" class="bg-gray-50 p-3 rounded-lg">
                 <p class="text-gray-700">{{ comment.content }}</p>
@@ -115,15 +115,15 @@
                 </div>
               </div>
               <div v-if="petition.comments.length === 0" class="text-gray-500">
-                {{ $t('petitions.no_comments') }}
+                {{ $t('comments.no_comments') }}
               </div>
             </div>
 
             <!-- Add Comment Form -->
             <form @submit.prevent="addComment(petition.id)" class="mt-4">
-              <textarea v-model="commentForms[petition.id].content" class="w-full border-gray-300 rounded-md shadow-sm focus:border-orange-500 focus:ring-orange-500" rows="2" :placeholder="$t('petitions.add_comment_placeholder')"></textarea>
+              <textarea v-model="commentForms[petition.id].content" class="w-full border-gray-300 rounded-md shadow-sm focus:border-orange-500 focus:ring-orange-500" rows="2" :placeholder="$t('comments.add_comment_placeholder')"></textarea>
               <button type="submit" class="mt-2 bg-orange-600 hover:bg-orange-700 text-white px-4 py-2 rounded-lg transition-colors">
-                {{ $t('petitions.add_comment_button') }}
+                {{ $t('comments.add_comment_button') }}
               </button>
             </form>
           </div>
@@ -198,7 +198,10 @@ export default {
   methods: {
     initializeCommentForms() {
       this.petitions.forEach(petition => {
-        this.commentForms[petition.id] = useForm({ content: '' });
+        this.commentForms[petition.id] = useForm({
+          content: '',
+          commentable_type: 'App\\Models\\Petition',
+        });
       });
     },
     statusText(status) {
@@ -262,12 +265,15 @@ export default {
       return this.visibleComments.includes(petitionId);
     },
     addComment(petitionId) {
-      this.commentForms[petitionId].post(`/petitions/${petitionId}/comments`, {
-        preserveScroll: true,
-        onSuccess: () => {
-          this.commentForms[petitionId].reset('content');
-        },
-      });
+      const form = this.commentForms[petitionId];
+      if (form.content.trim()) {
+          form.post(`/comments/${petitionId}`, {
+              preserveScroll: true,
+              onSuccess: () => {
+                  form.reset('content');
+              },
+          });
+      }
     },
     filterPetitions(filter) {
       this.currentFilter = filter;

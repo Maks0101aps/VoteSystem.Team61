@@ -37,15 +37,13 @@
 
       <!-- Список голосувань -->
       <div class="space-y-6">
-        <div v-if="!votings || votings.length === 0" class="bg-white p-8 rounded-xl shadow-md backdrop-blur-sm bg-opacity-90 text-center">
-          <div v-if="votings.data.length === 0" class="bg-white rounded-lg shadow-lg p-12 text-center">
-            <icon name="plus-circle" class="w-16 h-16 text-gray-300 mx-auto mb-6" />
-            <h2 class="text-2xl font-bold text-gray-700 mb-2">{{ $t('voting_page.no_active_votings') }}</h2>
-            <p class="text-gray-500 mb-6">{{ $t('voting_page.be_the_first') }}</p>
-            <Link href="/votings/create" class="inline-block bg-green-500 text-white font-bold px-6 py-3 rounded-full hover:bg-green-600 transition-colors duration-300">
-              {{ $t('voting_page.create_vote') }}
-            </Link>
-          </div>
+        <div v-if="!votings || votings.length === 0" class="bg-white rounded-lg shadow-lg p-12 text-center">
+          <icon name="plus-circle" class="w-16 h-16 text-gray-300 mx-auto mb-6" />
+          <h2 class="text-2xl font-bold text-gray-700 mb-2">{{ $t('voting_page.no_active_votings') }}</h2>
+          <p class="text-gray-500 mb-6">{{ $t('voting_page.be_the_first') }}</p>
+          <Link href="/votings/create" class="inline-block bg-green-500 text-white font-bold px-6 py-3 rounded-full hover:bg-green-600 transition-colors duration-300">
+            {{ $t('voting_page.create_vote') }}
+          </Link>
         </div>
         
         <!-- Тут буде список голосувань з бази даних -->
@@ -114,6 +112,10 @@
         <div class="text-sm text-gray-500 flex items-center">
             <span>{{ $t('voting_page.author') }}: {{ voting.user ? `${voting.user.first_name} ${voting.user.last_name}` : $t('voting_page.anonymous') }}</span>
             <span class="ml-4">{{ formatCreationTime(voting.created_at) }}</span>
+            <span class="mx-2">•</span>
+            <button @click="toggleComments(voting.id)" class="text-orange-600 hover:underline">
+              {{ $t('comments.comments') }} ({{ voting.comments_count }})
+            </button>
             <button v-if="voting.user && $page.props.auth.user.id === voting.user.id" @click="destroy(voting.id)" class="ml-4 inline-flex items-center bg-red-500 hover:bg-red-600 text-white px-3 py-1.5 rounded-lg transition-colors text-xs font-semibold">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1.5" viewBox="0 0 20 20" fill="currentColor">
                     <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" />
@@ -145,25 +147,54 @@
             </button>
         </div>
     </div>
-</div>
+
+    <!-- Comments Section -->
+    <div v-if="isCommentsVisible(voting.id)" class="mt-4 pt-4 border-t border-gray-200">
+      <h4 class="text-lg font-semibold text-gray-800 mb-2">{{ $t('comments.comments') }}</h4>
+      <div class="space-y-4">
+        <div v-for="comment in voting.comments" :key="comment.id" class="bg-gray-50 p-3 rounded-lg">
+          <p class="text-gray-700">{{ comment.content }}</p>
+          <div class="text-xs text-gray-500 mt-1">
+            <strong>{{ comment.user_name }}</strong> - {{ comment.created_at }}
+          </div>
+        </div>
+        <div v-if="voting.comments.length === 0" class="text-gray-500">
+          {{ $t('comments.no_comments') }}
+        </div>
       </div>
+
+      <!-- Add Comment Form -->
+      <form @submit.prevent="addComment(voting.id)" class="mt-4">
+        <textarea v-model="commentForms[voting.id].content" class="w-full border-gray-300 rounded-md shadow-sm focus:border-orange-500 focus:ring-orange-500" rows="2" :placeholder="$t('comments.add_comment_placeholder')"></textarea>
+        <div v-if="commentForms[voting.id] && commentForms[voting.id].errors.content" class="text-red-500 text-sm mt-1">
+            {{ commentForms[voting.id].errors.content }}
+        </div>
+        <button type="submit" class="mt-2 bg-orange-600 hover:bg-orange-700 text-white px-4 py-2 rounded-lg transition-colors" :disabled="commentForms[voting.id] && commentForms[voting.id].processing">
+          {{ $t('comments.add_comment_button') }}
+        </button>
+      </form>
     </div>
-  </div>
-  <ConfirmationModal 
-      :show="showConfirmation" 
-      @confirm="confirmDelete" 
-      @cancel="cancelDelete"
-      :title="$t('voting_page.confirmation_modal.title')"
-      :message="$t('voting_page.confirmation_modal.message')"
-      :confirmButtonText="$t('voting_page.confirmation_modal.confirm_button')"
-      :cancelButtonText="$t('voting_page.confirmation_modal.cancel_button')"
-    />
+        </div> <!-- End of v-for item -->
+      </div> <!-- End of space-y-6 -->
+
+      <ConfirmationModal 
+        :show="showConfirmation" 
+        @confirm="confirmDelete" 
+        @cancel="cancelDelete"
+        :title="$t('voting_page.confirmation_modal.title')"
+        :message="$t('voting_page.confirmation_modal.message')"
+        :confirmButtonText="$t('voting_page.confirmation_modal.confirm_button')"
+        :cancelButtonText="$t('voting_page.confirmation_modal.cancel_button')"
+      />
+    </div> <!-- End of container -->
+  </div> <!-- End of root element -->
 </template>
 
 <script>
-import { Head, Link, useForm, router } from '@inertiajs/vue3'
-import Layout from '@/Shared/Layout.vue'
+import { Head, Link, useForm, router } from '@inertiajs/vue3';
+import { ref, watch } from 'vue';
 import ConfirmationModal from '@/Shared/ConfirmationModal.vue';
+import Layout from '@/Shared/Layout.vue';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import 'dayjs/locale/uk';
@@ -178,6 +209,48 @@ export default {
     ConfirmationModal,
   },
   layout: Layout,
+  setup(props) {
+    const visibleComments = ref([]);
+    const commentForms = ref({});
+
+    const initializeCommentForms = () => {
+      props.votings.forEach(voting => {
+        commentForms.value[voting.id] = useForm({ content: '', commentable_type: 'App\Models\Voting' });
+      });
+    };
+
+    watch(() => props.votings, initializeCommentForms, { immediate: true });
+
+    const toggleComments = (votingId) => {
+      const index = visibleComments.value.indexOf(votingId);
+      if (index > -1) {
+        visibleComments.value.splice(index, 1);
+      } else {
+        visibleComments.value.push(votingId);
+      }
+    };
+
+    const isCommentsVisible = (votingId) => {
+      return visibleComments.value.includes(votingId);
+    };
+
+    const addComment = (votingId) => {
+    const form = commentForms.value[votingId];
+    if (form.content.trim()) {
+        form.transform((data) => ({
+            ...data,
+            commentable_type: 'App\\Models\\Voting',
+        })).post(`/comments/${votingId}`, {
+            preserveScroll: true,
+            onSuccess: () => {
+                form.reset('content');
+            },
+        });
+    }
+};
+
+    return { visibleComments, commentForms, toggleComments, isCommentsVisible, addComment };
+  },
   props: {
     title: String,
     votings: Array,
@@ -200,6 +273,14 @@ export default {
   },
   unmounted() {
     clearInterval(this.interval);
+  },
+
+  computed: {
+    votingToDeleteTitle() {
+      if (!this.votingToDelete) return '';
+      const voting = this.votings.find(v => v.id === this.votingToDelete);
+      return voting ? voting.title : '';
+    },
   },
   methods: {
     castVote(votingId, choice) {

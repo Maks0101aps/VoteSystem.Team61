@@ -93,8 +93,8 @@ Route::post('petitions/{petition}/sign', [PetitionsController::class, 'sign'])
     ->name('petitions.sign')
     ->middleware('auth');
 
-Route::post('petitions/{petition}/comments', [CommentController::class, 'store'])
-    ->name('petitions.comments.store')
+Route::post('comments/{commentable_id}', [CommentController::class, 'store'])
+    ->name('comments.store')
     ->middleware('auth');
 
 Route::delete('petitions/{petition}', [PetitionsController::class, 'destroy'])

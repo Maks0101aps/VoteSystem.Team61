@@ -6,6 +6,10 @@ import votesEn from '../../lang/en/votes.json';
 import votesUk from '../../lang/uk/votes.json';
 import petitionsEn from '../../lang/en/petitions.json';
 import petitionsUk from '../../lang/uk/petitions.json';
+import votingPageEn from '../../lang/en/voting_page.json';
+import votingPageUk from '../../lang/uk/voting_page.json';
+import commentsEn from '../../lang/en/comments.json';
+import commentsUk from '../../lang/uk/comments.json';
 
 const i18n = createI18n({
   locale: localStorage.getItem('locale') || 'uk', // set default locale from localStorage or 'uk'
@@ -15,11 +19,15 @@ const i18n = createI18n({
         ...en,
         ...votesEn,
         ...petitionsEn,
+        voting_page: votingPageEn,
+        comments: commentsEn,
     },
     uk: {
         ...uk,
         ...votesUk,
         ...petitionsUk,
+        voting_page: votingPageUk,
+        comments: commentsUk,
     },
   },
   legacy: false, // you must set `false`, to use Composition API
