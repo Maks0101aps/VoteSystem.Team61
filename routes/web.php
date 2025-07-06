@@ -12,6 +12,7 @@ use App\Http\Controllers\ReportsController;
 use App\Http\Controllers\UsersController;
 use App\Http\Controllers\VotingController;
 use App\Http\Controllers\PetitionsController;
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\DirectorController;
 use Illuminate\Support\Facades\Route;
 
@@ -90,6 +91,10 @@ Route::post('petitions', [PetitionsController::class, 'store'])
 
 Route::post('petitions/{petition}/sign', [PetitionsController::class, 'sign'])
     ->name('petitions.sign')
+    ->middleware('auth');
+
+Route::post('petitions/{petition}/comments', [CommentController::class, 'store'])
+    ->name('petitions.comments.store')
     ->middleware('auth');
 
 Route::delete('petitions/{petition}', [PetitionsController::class, 'destroy'])

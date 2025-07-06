@@ -93,12 +93,39 @@
             <button v-else-if="petition.is_signed" class="bg-gray-300 text-gray-500 px-4 py-2 rounded-lg cursor-not-allowed">
               {{ $t('petitions_page.signed') }}
             </button>
+            <button @click="toggleComments(petition.id)" class="text-sm text-orange-600 hover:underline">
+              {{ $t('petitions.comments') }} ({{ petition.comments.length }})
+            </button>
             <button v-if="$page.props.auth.user.id === petition.user_id" @click="destroy(petition.id)" class="inline-flex items-center bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg transition-colors ml-4">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" viewBox="0 0 20 20" fill="currentColor">
                   <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" />
                 </svg>
                 {{ $t('petitions_page.delete') }}
               </button>
+          </div>
+
+          <!-- Comments Section -->
+          <div v-if="isCommentsVisible(petition.id)" class="mt-4 pt-4 border-t border-gray-200">
+            <h4 class="text-lg font-semibold text-gray-800 mb-2">{{ $t('petitions.comments') }}</h4>
+            <div class="space-y-4">
+              <div v-for="comment in petition.comments" :key="comment.id" class="bg-gray-50 p-3 rounded-lg">
+                <p class="text-gray-700">{{ comment.content }}</p>
+                <div class="text-xs text-gray-500 mt-1">
+                  <strong>{{ comment.user_name }}</strong> - {{ comment.created_at }}
+                </div>
+              </div>
+              <div v-if="petition.comments.length === 0" class="text-gray-500">
+                {{ $t('petitions.no_comments') }}
+              </div>
+            </div>
+
+            <!-- Add Comment Form -->
+            <form @submit.prevent="addComment(petition.id)" class="mt-4">
+              <textarea v-model="commentForms[petition.id].content" class="w-full border-gray-300 rounded-md shadow-sm focus:border-orange-500 focus:ring-orange-500" rows="2" :placeholder="$t('petitions.add_comment_placeholder')"></textarea>
+              <button type="submit" class="mt-2 bg-orange-600 hover:bg-orange-700 text-white px-4 py-2 rounded-lg transition-colors">
+                {{ $t('petitions.add_comment_button') }}
+              </button>
+            </form>
           </div>
         </div>
       </div>
@@ -148,6 +175,8 @@ export default {
       showConfirmation: false,
       petitionToDelete: null,
       currentFilter: this.filters.filter || 'all',
+      visibleComments: [],
+      commentForms: {},
     };
   },
   computed: {
@@ -160,7 +189,18 @@ export default {
       });
     }
   },
+  watch: {
+    petitions: {
+      handler: 'initializeCommentForms',
+      immediate: true,
+    },
+  },
   methods: {
+    initializeCommentForms() {
+      this.petitions.forEach(petition => {
+        this.commentForms[petition.id] = useForm({ content: '' });
+      });
+    },
     statusText(status) {
       return this.$t(`petitions_page.statuses.${status}`);
     },
@@ -209,6 +249,25 @@ export default {
     cancelDelete() {
       this.showConfirmation = false;
       this.petitionToDelete = null;
+    },
+    toggleComments(petitionId) {
+      const index = this.visibleComments.indexOf(petitionId);
+      if (index > -1) {
+        this.visibleComments.splice(index, 1);
+      } else {
+        this.visibleComments.push(petitionId);
+      }
+    },
+    isCommentsVisible(petitionId) {
+      return this.visibleComments.includes(petitionId);
+    },
+    addComment(petitionId) {
+      this.commentForms[petitionId].post(`/petitions/${petitionId}/comments`, {
+        preserveScroll: true,
+        onSuccess: () => {
+          this.commentForms[petitionId].reset('content');
+        },
+      });
     },
     filterPetitions(filter) {
       this.currentFilter = filter;

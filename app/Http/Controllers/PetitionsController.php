@@ -17,7 +17,7 @@ class PetitionsController extends Controller
         $filters = $request->only('filter');
         $filterValue = $filters['filter'] ?? 'all';
 
-        $petitionsQuery = Petition::with(['signatures', 'user', 'schoolClass'])
+        $petitionsQuery = Petition::with(['signatures', 'user', 'schoolClass', 'comments.user'])
             ->withCount('signatures')
             ->latest();
 
@@ -46,6 +46,14 @@ class PetitionsController extends Controller
                     'status' => $petition->status,
                     'target_class' => $petition->schoolClass ? $petition->schoolClass->name : 'Вся школа',
                     'user_id' => $petition->user_id,
+                    'comments' => $petition->comments->map(function ($comment) {
+                        return [
+                            'id' => $comment->id,
+                            'content' => $comment->content,
+                            'created_at' => $comment->created_at->diffForHumans(),
+                            'user_name' => $comment->user->name,
+                        ];
+                    }),
                 ];
             });
 

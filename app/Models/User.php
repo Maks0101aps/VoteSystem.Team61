@@ -126,6 +126,11 @@ class User extends Authenticatable
         return $this->schoolClass?->class_number;
     }
 
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
+
     public function schoolClass(): BelongsTo
     {
         return $this->belongsTo(SchoolClass::class);
