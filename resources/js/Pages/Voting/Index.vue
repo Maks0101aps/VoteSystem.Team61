@@ -55,9 +55,9 @@
         <h2 class="text-2xl font-bold text-green-700">{{ voting.title }}</h2>
         <div class="text-sm text-gray-500 text-right">
             <div v-if="voting.ends_at">
-                <div v-if="isEnded(voting)" class="font-bold text-red-500">Голосування завершено</div>
+                <div v-if="isEnded(voting)" class="font-bold text-red-500">{{ $t('voting_page.voting_ended') }}</div>
                 <div v-else>
-                    <div class="font-semibold">Залишилось:</div>
+                    <div class="font-semibold">{{ $t('voting_page.remaining') }}</div>
                     <div>{{ formatRemainingTime(voting) }}</div>
                 </div>
             </div>
@@ -67,8 +67,8 @@
         {{ voting.description }}
     </p>
 
-    <div class="text-sm text-gray-500 mb-4" v-if="voting.visibility_text">
-        {{ voting.visibility_text }}
+    <div class="text-sm text-gray-500 mb-4" v-if="voting.visibility && voting.visibility.length > 0">
+        {{ buildVisibilityText(voting) }}
     </div>
 
     <!-- Vote Counts -->
@@ -112,8 +112,8 @@
 
     <div class="flex justify-between items-center">
         <div class="text-sm text-gray-500 flex items-center">
-            <span>Автор: {{ voting.user ? `${voting.user.first_name} ${voting.user.last_name}` : 'Анонім' }}</span>
-            <span class="ml-4">{{ voting.created_at }}</span>
+            <span>{{ $t('voting_page.author') }}: {{ voting.user ? `${voting.user.first_name} ${voting.user.last_name}` : $t('voting_page.anonymous') }}</span>
+            <span class="ml-4">{{ formatCreationTime(voting.created_at) }}</span>
             <button v-if="voting.user && $page.props.auth.user.id === voting.user.id" @click="destroy(voting.id)" class="ml-4 inline-flex items-center bg-red-500 hover:bg-red-600 text-white px-3 py-1.5 rounded-lg transition-colors text-xs font-semibold">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1.5" viewBox="0 0 20 20" fill="currentColor">
                     <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" />
@@ -124,7 +124,7 @@
         
         <!-- Voting buttons or user's vote -->
         <div v-if="isEnded(voting)">
-             <p class="font-semibold text-red-600">Голосування завершено</p>
+             <p class="font-semibold text-red-600">{{ $t('voting_page.voting_ended') }}</p>
         </div>
         <div v-else-if="voting.user_vote">
             <p class="font-semibold text-gray-700">{{ $t('votes.you_voted') }}: <span class="capitalize" :class="{
@@ -164,6 +164,12 @@
 import { Head, Link, useForm, router } from '@inertiajs/vue3'
 import Layout from '@/Shared/Layout.vue'
 import ConfirmationModal from '@/Shared/ConfirmationModal.vue';
+import dayjs from 'dayjs';
+import relativeTime from 'dayjs/plugin/relativeTime';
+import 'dayjs/locale/uk';
+import 'dayjs/locale/en';
+
+dayjs.extend(relativeTime);
 
 export default {
   components: {
@@ -210,27 +216,34 @@ export default {
       return new Date(voting.ends_at) < this.now;
     },
     formatRemainingTime(voting) {
-      if (!voting.ends_at) return '';
-      
-      const endsAt = new Date(voting.ends_at);
-      const diff = endsAt - this.now;
+        if (!voting.ends_at) return '';
+        
+        const endsAt = dayjs(voting.ends_at);
+        const diff = endsAt.diff(this.now);
 
-      if (diff <= 0) {
-        return 'Голосування завершено';
-      }
+        if (diff <= 0) {
+            return this.$t('voting_page.voting_ended');
+        }
 
-      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-      const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
-      const minutes = Math.floor((diff / 1000 / 60) % 60);
-      const seconds = Math.floor((diff / 1000) % 60);
+        return endsAt.locale(this.$i18n.locale).from(this.now, true);
+    },
+    formatCreationTime(createdAt) {
+        return dayjs(createdAt).locale(this.$i18n.locale).fromNow();
+    },
+    buildVisibilityText(voting) {
+        const parts = voting.visibility.map(visibility => {
+            const role = this.$t('roles.' + visibility.role);
+            if (visibility.role === 'student' && visibility.class_number && visibility.class_letter) {
+                return `${role} (${visibility.class_number}-${visibility.class_letter})`;
+            }
+            return role;
+        });
 
-      let parts = [];
-      if (days > 0) parts.push(`${days}д`);
-      if (hours > 0) parts.push(`${hours}г`);
-      if (minutes > 0) parts.push(`${minutes}хв`);
-      if (seconds > 0) parts.push(`${seconds}с`);
+        if (parts.length === 0) {
+            return '';
+        }
 
-      return parts.join(' ');
+        return `${this.$t('voting_page.for_whom_prefix')} ${parts.join(', ')}`;
     },
     filterVotings(filter) {
       this.currentFilter = filter;

@@ -138,13 +138,13 @@ class VotingController extends Controller
                 'title' => $voting->title,
                 'description' => $voting->description,
                 'user' => $voting->user ? $voting->user->only('id', 'first_name', 'last_name') : null,
-                'created_at' => $voting->created_at->diffForHumans(),
+                'created_at' => $voting->created_at->toIso8601String(),
                 'ends_at' => $voting->ends_at ? $voting->ends_at->toIso8601String() : null,
                 'user_vote' => $voting->votes->first()->choice ?? null,
                 'votes_for_count' => $voting->votes_for_count,
                 'votes_against_count' => $voting->votes_against_count,
                 'votes_abstain_count' => $voting->votes_abstain_count,
-                'visibility_text' => $this->buildVisibilityText($voting),
+                'visibility' => $voting->visibilities,
                 'deleted_at' => $voting->deleted_at,
             ]),
             'filters' => $filters,
@@ -192,20 +192,5 @@ class VotingController extends Controller
         return Redirect::back()->with('success', 'Voting restored.');
     }
 
-    private function buildVisibilityText(Voting $voting): string
-    {
-        $parts = $voting->visibilities->map(function ($visibility) {
-            $role = __('roles.' . $visibility->role);
-            if ($visibility->role === 'student' && $visibility->class_number && $visibility->class_letter) {
-                return "{$role} ({$visibility->class_number}-{$visibility->class_letter})";
-            }
-            return $role;
-        });
 
-        if ($parts->isEmpty()) {
-            return '';
-        }
-
-        return __('voting_page.for_whom_prefix') . ' ' . $parts->implode(', ');
-    }
 } 

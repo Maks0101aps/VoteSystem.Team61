@@ -64,7 +64,13 @@
     "transparency": "Transparency",
     "security": "Security",
     "community": "Community",
-    "impact": "Impact"
+    "impact": "Impact",
+    "get_started_title": "Get Started",
+    "get_started_text": "Explore the main features of the platform and get involved in school life.",
+    "petitions_title": "Petitions",
+    "petitions_text": "Create and sign petitions to address important issues.",
+    "votings_title": "Votings",
+    "votings_text": "Participate in votings and influence decision-making."
   },
   "voting_page": {
     "title": "Voting",
@@ -79,17 +85,30 @@
     "holiday_theme_description": "Vote for the theme of the next school holiday. Choose one of the proposed options.",
     "create_vote": "Create Vote",
     "no_active_votings": "No active votings",
-    "be_the_first": "Be the first to create a vote."
+    "be_the_first": "Be the first to create a vote.",
+    "vote_for_label": "For",
+    "voting_ended": "Voting has ended",
+    "author": "Author",
+    "anonymous": "Anonymous",
+    "remaining": "Remaining:",
+    "for_whom_prefix": "For:"
   },
   "reports_page": {
     "title": "Reports",
     "statistics_title": "Statistics",
+    "last_month_label": "(last month)",
     "petitions_last_month": "Petitions (Last Month)",
     "acceptance_percentage": "Petition Acceptance",
     "total_votings": "Total Votings",
     "no_votings": "No votings to display.",
     "votes": "Votes",
     "no_options": "No options available for this voting."
+  },
+  "votes": {
+    "for": "For",
+    "against": "Against",
+    "abstain": "Abstain",
+    "you_voted": "You voted"
   },
   "users_page": {
     "title": "Users",

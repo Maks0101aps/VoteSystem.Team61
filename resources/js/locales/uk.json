@@ -91,7 +91,13 @@
       "message": "Ви впевнені, що хочете видалити це голосування? Цю дію неможливо буде скасувати.",
       "confirm_button": "Видалити",
       "cancel_button": "Скасувати"
-    }
+    },
+    "vote_for_label": "Для",
+    "voting_ended": "Голосування завершено",
+    "author": "Автор",
+    "anonymous": "Анонім",
+    "remaining": "Залишилось:",
+    "for_whom_prefix": "Для:"
   },
   "reports_page": {
     "title": "Звіти",

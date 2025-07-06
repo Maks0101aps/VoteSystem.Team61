@@ -12,9 +12,7 @@ class ReportsController extends Controller
 {
     public function index(): Response
     {
-        $votings = Voting::withTrashed()->with(['options' => function ($query) {
-            $query->withCount('user_votes');
-        }])->where('created_at', '>=', Carbon::now()->subMonth())->get();
+        $totalVotings = Voting::withTrashed()->where('created_at', '>=', Carbon::now()->subMonth())->count();
 
         $petitionsLastMonth = Petition::where('created_at', '>=', Carbon::now()->subMonth())->count();
         $allPetitions = Petition::withCount('signatures')->where('created_at', '>=', Carbon::now()->subMonth())->get();
@@ -24,10 +22,8 @@ class ReportsController extends Controller
         })->count();
 
         $acceptancePercentage = $totalPetitions > 0 ? round(($acceptedPetitions / $totalPetitions) * 100, 2) : 0;
-        $totalVotings = $votings->count();
 
         return Inertia::render('Reports/Index', [
-            'votings' => $votings,
             'stats' => [
                 'petitionsLastMonth' => $petitionsLastMonth,
                 'acceptancePercentage' => $acceptancePercentage,
