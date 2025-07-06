@@ -5,6 +5,7 @@ use Inertia\Inertia;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\VerificationController;
+use App\Http\Controllers\Auth\LoginVerificationController;
 use App\Http\Controllers\ContactsController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ImagesController;
@@ -48,6 +49,15 @@ Route::post('register', [RegisteredUserController::class, 'store'])
 
 Route::delete('logout', [AuthenticatedSessionController::class, 'destroy'])
     ->name('logout');
+
+// 2FA Login Verification
+Route::get('login/verify', [LoginVerificationController::class, 'show'])
+    ->middleware('guest')
+    ->name('login.verify.show');
+
+Route::post('login/verify', [LoginVerificationController::class, 'verify'])
+    ->middleware('guest')
+    ->name('login.verify');
 
 // Email Verification
 Route::get('verify-email', [VerificationController::class, 'show'])

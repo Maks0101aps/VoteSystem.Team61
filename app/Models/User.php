@@ -162,6 +162,11 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(EmailVerificationCode::class);
     }
 
+    public function loginCodes()
+    {
+        return $this->hasMany(LoginCode::class);
+    }
+
     public function generateVerificationCode()
     {
         $code = rand(100000, 999999);
@@ -185,6 +190,35 @@ class User extends Authenticatable implements MustVerifyEmail
             $verificationCode->delete();
             return true;
         }
+        return false;
+    }
+
+    public function generateLoginCode(): string
+    {
+        $code = random_int(100000, 999999);
+
+        $this->loginCodes()->create([
+            'code' => $code,
+            'expires_at' => now()->addMinutes(10),
+        ]);
+
+        return $code;
+    }
+
+    public function verifyLoginCode(string $code): bool
+    {
+        $loginCode = $this->loginCodes()
+            ->where('code', $code)
+            ->where('expires_at', '>', now())
+            ->latest()
+            ->first();
+
+        if ($loginCode) {
+            // Code is valid, we can delete all codes for this user now
+            $this->loginCodes()->delete();
+            return true;
+        }
+
         return false;
     }
 }
