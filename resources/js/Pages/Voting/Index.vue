@@ -26,6 +26,10 @@
           <button @click="filterVotings('completed')" :class="{ 'bg-green-600 text-white': currentFilter === 'completed', 'bg-white text-green-600': currentFilter !== 'completed' }" class="px-4 py-2 rounded-lg transition-colors border border-green-600 hover:bg-green-600 hover:text-white">
             {{ $t('petitions_page.filters.completed') }}
           </button>
+          <button @click="filterVotings('my')" :class="{ 'bg-green-600 text-white': currentFilter === 'my', 'bg-white text-green-600': currentFilter !== 'my' }" class="px-4 py-2 rounded-lg transition-colors border border-green-600 hover:bg-green-600 hover:text-white">
+            {{ $t('voting_page.filters.my_votings') }}
+          </button>
+
         </div>
         <Link href="/votings/create" class="bg-green-600 hover:bg-green-700 text-white px-5 py-2 rounded-lg transition-colors flex items-center">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
@@ -38,7 +42,9 @@
       <!-- Список голосувань -->
       <div class="space-y-6">
         <div v-if="!votings || votings.length === 0" class="bg-white rounded-lg shadow-lg p-12 text-center">
-          <icon name="plus-circle" class="w-16 h-16 text-gray-300 mx-auto mb-6" />
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-16 h-16 text-gray-300 mx-auto mb-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+          </svg>
           <h2 class="text-2xl font-bold text-gray-700 mb-2">{{ $t('voting_page.no_active_votings') }}</h2>
           <p class="text-gray-500 mb-6">{{ $t('voting_page.be_the_first') }}</p>
           <Link href="/votings/create" class="inline-block bg-green-500 text-white font-bold px-6 py-3 rounded-full hover:bg-green-600 transition-colors duration-300">
@@ -263,7 +269,7 @@ export default {
     return {
       now: new Date(this.server_time),
       interval: null,
-      currentFilter: this.filters.filter || (this.filters.trashed ? 'trashed' : 'all'),
+      currentFilter: this.filters.filter || 'all',
       showConfirmation: false,
       votingToDelete: null,
       confirmationTitle: '',
@@ -333,9 +339,7 @@ export default {
     filterVotings(filter) {
       this.currentFilter = filter;
       let query = {};
-      if (filter === 'trashed') {
-        query.trashed = 'only';
-      } else {
+{
         query.filter = filter;
       }
       router.get('/votings', query, { preserveState: true, replace: true });

@@ -119,6 +119,8 @@ class VotingController extends Controller
             });
         } elseif ($filterValue === 'completed') {
             $votingsQuery->whereNotNull('ends_at')->where('ends_at', '<=', now());
+        } elseif ($filterValue === 'my') {
+            $votingsQuery->where('user_id', $user->id);
         }
 
         $votings = $votingsQuery->with(['user', 'votes' => fn ($q) => $q->where('user_id', $user->id), 'visibilities', 'comments.user'])
