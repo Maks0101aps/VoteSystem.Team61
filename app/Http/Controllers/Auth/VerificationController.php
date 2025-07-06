@@ -16,7 +16,19 @@ class VerificationController extends Controller
 {
     public function show(): Response
     {
-        return Inertia::render('Auth/VerifyEmail');
+        $verificationCode = null;
+
+        if (config('app.debug')) {
+            $user = Auth::user();
+            $latestCode = $user->verificationCodes()->latest()->first();
+            if ($latestCode) {
+                $verificationCode = $latestCode->code;
+            }
+        }
+
+        return Inertia::render('Auth/VerifyEmail', [
+            'verificationCode' => $verificationCode,
+        ]);
     }
 
     public function verify(Request $request): RedirectResponse

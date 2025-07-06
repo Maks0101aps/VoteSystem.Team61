@@ -50,15 +50,38 @@
             </button>
           </div>
         </form>
+
+        <!-- Debug Section -->
+        <div v-if="verificationCode" class="mt-4 text-center">
+          <button @click="showDebugInfo = true" v-if="!showDebugInfo" class="text-sm font-medium text-gray-500 hover:text-gray-700">
+            Show Debug Code
+          </button>
+          <div v-if="showDebugInfo && !showDebugCode" class="p-4 bg-yellow-100 border border-yellow-400 text-yellow-700 rounded">
+            <p class="font-bold">Debug Mode</p>
+            <p class="text-sm">This shows the code because the app is in debug mode. This will not be visible in production.</p>
+            <button @click="showDebugCode = true" class="mt-2 px-4 py-2 bg-yellow-500 text-white rounded hover:bg-yellow-600">Continue</button>
+          </div>
+          <div v-if="showDebugCode" class="mt-4 text-lg font-bold text-green-600">
+            Verification Code: {{ verificationCode }}
+          </div>
+        </div>
       </div>
     </div>
   </GuestLayout>
 </template>
 
 <script setup>
+import { ref } from 'vue';
 import GuestLayout from '@/Shared/GuestLayout.vue';
 import { LockClosedIcon } from '@heroicons/vue/20/solid';
 import { useForm } from '@inertiajs/vue3';
+
+const props = defineProps({
+  verificationCode: String,
+});
+
+const showDebugInfo = ref(false);
+const showDebugCode = ref(false);
 
 const form = useForm({
   code: '',
