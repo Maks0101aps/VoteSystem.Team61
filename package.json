@@ -10,6 +10,7 @@
         "build": "vite build && vite build --ssr"
     },
     "devDependencies": {
+        "@heroicons/vue": "^2.1.1",
         "@inertiajs/vue3": "^1.0.15",
         "@popperjs/core": "^2.11.0",
         "@vitejs/plugin-vue": "^5.0.4",
@@ -30,6 +31,7 @@
     },
     "dependencies": {
         "dayjs": "^1.11.13",
-        "vue-i18n": "^12.0.0-alpha.3"
+        "vue-i18n": "^12.0.0-alpha.3",
+        "ziggy-js": "^2.5.3"
     }
 }

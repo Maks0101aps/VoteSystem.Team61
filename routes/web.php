@@ -4,6 +4,7 @@ use Inertia\Inertia;
 
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\RegisteredUserController;
+use App\Http\Controllers\Auth\VerificationController;
 use App\Http\Controllers\ContactsController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ImagesController;
@@ -14,7 +15,6 @@ use App\Http\Controllers\VotingController;
 use App\Http\Controllers\PetitionsController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\DirectorController;
-
 
 use Illuminate\Support\Facades\Route;
 
@@ -48,6 +48,19 @@ Route::post('register', [RegisteredUserController::class, 'store'])
 
 Route::delete('logout', [AuthenticatedSessionController::class, 'destroy'])
     ->name('logout');
+
+// Email Verification
+Route::get('verify-email', [VerificationController::class, 'show'])
+    ->middleware('auth')
+    ->name('verification.show');
+
+Route::post('verify-email', [VerificationController::class, 'verify'])
+    ->middleware('auth')
+    ->name('verification.verify');
+
+Route::get('verify-email/resend', [VerificationController::class, 'resend'])
+    ->middleware('auth')
+    ->name('verification.resend');
 
 // Dashboard
 

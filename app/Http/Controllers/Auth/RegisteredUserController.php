@@ -3,20 +3,26 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Models\User;
 use App\Models\SchoolClass;
+use App\Models\User;
+use App\Mail\VerificationCode;
+use Illuminate\Auth\Events\Registered;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
+use Inertia\Inertia;
+use Inertia\Response;
 
 class RegisteredUserController extends Controller
 {
-    public function create()
+    public function create(): Response
     {
-        return inertia('Auth/Register');
+        return Inertia::render('Auth/Register');
     }
 
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         $request->validate([
             'first_name' => ['required', 'string', 'max:25'],
@@ -57,6 +63,10 @@ class RegisteredUserController extends Controller
 
         Auth::login($user);
 
-        return redirect()->route('dashboard');
+        // Generate and send verification code
+        $code = $user->generateVerificationCode();
+        Mail::to($user->email)->send(new VerificationCode($user, $code));
+
+        return redirect()->route('verification.show');
     }
 }

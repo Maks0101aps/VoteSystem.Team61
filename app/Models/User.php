@@ -7,10 +7,11 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Sanctum\HasApiTokens;
 
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail
 {
     use HasApiTokens, HasFactory, Notifiable, SoftDeletes;
 
@@ -65,9 +66,9 @@ class User extends Authenticatable
         ];
     }
 
-    public function resolveRouteBinding($value, $field = null)
+    public function setPasswordAttribute($password)
     {
-        return $this->where($field ?? 'id', $value)->withTrashed()->firstOrFail();
+        $this->attributes['password'] = Hash::needsRehash($password) ? Hash::make($password) : $password;
     }
 
     public function getNameAttribute()
@@ -75,14 +76,14 @@ class User extends Authenticatable
         return $this->first_name.' '.$this->last_name;
     }
 
-    public function setPasswordAttribute($password)
+    /**
+     * Get the class number attribute (legacy).
+     *
+     * @return int|null
+     */
+    public function getClassAttribute(): ?int
     {
-        $this->attributes['password'] = Hash::needsRehash($password) ? Hash::make($password) : $password;
-    }
-
-    public function isDemoUser()
-    {
-        return $this->email === 'johndoe@example.com';
+        return $this->schoolClass?->class_number;
     }
 
     public function scopeOrderByName($query)
@@ -116,14 +117,14 @@ class User extends Authenticatable
         });
     }
 
-    /**
-     * Get the class number attribute (legacy).
-     *
-     * @return int|null
-     */
-    public function getClassAttribute(): ?int
+    public function isDemoUser()
     {
-        return $this->schoolClass?->class_number;
+        return $this->email === 'johndoe@example.com';
+    }
+
+    public function resolveRouteBinding($value, $field = null)
+    {
+        return $this->where($field ?? 'id', $value)->withTrashed()->firstOrFail();
     }
 
     public function comments()
@@ -154,5 +155,36 @@ class User extends Authenticatable
     public function signatures()
     {
         return $this->hasMany(PetitionSignature::class);
+    }
+
+    public function verificationCodes()
+    {
+        return $this->hasMany(EmailVerificationCode::class);
+    }
+
+    public function generateVerificationCode()
+    {
+        $code = rand(100000, 999999);
+        $this->verificationCodes()->create([
+            'code' => $code,
+            'expires_at' => now()->addMinutes(30),
+        ]);
+        return $code;
+    }
+
+    public function verifyCode($code)
+    {
+        $verificationCode = $this->verificationCodes()
+            ->where('code', $code)
+            ->where('expires_at', '>', now())
+            ->first();
+
+        if ($verificationCode) {
+            $this->email_verified_at = now();
+            $this->save();
+            $verificationCode->delete();
+            return true;
+        }
+        return false;
     }
 }
