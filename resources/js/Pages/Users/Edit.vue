@@ -1,33 +1,74 @@
 <template>
   <div>
     <Head :title="`${form.first_name} ${form.last_name}`" />
-    <div class="flex justify-center mb-8 max-w-3xl mx-auto">
-      <h1 class="text-3xl font-bold text-center">
-        {{ form.first_name }} {{ form.last_name }}
-      </h1>
-    </div>
-    <trashed-message v-if="user.deleted_at" class="mb-6 mx-auto text-center" @restore="restore"> This user has been deleted. </trashed-message>
-    <div class="max-w-3xl bg-white rounded-md shadow overflow-hidden mx-auto">
-      <form @submit.prevent="update">
-        <div class="flex flex-wrap -mb-8 -mr-6 p-8">
-          <text-input v-model="form.first_name" :error="form.errors.first_name" class="pb-8 pr-6 w-full lg:w-1/2" label="First name" />
-          <text-input v-model="form.middle_name" :error="form.errors.middle_name" class="pb-8 pr-6 w-full lg:w-1/2" label="Middle name" />
-          <text-input v-model="form.last_name" :error="form.errors.last_name" class="pb-8 pr-6 w-full lg:w-1/2" label="Last name" />
-          <text-input v-model="form.email" :error="form.errors.email" class="pb-8 pr-6 w-full lg:w-1/2" label="Email" />
-          <text-input v-model="form.password" :error="form.errors.password" class="pb-8 pr-6 w-full lg:w-1/2" type="password" autocomplete="new-password" label="Password" />
-          <text-input v-model="form.role" :error="form.errors.role" class="pb-8 pr-6 w-full lg:w-1/2" label="Role" />
-          <text-input v-model="form.school" :error="form.errors.school" class="pb-8 pr-6 w-full lg:w-1/2" label="School" />
-          <text-input v-model="form.class" :error="form.errors.class" class="pb-8 pr-6 w-full lg:w-1/2" label="Class" />
-          <text-input v-model="form.class_letter" :error="form.errors.class_letter" class="pb-8 pr-6 w-full lg:w-1/2" label="Class Letter" />
-          <text-input v-model="form.region" :error="form.errors.region" class="pb-8 pr-6 w-full lg:w-1/2" label="Region" />
-          <text-input v-model="form.city" :error="form.errors.city" class="pb-8 pr-6 w-full lg:w-1/2" label="City" />
-          <text-input v-model="form.district" :error="form.errors.district" class="pb-8 pr-6 w-full lg:w-1/2" label="District" />
+    <div class="max-w-4xl mx-auto">
+      <trashed-message v-if="user.deleted_at" class="mb-6" @restore="restore">
+        This user has been deleted.
+      </trashed-message>
+
+      <div class="bg-white rounded-lg shadow-xl overflow-hidden">
+        <div class="md:grid md:grid-cols-3">
+          <!-- Left Column: Profile Info -->
+          <div class="md:col-span-1 p-8 bg-gray-50 border-r border-gray-200">
+            <div class="flex flex-col items-center">
+              <div class="relative">
+                <img class="h-32 w-32 rounded-full object-cover shadow-lg" :src="user.photo" :alt="`${form.first_name} ${form.last_name}`" />
+                <span class="absolute bottom-0 right-0 block h-6 w-6 rounded-full bg-green-500 border-2 border-white"></span>
+              </div>
+              <h2 class="mt-4 text-2xl font-bold text-gray-800">{{ form.first_name }} {{ form.last_name }}</h2>
+              <p class="text-sm text-gray-500">{{ form.email }}</p>
+              
+              <div class="mt-6 w-full">
+                <div class="flex items-center text-gray-600">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-orange-500" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
+                  </svg>
+                  <span>{{ form.role }}</span>
+                </div>
+                <div class="flex items-center mt-2 text-gray-600">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-orange-500" viewBox="0 0 20 20" fill="currentColor">
+                    <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
+                    <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
+                  </svg>
+                  <span>{{ form.email }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right Column: Form -->
+          <div class="md:col-span-2">
+            <form @submit.prevent="update">
+              <div class="p-8">
+                <h3 class="text-xl font-semibold text-gray-800 mb-6 border-b pb-4">Personal Information</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <text-input v-model="form.first_name" :error="form.errors.first_name" label="First name" icon="user" />
+                  <text-input v-model="form.middle_name" :error="form.errors.middle_name" label="Middle name" icon="user" />
+                  <text-input v-model="form.last_name" :error="form.errors.last_name" label="Last name" icon="user" />
+                  <text-input v-model="form.email" :error="form.errors.email" label="Email" icon="envelope" />
+                  <text-input v-model="form.password" :error="form.errors.password" type="password" autocomplete="new-password" label="Password" icon="lock-closed" />
+                  <text-input v-model="form.role" :error="form.errors.role" label="Role" icon="briefcase" />
+                </div>
+
+                <h3 class="text-xl font-semibold text-gray-800 mt-10 mb-6 border-b pb-4">Educational Details</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <text-input v-model="form.school" :error="form.errors.school" label="School" icon="academic-cap" />
+                  <text-input v-model="form.class" :error="form.errors.class" label="Class" icon="book-open" />
+                  <text-input v-model="form.class_letter" :error="form.errors.class_letter" label="Class Letter" icon="identification" />
+                  <text-input v-model="form.region" :error="form.errors.region" label="Region" icon="map" />
+                  <text-input v-model="form.city" :error="form.errors.city" label="City" icon="office-building" />
+                  <text-input v-model="form.district" :error="form.errors.district" label="District" icon="location-marker" />
+                </div>
+              </div>
+              
+              <div class="flex items-center justify-between px-8 py-4 bg-gray-50 border-t border-gray-200">
+                <button v-if="!user.deleted_at" class="text-red-600 hover:underline" tabindex="-1" type="button" @click="destroy">Delete User</button>
+                <loading-button :loading="form.processing" class="btn-orange ml-auto" type="submit">Update User</loading-button>
+              </div>
+            </form>
+          </div>
         </div>
-        <div class="flex items-center px-8 py-4 bg-gray-50 border-t border-gray-100">
-          <button v-if="!user.deleted_at" class="text-red-600 hover:underline" tabindex="-1" type="button" @click="destroy">Delete User</button>
-          <loading-button :loading="form.processing" class="btn-indigo ml-auto" type="submit">Update User</loading-button>
-        </div>
-      </form>
+      </div>
     </div>
   </div>
 </template>
