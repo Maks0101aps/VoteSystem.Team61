@@ -33,47 +33,42 @@ class ReportsController extends Controller
                 // History data
         $user = Auth::user();
 
-        $votings = Voting::where('user_id', $user->id)
-            ->orWhereHas('votes', function ($query) use ($user) {
-                $query->where('user_id', $user->id);
-            })
-            ->with('user')
-            ->withTrashed()
-            ->latest()
-            ->get()
-            ->map(function ($voting) {
-                return [
-                    'id' => $voting->id,
-                    'title' => $voting->title,
-                    'type' => 'voting',
-                    'created_at' => $voting->created_at,
-                    'status' => $voting->deleted_at ? 'archived' : ($voting->ends_at && $voting->ends_at->isPast() ? 'closed' : 'active'),
-                ];
-            });
+        // History data
+        $user = Auth::user();
 
-        $petitions = Petition::where('user_id', $user->id)
-            ->orWhereHas('signatures', function ($query) use ($user) {
-                $query->where('user_id', $user->id);
-            })
-            ->with('user')
-            ->latest()
-            ->get()
-            ->map(function ($petition) {
-                $status = $petition->status;
-                if ($status === 'active' && $petition->ends_at->isPast()) {
-                    $status = 'expired';
-                }
+        $mapItem = function($item, $type, $action_type) {
+            $status = $item->status;
+            if ($type === 'petition' && $status === 'active' && $item->ends_at->isPast()) {
+                $status = 'expired';
+            } elseif ($type === 'voting') {
+                $status = $item->deleted_at ? 'archived' : ($item->ends_at && $item->ends_at->isPast() ? 'closed' : 'active');
+            }
 
-                return [
-                    'id' => $petition->id,
-                    'title' => $petition->title,
-                    'type' => 'petition',
-                    'created_at' => $petition->created_at,
-                    'status' => $status,
-                ];
-            });
+            return [
+                'id' => $item->id,
+                'title' => $item->title,
+                'type' => $type,
+                'action_type' => $action_type,
+                'created_at_formatted' => $item->created_at->format('d.m.Y H:i'),
+                'status' => $status,
+            ];
+        };
 
-        $history = $votings->concat($petitions)->sortByDesc('created_at')->values();
+        // Created Votings
+        $createdVotings = Voting::where('user_id', $user->id)->withTrashed()->latest()->get()->map(fn($item) => $mapItem($item, 'voting', 'created'));
+
+        // Created Petitions
+        $createdPetitions = Petition::where('user_id', $user->id)->latest()->get()->map(fn($item) => $mapItem($item, 'petition', 'created'));
+
+        // Participated Votings
+        $participatedVotings = Voting::whereHas('votes', function ($query) use ($user) {
+            $query->where('user_id', $user->id);
+        })->where('user_id', '!=', $user->id)->withTrashed()->latest()->get()->map(fn($item) => $mapItem($item, 'voting', 'participated'));
+
+        // Participated Petitions
+        $participatedPetitions = Petition::whereHas('signatures', function ($query) use ($user) {
+            $query->where('user_id', $user->id);
+        })->where('user_id', '!=', $user->id)->latest()->get()->map(fn($item) => $mapItem($item, 'petition', 'participated'));
 
         return Inertia::render('Reports/Index', [
             'title' => 'reports_page.title',
@@ -87,10 +82,10 @@ class ReportsController extends Controller
                 'totalUsers' => $totalUsers,
                 'totalVotesCast' => $totalVotesCast,
             ],
-            'history' => $history->map(function($item) {
-                $item['created_at_formatted'] = $item['created_at']->format('d.m.Y H:i');
-                return $item;
-            }),
+            'createdVotings' => $createdVotings,
+            'createdPetitions' => $createdPetitions,
+            'participatedVotings' => $participatedVotings,
+            'participatedPetitions' => $participatedPetitions,
         ]);
     }
 }

@@ -91,24 +91,132 @@
       </div>
 
       <!-- History Tab Content -->
-      <div v-if="activeTab === 'history'" class="bg-white rounded-md shadow overflow-x-auto">
-        <table class="w-full whitespace-nowrap">
-          <tr class="text-left font-bold">
-            <th class="px-6 pt-6 pb-4">{{ $t('reports_page.history_table.title') }}</th>
-            <th class="px-6 pt-6 pb-4">{{ $t('reports_page.history_table.type') }}</th>
-            <th class="px-6 pt-6 pb-4">{{ $t('reports_page.history_table.created_at') }}</th>
-            <th class="px-6 pt-6 pb-4">{{ $t('reports_page.history_table.status') }}</th>
-          </tr>
-          <tr v-for="item in history" :key="item.id" class="hover:bg-gray-100 focus-within:bg-gray-100">
-            <td class="border-t px-6 py-4">{{ item.title }}</td>
-            <td class="border-t px-6 py-4">{{ getTranslatedType(item.type) }}</td>
-            <td class="border-t px-6 py-4">{{ item.created_at_formatted }}</td>
-            <td class="border-t px-6 py-4">{{ getTranslatedStatus(item) }}</td>
-          </tr>
-          <tr v-if="history.length === 0">
-            <td class="border-t px-6 py-4" colspan="4">{{ $t('reports_page.history_table.no_history') }}</td>
-          </tr>
-        </table>
+      <div v-if="activeTab === 'history'">
+        <!-- Voting History Section -->
+        <div class="mb-12">
+          <div class="bg-white overflow-hidden shadow rounded-lg mb-6">
+            <div class="px-4 py-5 sm:px-6 flex items-center">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 text-gray-500">
+                <path fill-rule="evenodd" d="M2.25 2.25a.75.75 0 0 0-1.5 0v11.5a.75.75 0 0 0 .75.75h1.5v-12.25ZM21.75 2.25a.75.75 0 0 1 1.5 0v11.5a.75.75 0 0 1-.75.75h-1.5v-12.25ZM12 15.75a.75.75 0 0 1 .75.75v3.19l1.47-1.47a.75.75 0 1 1 1.06 1.06l-2.75 2.75a.75.75 0 0 1-1.06 0l-2.75-2.75a.75.75 0 1 1 1.06-1.06l1.47 1.47v-3.19a.75.75 0 0 1 .75-.75Zm-9-7.5a.75.75 0 0 1 .75-.75h16.5a.75.75 0 0 1 0 1.5H3.75a.75.75 0 0 1-.75-.75ZM3 12.75a.75.75 0 0 1 .75-.75h16.5a.75.75 0 0 1 0 1.5H3.75a.75.75 0 0 1-.75-.75Z" clip-rule="evenodd" />
+              </svg>
+              <h3 class="text-lg leading-6 font-medium text-gray-900 ml-3">
+                История созданных голосований
+              </h3>
+            </div>
+            <div class="border-t border-gray-200 overflow-x-auto">
+              <table class="w-full whitespace-nowrap">
+                <tr class="text-left font-bold">
+                  <th class="px-6 pt-6 pb-4">{{ $t('reports_page.history_table.title') }}</th>
+                  <th class="px-6 pt-6 pb-4">{{ $t('reports_page.history_table.created_at') }}</th>
+                  <th class="px-6 pt-6 pb-4">{{ $t('reports_page.history_table.status') }}</th>
+                </tr>
+                <tr v-for="item in createdVotings" :key="item.id" class="hover:bg-gray-100 focus-within:bg-gray-100">
+                  <td class="border-t px-6 py-4">{{ item.title }}</td>
+                  <td class="border-t px-6 py-4">{{ item.created_at_formatted }}</td>
+                  <td class="border-t px-6 py-4">{{ getTranslatedStatus(item) }}</td>
+                </tr>
+                <tr v-if="createdVotings.length === 0">
+                  <td class="border-t px-6 py-4" colspan="3">{{ $t('reports_page.history_table.no_history') }}</td>
+                </tr>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Petition History Section -->
+        <div class="mb-12">
+          <div class="bg-white overflow-hidden shadow rounded-lg mb-6">
+            <div class="px-4 py-5 sm:px-6 flex items-center">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 text-gray-500">
+                <path fill-rule="evenodd" d="M5.625 1.5c-1.036 0-1.875.84-1.875 1.875v17.25c0 1.035.84 1.875 1.875 1.875h12.75c1.035 0 1.875-.84 1.875-1.875V12.75A3.75 3.75 0 0 0 16.5 9h-1.875a.375.375 0 0 1-.375-.375V6.75A3.75 3.75 0 0 0 9 3H5.625ZM12.75 12a.75.75 0 0 0-1.5 0v2.25H9a.75.75 0 0 0 0 1.5h2.25V18a.75.75 0 0 0 1.5 0v-2.25H15a.75.75 0 0 0 0-1.5h-2.25V12Z" clip-rule="evenodd" />
+                <path d="M14.25 7.5a.75.75 0 0 0 .75.75h.008a.75.75 0 0 0 .75-.75V4.525A2.25 2.25 0 0 0 13.5 2.25H12a.75.75 0 0 0 0 1.5h1.5v3.75Z" />
+              </svg>
+              <h3 class="text-lg leading-6 font-medium text-gray-900 ml-3">
+                История созданных петиций
+              </h3>
+            </div>
+            <div class="border-t border-gray-200 overflow-x-auto">
+              <table class="w-full whitespace-nowrap">
+                <tr class="text-left font-bold">
+                  <th class="px-6 pt-6 pb-4">{{ $t('reports_page.history_table.title') }}</th>
+                  <th class="px-6 pt-6 pb-4">{{ $t('reports_page.history_table.created_at') }}</th>
+                  <th class="px-6 pt-6 pb-4">{{ $t('reports_page.history_table.status') }}</th>
+                </tr>
+                <tr v-for="item in createdPetitions" :key="item.id" class="hover:bg-gray-100 focus-within:bg-gray-100">
+                  <td class="border-t px-6 py-4">{{ item.title }}</td>
+                  <td class="border-t px-6 py-4">{{ item.created_at_formatted }}</td>
+                  <td class="border-t px-6 py-4">{{ getTranslatedStatus(item) }}</td>
+                </tr>
+                <tr v-if="createdPetitions.length === 0">
+                  <td class="border-t px-6 py-4" colspan="3">{{ $t('reports_page.history_table.no_history') }}</td>
+                </tr>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Voting Participation History Section -->
+        <div class="mb-12">
+          <div class="bg-white overflow-hidden shadow rounded-lg mb-6">
+            <div class="px-4 py-5 sm:px-6 flex items-center">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 text-gray-500">
+                <path fill-rule="evenodd" d="M8.603 3.799A4.49 4.49 0 0 1 12 2.25c1.357 0 2.573.6 3.397 1.549a4.49 4.49 0 0 1 3.498 1.307 4.491 4.491 0 0 1 1.307 3.497A4.49 4.49 0 0 1 21.75 12c0 1.357-.6 2.573-1.549 3.397a4.49 4.49 0 0 1-1.307 3.498 4.491 4.491 0 0 1-3.497 1.307A4.49 4.49 0 0 1 12 21.75c-1.357 0-2.573-.6-3.397-1.549a4.49 4.49 0 0 1-3.498-1.307 4.491 4.491 0 0 1-1.307-3.497A4.49 4.49 0 0 1 2.25 12c0-1.357.6-2.573 1.549-3.397a4.49 4.49 0 0 1 1.307-3.498 4.491 4.491 0 0 1 3.497-1.307Zm7.007 6.387a.75.75 0 1 0-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 0 0-1.06 1.06l2.25 2.25a.75.75 0 0 0 1.14-.094l3.75-5.25Z" clip-rule="evenodd" />
+              </svg>
+              <h3 class="text-lg leading-6 font-medium text-gray-900 ml-3">
+                История участий в голосованиях
+              </h3>
+            </div>
+            <div class="border-t border-gray-200 overflow-x-auto">
+              <table class="w-full whitespace-nowrap">
+                <tr class="text-left font-bold">
+                  <th class="px-6 pt-6 pb-4">{{ $t('reports_page.history_table.title') }}</th>
+                  <th class="px-6 pt-6 pb-4">{{ $t('reports_page.history_table.created_at') }}</th>
+                  <th class="px-6 pt-6 pb-4">{{ $t('reports_page.history_table.status') }}</th>
+                </tr>
+                <tr v-for="item in participatedVotings" :key="item.id" class="hover:bg-gray-100 focus-within:bg-gray-100">
+                  <td class="border-t px-6 py-4">{{ item.title }}</td>
+                  <td class="border-t px-6 py-4">{{ item.created_at_formatted }}</td>
+                  <td class="border-t px-6 py-4">{{ getTranslatedStatus(item) }}</td>
+                </tr>
+                <tr v-if="participatedVotings.length === 0">
+                  <td class="border-t px-6 py-4" colspan="3">{{ $t('reports_page.history_table.no_history') }}</td>
+                </tr>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Petition Participation History Section -->
+        <div>
+          <div class="bg-white overflow-hidden shadow rounded-lg mb-6">
+            <div class="px-4 py-5 sm:px-6 flex items-center">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 text-gray-500">
+                <path d="M21.731 2.269a2.625 2.625 0 0 0-3.712 0l-1.157 1.157 3.712 3.712 1.157-1.157a2.625 2.625 0 0 0 0-3.712ZM19.513 8.199l-3.712-3.712-8.4 8.4a5.25 5.25 0 0 0-1.32 2.214l-.8 2.685a.75.75 0 0 0 .933.933l2.685-.8a5.25 5.25 0 0 0 2.214-1.32l8.4-8.4Z" />
+                <path d="M5.25 5.25a3 3 0 0 0-3 3v10.5a3 3 0 0 0 3 3h10.5a3 3 0 0 0 3-3V13.5a.75.75 0 0 0-1.5 0v5.25a1.5 1.5 0 0 1-1.5 1.5H5.25a1.5 1.5 0 0 1-1.5-1.5V8.25a1.5 1.5 0 0 1 1.5-1.5h5.25a.75.75 0 0 0 0-1.5H5.25Z" />
+              </svg>
+              <h3 class="text-lg leading-6 font-medium text-gray-900 ml-3">
+                История участий в петициях
+              </h3>
+            </div>
+            <div class="border-t border-gray-200 overflow-x-auto">
+              <table class="w-full whitespace-nowrap">
+                <tr class="text-left font-bold">
+                  <th class="px-6 pt-6 pb-4">{{ $t('reports_page.history_table.title') }}</th>
+                  <th class="px-6 pt-6 pb-4">{{ $t('reports_page.history_table.created_at') }}</th>
+                  <th class="px-6 pt-6 pb-4">{{ $t('reports_page.history_table.status') }}</th>
+                </tr>
+                <tr v-for="item in participatedPetitions" :key="item.id" class="hover:bg-gray-100 focus-within:bg-gray-100">
+                  <td class="border-t px-6 py-4">{{ item.title }}</td>
+                  <td class="border-t px-6 py-4">{{ item.created_at_formatted }}</td>
+                  <td class="border-t px-6 py-4">{{ getTranslatedStatus(item) }}</td>
+                </tr>
+                <tr v-if="participatedPetitions.length === 0">
+                  <td class="border-t px-6 py-4" colspan="3">{{ $t('reports_page.history_table.no_history') }}</td>
+                </tr>
+              </table>
+            </div>
+          </div>
+        </div>
       </div>
 
     </div>
@@ -129,13 +237,17 @@ export default {
   props: {
     title: String,
     stats: Object,
-    history: Array,
+    createdVotings: Array,
+    createdPetitions: Array,
+    participatedVotings: Array,
+    participatedPetitions: Array,
   },
   data() {
     return {
       activeTab: 'stats',
     };
   },
+
   methods: {
     getTranslatedType(type) {
       return this.$t(`reports_page.history_table.type_${type}`);
