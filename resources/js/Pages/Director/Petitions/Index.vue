@@ -9,9 +9,9 @@
       <Head :title="title" />
       
       <div class="text-center mb-10">
-        <h1 class="text-4xl font-bold text-orange-800 mb-2">Петиції на розгляді</h1>
+                <h1 class="text-4xl font-bold text-orange-800 mb-2">{{ $t('director_petitions.title') }}</h1>
         <div class="h-1 w-24 bg-orange-500 mx-auto mb-4 rounded-full"></div>
-        <p class="text-xl text-orange-700">Тут знаходяться петиції, які набрали необхідну кількість голосів</p>
+                <p class="text-xl text-orange-700">{{ $t('director_petitions.subtitle') }}</p>
       </div>
 
       <div class="space-y-6">
@@ -19,8 +19,8 @@
           <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto text-orange-300 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
           </svg>
-          <h3 class="text-xl font-medium text-orange-700 mb-2">Немає петицій для розгляду</h3>
-          <p class="text-orange-600 mb-6">На даний момент усі петиції оброблені.</p>
+                    <h3 class="text-xl font-medium text-orange-700 mb-2">{{ $t('director_petitions.no_petitions_title') }}</h3>
+                    <p class="text-orange-600 mb-6">{{ $t('director_petitions.no_petitions_subtitle') }}</p>
         </div>
         
         <div v-for="petition in petitions" :key="petition.id" 
@@ -32,19 +32,19 @@
             {{ petition.description }}
           </p>
           <div class="flex justify-between items-center text-sm text-gray-500 mb-4">
-            <span>Підписи: {{ petition.signatures_count }} / {{ petition.signatures_required }}</span>
-            <span>Автор: {{ petition.user.name }}</span>
-            <span>Створено: {{ formatDate(petition.created_at) }}</span>
+                        <span>{{ $t('director_petitions.signatures') }}: {{ petition.signatures_count }} / {{ petition.signatures_required }}</span>
+                        <span>{{ $t('director_petitions.author') }}: {{ petition.user.name }}</span>
+                        <span>{{ $t('director_petitions.created_at') }}: {{ formatDate(petition.created_at) }}</span>
           </div>
           <div class="flex justify-end space-x-4">
             <form @submit.prevent="reject(petition.id)">
-              <button type="submit" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg transition-colors">
-                Відхилити
+                            <button type="submit" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg transition-colors">
+                {{ $t('director_petitions.reject') }}
               </button>
             </form>
             <form @submit.prevent="approve(petition.id)">
-              <button type="submit" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg transition-colors">
-                Схвалити
+                            <button type="submit" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg transition-colors">
+                {{ $t('director_petitions.approve') }}
               </button>
             </form>
           </div>

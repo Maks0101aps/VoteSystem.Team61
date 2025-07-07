@@ -1,0 +1,11 @@
+{
+    "title": "Petitions for consideration",
+    "subtitle": "Here are the petitions that have collected the required number of votes",
+    "no_petitions_title": "No petitions to review",
+    "no_petitions_subtitle": "All petitions are currently processed.",
+    "signatures": "Signatures",
+    "author": "Author",
+    "created_at": "Created at",
+    "reject": "Reject",
+    "approve": "Approve"
+}
