@@ -11,6 +11,9 @@ import votingPageUk from '../../lang/uk/voting_page.json';
 import commentsEn from '../../lang/en/comments.json';
 import commentsUk from '../../lang/uk/comments.json';
 
+import reportsPageEn from '../../lang/en/reports_page.json';
+import reportsPageUk from '../../lang/uk/reports_page.json';
+
 const i18n = createI18n({
   locale: localStorage.getItem('locale') || 'uk', // set default locale from localStorage or 'uk'
   fallbackLocale: 'en', // set fallback locale
@@ -21,6 +24,7 @@ const i18n = createI18n({
         ...petitionsEn,
         voting_page: votingPageEn,
         comments: commentsEn,
+        reports_page: reportsPageEn,
     },
     uk: {
         ...uk,
@@ -28,6 +32,7 @@ const i18n = createI18n({
         ...petitionsUk,
         voting_page: votingPageUk,
         comments: commentsUk,
+        reports_page: reportsPageUk,
     },
   },
   legacy: false, // you must set `false`, to use Composition API

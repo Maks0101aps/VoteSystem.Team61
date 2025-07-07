@@ -1,0 +1,13 @@
+{
+    "history_tab": "Історія",
+    "created_votings_title": "Історія створених голосувань",
+    "created_petitions_title": "Історія створених петицій",
+    "participated_votings_title": "Історія участі в голосуваннях",
+    "participated_petitions_title": "Історія участі в петиціях",
+    "history_table": {
+        "title": "Назва",
+        "created_at": "Дата створення",
+        "status": "Статус",
+        "no_history": "Записів немає"
+    }
+}

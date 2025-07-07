@@ -1,0 +1,13 @@
+{
+    "history_tab": "History",
+    "created_votings_title": "History of Created Votings",
+    "created_petitions_title": "History of Created Petitions",
+    "participated_votings_title": "History of Participation in Votings",
+    "participated_petitions_title": "History of Participation in Petitions",
+    "history_table": {
+        "title": "Title",
+        "created_at": "Created At",
+        "status": "Status",
+        "no_history": "No records found"
+    }
+}

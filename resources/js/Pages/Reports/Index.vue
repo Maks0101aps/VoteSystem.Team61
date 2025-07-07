@@ -100,7 +100,7 @@
                 <path fill-rule="evenodd" d="M2.25 2.25a.75.75 0 0 0-1.5 0v11.5a.75.75 0 0 0 .75.75h1.5v-12.25ZM21.75 2.25a.75.75 0 0 1 1.5 0v11.5a.75.75 0 0 1-.75.75h-1.5v-12.25ZM12 15.75a.75.75 0 0 1 .75.75v3.19l1.47-1.47a.75.75 0 1 1 1.06 1.06l-2.75 2.75a.75.75 0 0 1-1.06 0l-2.75-2.75a.75.75 0 1 1 1.06-1.06l1.47 1.47v-3.19a.75.75 0 0 1 .75-.75Zm-9-7.5a.75.75 0 0 1 .75-.75h16.5a.75.75 0 0 1 0 1.5H3.75a.75.75 0 0 1-.75-.75ZM3 12.75a.75.75 0 0 1 .75-.75h16.5a.75.75 0 0 1 0 1.5H3.75a.75.75 0 0 1-.75-.75Z" clip-rule="evenodd" />
               </svg>
               <h3 class="text-lg leading-6 font-medium text-gray-900 ml-3">
-                История созданных голосований
+                {{ $t('reports_page.created_votings_title') }}
               </h3>
             </div>
             <div class="border-t border-gray-200 overflow-x-auto">
@@ -132,7 +132,7 @@
                 <path d="M14.25 7.5a.75.75 0 0 0 .75.75h.008a.75.75 0 0 0 .75-.75V4.525A2.25 2.25 0 0 0 13.5 2.25H12a.75.75 0 0 0 0 1.5h1.5v3.75Z" />
               </svg>
               <h3 class="text-lg leading-6 font-medium text-gray-900 ml-3">
-                История созданных петиций
+                {{ $t('reports_page.created_petitions_title') }}
               </h3>
             </div>
             <div class="border-t border-gray-200 overflow-x-auto">
@@ -163,7 +163,7 @@
                 <path fill-rule="evenodd" d="M8.603 3.799A4.49 4.49 0 0 1 12 2.25c1.357 0 2.573.6 3.397 1.549a4.49 4.49 0 0 1 3.498 1.307 4.491 4.491 0 0 1 1.307 3.497A4.49 4.49 0 0 1 21.75 12c0 1.357-.6 2.573-1.549 3.397a4.49 4.49 0 0 1-1.307 3.498 4.491 4.491 0 0 1-3.497 1.307A4.49 4.49 0 0 1 12 21.75c-1.357 0-2.573-.6-3.397-1.549a4.49 4.49 0 0 1-3.498-1.307 4.491 4.491 0 0 1-1.307-3.497A4.49 4.49 0 0 1 2.25 12c0-1.357.6-2.573 1.549-3.397a4.49 4.49 0 0 1 1.307-3.498 4.491 4.491 0 0 1 3.497-1.307Zm7.007 6.387a.75.75 0 1 0-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 0 0-1.06 1.06l2.25 2.25a.75.75 0 0 0 1.14-.094l3.75-5.25Z" clip-rule="evenodd" />
               </svg>
               <h3 class="text-lg leading-6 font-medium text-gray-900 ml-3">
-                История участий в голосованиях
+                {{ $t('reports_page.participated_votings_title') }}
               </h3>
             </div>
             <div class="border-t border-gray-200 overflow-x-auto">
@@ -195,7 +195,7 @@
                 <path d="M5.25 5.25a3 3 0 0 0-3 3v10.5a3 3 0 0 0 3 3h10.5a3 3 0 0 0 3-3V13.5a.75.75 0 0 0-1.5 0v5.25a1.5 1.5 0 0 1-1.5 1.5H5.25a1.5 1.5 0 0 1-1.5-1.5V8.25a1.5 1.5 0 0 1 1.5-1.5h5.25a.75.75 0 0 0 0-1.5H5.25Z" />
               </svg>
               <h3 class="text-lg leading-6 font-medium text-gray-900 ml-3">
-                История участий в петициях
+                {{ $t('reports_page.participated_petitions_title') }}
               </h3>
             </div>
             <div class="border-t border-gray-200 overflow-x-auto">
