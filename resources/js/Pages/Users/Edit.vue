@@ -11,10 +11,7 @@
           <!-- Left Column: Profile Info -->
           <div class="md:col-span-1 p-8 bg-gray-50 border-r border-gray-200">
             <div class="flex flex-col items-center">
-              <div class="relative">
-                <img class="h-32 w-32 rounded-full object-cover shadow-lg" :src="user.photo" :alt="`${form.first_name} ${form.last_name}`" />
-                <span class="absolute bottom-0 right-0 block h-6 w-6 rounded-full bg-green-500 border-2 border-white"></span>
-              </div>
+
               <h2 class="mt-4 text-2xl font-bold text-gray-800">{{ form.first_name }} {{ form.last_name }}</h2>
               <p class="text-sm text-gray-500">{{ form.email }}</p>
               
