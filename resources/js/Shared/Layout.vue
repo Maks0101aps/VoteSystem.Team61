@@ -1,5 +1,6 @@
 <template>
   <div class="bg-orange-100 min-h-screen">
+    <div id="cursor-circle" class="cursor-circle"></div>
     <div id="dropdown" />
     <header class="fixed top-0 left-0 right-0 z-40 w-full bg-white/90 backdrop-blur-sm border-b border-gray-200/80">
       <div class="flex items-center justify-between h-14 px-6">
@@ -62,6 +63,16 @@ export default {
   props: {
     auth: Object,
   },
+  mounted() {
+    const cursorCircle = document.getElementById('cursor-circle');
+
+    document.addEventListener('mousemove', (e) => {
+      window.requestAnimationFrame(() => {
+        const { clientX, clientY } = e;
+        cursorCircle.style.transform = `translate(${clientX - 150}px, ${clientY - 150}px)`;
+      });
+    });
+  },
 }
 </script>
 
@@ -73,5 +84,16 @@ export default {
 .fly-out-enter-from {
   transform: translateY(20px);
   opacity: 0;
+}
+.cursor-circle {
+  position: fixed;
+  width: 300px;
+  height: 300px;
+  border-radius: 50%;
+  background-color: rgba(251, 146, 60, 0.5);
+  pointer-events: none;
+  z-index: 1;
+  transition: transform 0.2s ease-out;
+  filter: blur(100px);
 }
 </style>
