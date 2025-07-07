@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="bg-orange-100 min-h-screen">
     <div id="dropdown" />
     <header class="fixed top-0 left-0 right-0 z-40 w-full bg-white/90 backdrop-blur-sm border-b border-gray-200/80">
       <div class="flex items-center justify-between h-14 px-6">
