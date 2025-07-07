@@ -96,9 +96,7 @@
         <div class="mb-12">
           <div class="bg-white overflow-hidden shadow rounded-lg mb-6">
             <div class="px-4 py-5 sm:px-6 flex items-center">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 text-gray-500">
-                <path fill-rule="evenodd" d="M2.25 2.25a.75.75 0 0 0-1.5 0v11.5a.75.75 0 0 0 .75.75h1.5v-12.25ZM21.75 2.25a.75.75 0 0 1 1.5 0v11.5a.75.75 0 0 1-.75.75h-1.5v-12.25ZM12 15.75a.75.75 0 0 1 .75.75v3.19l1.47-1.47a.75.75 0 1 1 1.06 1.06l-2.75 2.75a.75.75 0 0 1-1.06 0l-2.75-2.75a.75.75 0 1 1 1.06-1.06l1.47 1.47v-3.19a.75.75 0 0 1 .75-.75Zm-9-7.5a.75.75 0 0 1 .75-.75h16.5a.75.75 0 0 1 0 1.5H3.75a.75.75 0 0 1-.75-.75ZM3 12.75a.75.75 0 0 1 .75-.75h16.5a.75.75 0 0 1 0 1.5H3.75a.75.75 0 0 1-.75-.75Z" clip-rule="evenodd" />
-              </svg>
+              <icon name="vote" class="w-6 h-6 text-gray-500" />
               <h3 class="text-lg leading-6 font-medium text-gray-900 ml-3">
                 {{ $t('reports_page.created_votings_title') }}
               </h3>
@@ -127,10 +125,7 @@
         <div class="mb-12">
           <div class="bg-white overflow-hidden shadow rounded-lg mb-6">
             <div class="px-4 py-5 sm:px-6 flex items-center">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 text-gray-500">
-                <path fill-rule="evenodd" d="M5.625 1.5c-1.036 0-1.875.84-1.875 1.875v17.25c0 1.035.84 1.875 1.875 1.875h12.75c1.035 0 1.875-.84 1.875-1.875V12.75A3.75 3.75 0 0 0 16.5 9h-1.875a.375.375 0 0 1-.375-.375V6.75A3.75 3.75 0 0 0 9 3H5.625ZM12.75 12a.75.75 0 0 0-1.5 0v2.25H9a.75.75 0 0 0 0 1.5h2.25V18a.75.75 0 0 0 1.5 0v-2.25H15a.75.75 0 0 0 0-1.5h-2.25V12Z" clip-rule="evenodd" />
-                <path d="M14.25 7.5a.75.75 0 0 0 .75.75h.008a.75.75 0 0 0 .75-.75V4.525A2.25 2.25 0 0 0 13.5 2.25H12a.75.75 0 0 0 0 1.5h1.5v3.75Z" />
-              </svg>
+              <icon name="document-text" class="w-6 h-6 text-gray-500" />
               <h3 class="text-lg leading-6 font-medium text-gray-900 ml-3">
                 {{ $t('reports_page.created_petitions_title') }}
               </h3>
