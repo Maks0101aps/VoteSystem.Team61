@@ -20,6 +20,10 @@ class Petition extends Model
         'school_class_id',
     ];
 
+    protected $appends = [
+        'ends_at',
+    ];
+
     public function user()
     {
         return $this->belongsTo(User::class);

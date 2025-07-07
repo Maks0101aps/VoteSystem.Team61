@@ -27,34 +27,21 @@
             </select>
           </div>
 
-          <div class="flex items-center mb-6">
-            <input id="for_all" type="checkbox" v-model="form.for_all" class="w-4 h-4 text-green-600 bg-gray-100 border-gray-300 rounded focus:ring-green-500">
-            <label for="for_all" class="ml-2 text-sm font-medium text-green-700">{{ $t('voting_create_page.for_all_label') }}</label>
-          </div>
-
-          <div class="mb-6" v-if="!form.for_all">
-            <label for="roles" class="block mb-2 text-sm font-medium text-green-700">{{ $t('voting_create_page.roles_label') }}</label>
-            <select multiple id="roles" v-model="form.roles" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2.5">
-              <option v-for="(translatedRole, roleKey) in roles" :key="roleKey" :value="roleKey">{{ translatedRole }}</option>
-            </select>
-          </div>
-
-          <div v-if="!form.for_all && form.roles.includes('student')" class="grid grid-cols-2 gap-4 mb-6">
-            <div>
-              <label for="class" class="block mb-2 text-sm font-medium text-green-700">{{ $t('voting_create_page.class_label') }}</label>
-              <select id="class" v-model="form.class" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2.5">
-                <option :value="null">{{ $t('voting_create_page.class_placeholder') }}</option>
-                <option v-for="c in classes" :key="c" :value="c">{{ c }}</option>
-              </select>
-            </div>
-            <div>
-              <label for="class_letter" class="block mb-2 text-sm font-medium text-green-700">{{ $t('voting_create_page.class_letter_label') }}</label>
-              <select id="class_letter" v-model="form.class_letter" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2.5">
-                <option :value="null">{{ $t('voting_create_page.class_letter_placeholder') }}</option>
-                <option v-for="l in class_letters" :key="l" :value="l">{{ l }}</option>
-              </select>
+          <div class="mb-6">
+            <label class="block mb-2 text-sm font-medium text-green-700">Для кого це голосування?</label>
+            <div class="flex items-center space-x-6">
+                <label class="flex items-center">
+                    <input type="radio" v-model="form.target_type" value="class" class="form-radio text-green-500 h-5 w-5">
+                    <span class="ml-2 text-gray-700">Тільки для мого класу</span>
+                </label>
+                <label class="flex items-center">
+                    <input type="radio" v-model="form.target_type" value="school" class="form-radio text-green-500 h-5 w-5">
+                    <span class="ml-2 text-gray-700">Для всієї школи</span>
+                </label>
             </div>
           </div>
+
+
 
           <div class="flex items-center justify-between">
             <Link href="/voting" class="text-sm font-medium text-green-600 hover:underline">{{ $t('voting_create_page.cancel_button') }}</Link>
@@ -83,20 +70,14 @@ export default {
   layout: Layout,
   props: {
     title: String,
-    roles: Object,
-    classes: Array,
-    class_letters: Array,
     duration_options: Object,
   },
   setup(props) {
     const form = useForm({
       title: '',
       description: '',
-      roles: [],
-      class: null,
-      class_letter: null,
-      for_all: false,
       duration: Object.keys(props.duration_options)[0] || null,
+      target_type: 'class',
     })
 
     function submit() {

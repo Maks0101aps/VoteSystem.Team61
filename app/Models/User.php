@@ -27,6 +27,8 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     protected $appends = [
         'class',
+        'name',
+        'class_letter',
     ];
 
     protected $fillable = [
@@ -84,6 +86,11 @@ class User extends Authenticatable implements MustVerifyEmail
     public function getClassAttribute(): ?int
     {
         return $this->schoolClass?->class_number;
+    }
+
+    public function getClassLetterAttribute(): ?string
+    {
+        return $this->schoolClass?->class_letter;
     }
 
     public function scopeOrderByName($query)

@@ -13,11 +13,12 @@ class VotingController extends Controller
 {
     public function create()
     {
+        if (Auth::user()->role !== 'student') {
+            return Redirect::route('voting.index')->with('error', 'Тільки студенти можуть створювати голосування.');
+        }
+
         return Inertia::render('Voting/Create', [
             'title' => __('voting.create_title'),
-            'roles' => collect(['student', 'parent', 'teacher'])->mapWithKeys(fn ($role) => [$role => __('roles.'.$role)]),
-            'classes' => range(1, 11),
-            'class_letters' => ['а', 'б', 'в', 'г'],
             'duration_options' => [
                 2 => '2 хвилини',
                 5 => '5 хвилин',
@@ -32,55 +33,56 @@ class VotingController extends Controller
 
     public function store(Request $request)
     {
+        if (Auth::user()->role !== 'student') {
+            abort(403, 'У вас немає прав для створення голосувань.');
+        }
+
         $request->validate([
             'title' => ['required', 'max:255'],
             'description' => ['required'],
             'duration' => ['required', 'integer', 'in:2,5,15,30,60,300,1440'],
-            'for_all' => ['required', 'boolean'],
-            'roles' => ['required_if:for_all,false', 'array'],
-            'roles.*' => ['in:student,parent,teacher'],
-            'class' => ['nullable', 'integer'],
-            'class_letter' => ['nullable', 'string', 'max:1'],
+            'target_type' => ['required', 'string', 'in:school,class'],
         ]);
+
+        $user = Auth::user();
 
         $ends_at = $request->duration ? now()->addMinutes((int)$request->duration) : null;
 
         $voting = Voting::create([
             'title' => $request->title,
             'description' => $request->description,
-            'user_id' => Auth::id(),
+            'user_id' => $user->id,
             'ends_at' => $ends_at,
         ]);
 
-        if ($request->for_all) {
+        if ($request->target_type === 'school') {
             VotingVisibility::create([
                 'voting_id' => $voting->id,
                 'role' => 'all',
             ]);
         } else {
-            if (in_array('student', $request->roles)) {
-                $request->validate([
-                    'class' => ['required', 'integer'],
-                    'class_letter' => ['required', 'string', 'max:1'],
-                ]);
+            if (!$user->school_class_id) {
+                return Redirect::back()->with('error', 'Ви не прив\'язані до класу, тому не можете створювати голосування для класу.');
             }
-
-            foreach ($request->roles as $role) {
-                VotingVisibility::create([
-                    'voting_id' => $voting->id,
-                    'role' => $role,
-                    'class_number' => ($role === 'student') ? $request->class : null,
-                    'class_letter' => ($role === 'student') ? $request->class_letter : null,
-                ]);
-            }
+            $user->load('schoolClass');
+            VotingVisibility::create([
+                'voting_id' => $voting->id,
+                'role' => 'student',
+                'class_number' => $user->schoolClass->class_number,
+                'class_letter' => $user->schoolClass->class_letter,
+            ]);
         }
 
-        return Redirect::route('voting.index')->with('success', 'Voting created.');
+        return Redirect::route('voting.index')->with('success', 'Голосування успішно створено.');
     }
 
     public function index(Request $request)
     {
         $user = Auth::user();
+        if ($user->role === 'student') {
+            $user->load('schoolClass');
+        }
+
         $filters = $request->only('filter', 'trashed');
         $filterValue = $filters['filter'] ?? 'all';
 
@@ -98,12 +100,12 @@ class VotingController extends Controller
                             ->orWhere(function ($roleSpecificQuery) use ($user) {
                                 $roleSpecificQuery->where('role', $user->role);
 
-                                if ($user->role === 'student') {
+                                if ($user->role === 'student' && $user->schoolClass) {
                                     $roleSpecificQuery->where(function ($classQuery) use ($user) {
                                         $classQuery->whereNull('class_number')
                                             ->orWhere(function ($specificClassQuery) use ($user) {
-                                                $specificClassQuery->where('class_number', $user->school_class_id)
-                                                                   ->where('class_letter', $user->class_letter);
+                                                $specificClassQuery->where('class_number', $user->schoolClass->class_number)
+                                                                   ->where('class_letter', $user->schoolClass->class_letter);
                                             });
                                     });
                                 }

@@ -31,10 +31,46 @@
           <p class="text-orange-600 mb-4">
             {{ petition.description }}
           </p>
-          <div class="flex justify-between items-center text-sm text-gray-500 mb-4">
-                        <span>{{ $t('director_petitions.signatures') }}: {{ petition.signatures_count }} / {{ petition.signatures_required }}</span>
-                        <span>{{ $t('director_petitions.author') }}: {{ petition.user.name }}</span>
-                        <span>{{ $t('director_petitions.created_at') }}: {{ formatDate(petition.created_at) }}</span>
+          <div class="border-t border-gray-200 pt-4 mt-4">
+            <h4 class="text-md font-semibold text-gray-700 mb-2">Детальна інформація:</h4>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-1 text-sm text-gray-600">
+
+              <div class="flex">
+                <strong class="w-32 shrink-0">Автор:</strong>
+                <span>{{ petition.user.name }}</span>
+              </div>
+
+              <div class="flex" v-if="petition.user.class">
+                <strong class="w-32 shrink-0">Клас автора:</strong>
+                <span>{{ petition.user.class }}-{{ petition.user.class_letter }}</span>
+              </div>
+
+              <div class="flex">
+                <strong class="w-32 shrink-0">Email автора:</strong>
+                <span>{{ petition.user.email }}</span>
+              </div>
+
+              <div class="flex">
+                <strong class="w-32 shrink-0">Підписи:</strong>
+                <span>{{ petition.signatures_count }} / {{ petition.signatures_required }}</span>
+              </div>
+
+              <div class="flex">
+                <strong class="w-32 shrink-0">Створено:</strong>
+                <span>{{ formatDate(petition.created_at) }}</span>
+              </div>
+
+              <div class="flex">
+                <strong class="w-32 shrink-0">Закінчується:</strong>
+                <span>{{ formatDate(petition.ends_at) }}</span>
+              </div>
+
+              <div class="flex" v-if="petition.school_class">
+                <strong class="w-32 shrink-0">Петиція для класу:</strong>
+                <span>{{ petition.school_class.class_number }}-{{ petition.school_class.class_letter }}</span>
+              </div>
+
+            </div>
           </div>
           <div class="flex justify-end space-x-4">
             <form @submit.prevent="reject(petition.id)">

@@ -17,9 +17,18 @@ class PetitionsController extends Controller
         $filters = $request->only('filter');
         $filterValue = $filters['filter'] ?? 'all';
 
+        $user = Auth::user();
+
         $petitionsQuery = Petition::with(['signatures', 'user', 'schoolClass', 'comments.user'])
             ->withCount(['signatures', 'comments'])
             ->latest();
+
+        if ($user->role === 'student') {
+            $petitionsQuery->where(function ($query) use ($user) {
+                $query->whereNull('school_class_id') // Petitions for the whole school
+                    ->orWhere('school_class_id', $user->school_class_id); // Petitions for the student's class
+            });
+        }
 
         if ($filterValue === 'active') {
             $petitionsQuery->where('status', 'active')->where('ends_at', '>', now());
@@ -44,7 +53,7 @@ class PetitionsController extends Controller
                     'author' => $petition->user->name,
                     'is_signed' => $petition->signatures->contains('user_id', Auth::id()),
                     'status' => $petition->status,
-                    'target_class' => $petition->schoolClass ? $petition->schoolClass->name : 'Вся школа',
+                    'target_class' => $petition->schoolClass ? $petition->schoolClass->name : 'Для всієї школи',
                     'user_id' => $petition->user_id,
                     'comments_count' => $petition->comments_count,
                     'comments' => $petition->comments->map(function ($comment) {
@@ -69,30 +78,18 @@ class PetitionsController extends Controller
     public function create()
     {
         if (Auth::user()->role !== 'student') {
-                        return Redirect::route('petitions')->with('error', 'Тільки учні можуть створювати петиції.');
+            return Redirect::route('petitions')->with('error', 'Тільки студенти можуть створювати петиції.');
         }
-
-        $classData = SchoolClass::all()->groupBy('class_number')->map(function ($group) {
-            return $group->pluck('class_letter');
-        });
 
         return Inertia::render('Petitions/Create', [
             'title' => 'Створити петицію',
-            'classData' => $classData,
         ]);
     }
 
     public function store(Request $request)
     {
         if (Auth::user()->role !== 'student') {
-            abort(403, 'Тільки учні можуть створювати петиції.');
-        }
-
-        if ($request->input('target_type') === 'school') {
-            $request->merge([
-                'class_number' => null,
-                'class_letter' => null,
-            ]);
+            abort(403, 'У вас немає прав для створення петицій.');
         }
 
         $request->validate([
@@ -101,39 +98,34 @@ class PetitionsController extends Controller
             'signatures_required' => ['required', 'integer', 'min:1'],
             'duration' => ['required', 'integer', 'in:24,48,72'],
             'target_type' => ['required', 'string', 'in:school,class'],
-            'class_number' => ['required_if:target_type,class', 'nullable', 'integer', 'max:11'],
-            'class_letter' => ['required_if:target_type,class', 'nullable', 'string', 'max:1'],
         ]);
 
+        $user = Auth::user();
         $school_class_id = null;
 
         if ($request->target_type === 'class') {
-            $schoolClass = SchoolClass::where('class_number', $request->class_number)
-                ->where('class_letter', $request->class_letter)
-                ->first();
-
-            if (!$schoolClass) {
-                return back()->withErrors(['class_letter' => 'Клас не знайдено.'])->withInput();
+            if (!$user->school_class_id) {
+                return Redirect::back()->with('error', 'Ви не прив\'язані до класу, тому не можете створювати петиції для класу.');
             }
-            $school_class_id = $schoolClass->id;
+            $school_class_id = $user->school_class_id;
         }
 
         $petition = Petition::create([
             'title' => $request->title,
             'description' => $request->description,
             'signatures_required' => $request->signatures_required,
-            'user_id' => Auth::id(),
+            'user_id' => $user->id,
             'duration' => $request->duration,
             'school_class_id' => $school_class_id,
         ]);
 
-        return Redirect::route('petitions')->with('success', 'Петиція успішно створена.');
+        return Redirect::route('petitions')->with('success', 'Петицію успішно створено.');
     }
 
     public function sign(Petition $petition)
     {
         if (Auth::user()->role !== 'student') {
-            return Redirect::back()->with('error', 'Тільки учні можуть підписувати петиції.');
+            return Redirect::back()->with('error', 'Тільки студенти можуть підписувати петиції.');
         }
 
         // Check if user already signed

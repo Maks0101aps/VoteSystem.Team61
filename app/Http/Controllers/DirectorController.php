@@ -11,7 +11,19 @@ class DirectorController extends Controller
     public function index()
     {
         return Inertia::render('Director/Petitions/Index', [
-            'petitions' => Petition::with('user')->where('status', 'pending_review')->get(),
+            'petitions' => Petition::with(['user.schoolClass', 'schoolClass', 'signatures'])->where('status', 'pending_review')->get()->map(function ($petition) {
+            return [
+                'id' => $petition->id,
+                'title' => $petition->title,
+                'description' => $petition->description,
+                'signatures_count' => $petition->signatures->count(),
+                'signatures_required' => $petition->signatures_required,
+                'created_at' => $petition->created_at,
+                'ends_at' => $petition->ends_at,
+                'user' => $petition->user,
+                'school_class' => $petition->schoolClass,
+            ];
+        }),
         ]);
     }
 

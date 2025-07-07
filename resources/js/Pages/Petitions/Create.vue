@@ -35,82 +35,48 @@
             rows="6"
           />
         </div>
-        
-        <div class="mb-8">
-          <label class="block text-green-700 font-medium mb-2" for="signatures_required">Необхідна кількість підписів</label>
-          <TextInput
-            id="signatures_required"
-            v-model="form.signatures_required"
-            :error="form.errors.signatures_required"
-            class="w-full"
-            type="number"
-            min="1"
-          />
-        </div>
 
-        <div class="mb-8">
-          <label class="block text-green-700 font-medium mb-2" for="duration">Тривалість петиції (годин)</label>
-          <select
-            id="duration"
-            v-model="form.duration"
-            :error="form.errors.duration"
-            class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
-          >
-            <option value="24">24 години</option>
-            <option value="48">48 годин</option>
-            <option value="72">72 години</option>
-          </select>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+            <div>
+                <label class="block text-green-700 font-medium mb-2" for="signatures_required">Необхідна кількість підписів</label>
+                <TextInput
+                    id="signatures_required"
+                    v-model="form.signatures_required"
+                    :error="form.errors.signatures_required"
+                    class="w-full"
+                    type="number"
+                    min="1"
+                />
+            </div>
+            <div>
+                <label class="block text-green-700 font-medium mb-2" for="duration">Тривалість петиції (годин)</label>
+                <select
+                    id="duration"
+                    v-model="form.duration"
+                    class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+                >
+                    <option value="24">24 години</option>
+                    <option value="48">48 годин</option>
+                    <option value="72">72 години</option>
+                </select>
+            </div>
         </div>
 
         <div class="mb-6">
-          <label class="block text-green-700 font-medium mb-2">Цільова аудиторія</label>
-          <div class="flex items-center space-x-4">
-            <label class="flex items-center">
-              <input type="radio" v-model="form.target_type" value="school" class="form-radio h-4 w-4 text-green-600 transition duration-150 ease-in-out">
-              <span class="ml-2 text-gray-700">Для всієї школи</span>
-            </label>
-            <label class="flex items-center">
-              <input type="radio" v-model="form.target_type" value="class" class="form-radio h-4 w-4 text-green-600 transition duration-150 ease-in-out">
-              <span class="ml-2 text-gray-700">Для класу</span>
-            </label>
-          </div>
+            <label class="block text-green-700 font-medium mb-2">Для кого ця петиція?</label>
+            <div class="flex items-center space-x-6">
+                <label class="flex items-center">
+                    <input type="radio" v-model="form.target_type" value="class" class="form-radio text-green-500 h-5 w-5">
+                    <span class="ml-2 text-gray-700">Тільки для мого класу</span>
+                </label>
+                <label class="flex items-center">
+                    <input type="radio" v-model="form.target_type" value="school" class="form-radio text-green-500 h-5 w-5">
+                    <span class="ml-2 text-gray-700">Для всієї школи</span>
+                </label>
+            </div>
+            <InputError :message="form.errors.target_type" class="mt-2"/>
         </div>
 
-        <div v-if="form.target_type === 'class'" class="mb-6 p-4 bg-green-50 rounded-lg border border-green-200">
-          <label class="block text-green-700 font-medium mb-2">Вкажіть клас</label>
-          <div class="flex items-start space-x-4">
-            <div class="flex-1">
-              <select
-                id="class_number"
-                v-model="form.class_number"
-                class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
-                :class="{ 'border-red-500': form.errors.class_number }"
-              >
-                <option :value="''" disabled>Номер</option>
-                <option v-for="number in Object.keys(classData)" :key="number" :value="number">
-                  {{ number }}
-                </option>
-              </select>
-              <div v-if="form.errors.class_number" class="text-red-500 text-sm mt-1">{{ form.errors.class_number }}</div>
-            </div>
-            <div class="flex-1">
-              <select
-                id="class_letter"
-                v-model="form.class_letter"
-                class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
-                :class="{ 'border-red-500': form.errors.class_letter }"
-                :disabled="!form.class_number"
-              >
-                <option :value="''" disabled>Буква</option>
-                <option v-for="letter in availableLetters" :key="letter" :value="letter">
-                  {{ letter }}
-                </option>
-              </select>
-              <div v-if="form.errors.class_letter" class="text-red-500 text-sm mt-1">{{ form.errors.class_letter }}</div>
-            </div>
-          </div>
-        </div>
-        
         <div class="flex items-center justify-end">
           <Link href="/petitions" class="text-green-700 hover:text-green-900 mr-4">Скасувати</Link>
           <LoadingButton :loading="form.processing" class="bg-green-500 hover:bg-green-600 text-white px-6 py-2 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2">
@@ -135,6 +101,7 @@ import Layout from '@/Shared/Layout.vue'
 import TextInput from '@/Shared/TextInput.vue'
 import TextareaInput from '@/Shared/TextareaInput.vue'
 import LoadingButton from '@/Shared/LoadingButton.vue'
+import InputError from '@/Shared/InputError.vue'
 
 export default {
   components: {
@@ -143,53 +110,26 @@ export default {
     TextInput,
     TextareaInput,
     LoadingButton,
+    InputError,
   },
   layout: Layout,
   props: {
     title: String,
-    classData: Object,
   },
-  remember: 'form',
-  data() {
-    return {
-      form: this.$inertia.form({
-        title: '',
-        description: '',
-        signatures_required: 1,
-        duration: 24,
-        target_type: 'school',
-        class_number: '',
-        class_letter: '',
-      }),
+  setup() {
+    const form = useForm({
+      title: '',
+      description: '',
+      target_type: 'class',
+      signatures_required: 1,
+      duration: 24,
+    });
+
+    function submit() {
+      form.post('/petitions');
     }
-  },
-  computed: {
-    availableLetters() {
-      if (this.form.class_number && this.classData) {
-        return this.classData[this.form.class_number] || []
-      }
-      return []
-    },
-  },
-  watch: {
-    'form.class_number'() {
-      this.form.class_letter = ''
-    },
-    'form.target_type'(newValue) {
-      if (newValue === 'school') {
-        // Clear class selections and errors when switching to school-wide petition
-        this.form.class_number = '';
-        this.form.class_letter = '';
-        // Clear any validation errors for class fields
-        delete this.form.errors.class_number;
-        delete this.form.errors.class_letter;
-      }
-    },
-  },
-  methods: {
-    submit() {
-      this.form.post('/petitions')
-    },
+
+    return { form, submit };
   },
 }
 </script>
