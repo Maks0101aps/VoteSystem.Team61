@@ -296,7 +296,7 @@ export default {
 
       // Подписываемся на каналы каждого голосования для комментариев
       props.votings.forEach(voting => {
-        const channelName = `App\\Models\\Voting.${voting.id}`;
+        const channelName = `voting.${voting.id}`;
         window.Echo.channel(channelName).listen('.comment.created', (data) => {
           console.log(`Получено событие комментария для голосования ${voting.id}:`, data);
         });

@@ -198,6 +198,7 @@
     "student": "Student",
     "parent": "Parent",
     "teacher": "Teacher",
-    "director": "Director"
+    "director": "Director",
+    "all": "All roles"
   }
 }

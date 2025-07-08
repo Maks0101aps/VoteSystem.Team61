@@ -33,9 +33,11 @@ class NewCommentAdded implements ShouldBroadcast
     public function broadcastOn(): array
     {
         // Отправляем уведомление в канал связанного объекта (петиции или голосования)
+        $channelType = strtolower(class_basename($this->comment->commentable_type)); // Convert App\Models\Voting to voting
+        
         return [
             new Channel('all-users'),
-            new Channel($this->comment->commentable_type . '.' . $this->comment->commentable_id),
+            new Channel($channelType . '.' . $this->comment->commentable_id),
         ];
     }
 

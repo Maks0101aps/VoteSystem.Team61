@@ -23,11 +23,11 @@ console.log('Pusher кластер:', 'mt1');
 
 // Проверяем соединение
 window.Echo.connector.pusher.connection.bind('connected', () => {
-  console.log('✅ Pusher успешно подключен!');
+  console.log('✅ Pusher work!');
 });
 
 window.Echo.connector.pusher.connection.bind('error', (err) => {
-  console.error('❌ Ошибка Pusher:', err);
+  console.error('❌ not work Pusher:', err);
 });
 
 createInertiaApp({
