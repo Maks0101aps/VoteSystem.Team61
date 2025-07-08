@@ -34,17 +34,12 @@ class User extends Authenticatable implements MustVerifyEmail
 
     protected $fillable = [
         'first_name',
-        'last_name',
         'middle_name',
+        'last_name',
         'email',
         'password',
         'role',
-        'school',
         'school_class_id',
-        'class_letter',
-        'region',
-        'city',
-        'district',
     ];
 
     /**
@@ -162,7 +157,7 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function organizations(): HasMany
     {
-        return $this->hasMany(Organization::class, 'account_id');
+        return $this->hasMany(Organization::class);
     }
 
     public function petitions(): HasMany
@@ -248,5 +243,11 @@ class User extends Authenticatable implements MustVerifyEmail
         }
 
         return false;
+    }
+
+    public function getFullName()
+    {
+        $middleName = $this->middle_name ? " {$this->middle_name}" : '';
+        return "{$this->first_name}{$middleName} {$this->last_name}";
     }
 }

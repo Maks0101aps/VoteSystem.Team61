@@ -25,6 +25,7 @@ class OrganizationTest extends TestCase
             'country',
             'postal_code',
             'account_id',
+            'user_id',
         ];
 
         $this->assertEquals($fillable, $organization->getFillable());
@@ -35,7 +36,7 @@ class OrganizationTest extends TestCase
     {
         $user = User::factory()->create();
         $organization = Organization::factory()->create([
-            'account_id' => $user->id,
+            'user_id' => $user->id,
         ]);
 
         $this->assertEquals($user->id, $organization->user->id);

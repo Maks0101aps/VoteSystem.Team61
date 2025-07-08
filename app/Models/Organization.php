@@ -23,6 +23,7 @@ class Organization extends Model
         'country',
         'postal_code',
         'account_id',
+        'user_id',
     ];
 
     public function resolveRouteBinding($value, $field = null)
@@ -32,7 +33,7 @@ class Organization extends Model
 
     public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'account_id', 'id');
+        return $this->belongsTo(User::class);
     }
 
     public function contacts(): HasMany

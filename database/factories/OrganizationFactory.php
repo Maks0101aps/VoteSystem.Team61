@@ -22,6 +22,7 @@ class OrganizationFactory extends Factory
     {
         return [
             'account_id' => User::factory(),
+            'user_id' => User::factory(),
             'name' => $this->faker->company(),
             'email' => $this->faker->companyEmail(),
             'phone' => $this->faker->tollFreePhoneNumber(),
@@ -41,6 +42,7 @@ class OrganizationFactory extends Factory
         return $this->state(function (array $attributes) use ($user) {
             return [
                 'account_id' => $user->id,
+                'user_id' => $user->id,
             ];
         });
     }
