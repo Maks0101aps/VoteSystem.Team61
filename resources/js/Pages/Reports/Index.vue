@@ -103,19 +103,23 @@
             </div>
             <div class="border-t border-gray-200 overflow-x-auto">
               <table class="w-full whitespace-nowrap">
-                <tr class="text-left font-bold">
-                  <th class="px-6 pt-6 pb-4">{{ $t('reports_page.history_table.title') }}</th>
-                  <th class="px-6 pt-6 pb-4">{{ $t('reports_page.history_table.created_at') }}</th>
-                  <th class="px-6 pt-6 pb-4">{{ $t('reports_page.history_table.status') }}</th>
-                </tr>
-                <tr v-for="item in createdVotings" :key="item.id" class="hover:bg-gray-100 focus-within:bg-gray-100">
-                  <td class="border-t px-6 py-4">{{ item.title }}</td>
-                  <td class="border-t px-6 py-4">{{ item.created_at_formatted }}</td>
-                  <td class="border-t px-6 py-4">{{ getTranslatedStatus(item) }}</td>
-                </tr>
-                <tr v-if="createdVotings.length === 0">
-                  <td class="border-t px-6 py-4" colspan="3">{{ $t('reports_page.history_table.no_history') }}</td>
-                </tr>
+                <thead>
+                  <tr class="text-left font-bold">
+                    <th class="px-6 pt-6 pb-4">{{ $t('reports_page.history_table.title') }}</th>
+                    <th class="px-6 pt-6 pb-4">{{ $t('reports_page.history_table.created_at') }}</th>
+                    <th class="px-6 pt-6 pb-4">{{ $t('reports_page.history_table.status') }}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="item in createdVotings" :key="item.id" class="hover:bg-gray-100 focus-within:bg-gray-100">
+                    <td class="border-t px-6 py-4">{{ item.title }}</td>
+                    <td class="border-t px-6 py-4">{{ item.created_at_formatted }}</td>
+                    <td class="border-t px-6 py-4">{{ getTranslatedStatus(item) }}</td>
+                  </tr>
+                  <tr v-if="createdVotings.length === 0">
+                    <td class="border-t px-6 py-4" colspan="3">{{ $t('reports_page.history_table.no_history') }}</td>
+                  </tr>
+                </tbody>
               </table>
             </div>
           </div>
@@ -132,19 +136,23 @@
             </div>
             <div class="border-t border-gray-200 overflow-x-auto">
               <table class="w-full whitespace-nowrap">
-                <tr class="text-left font-bold">
-                  <th class="px-6 pt-6 pb-4">{{ $t('reports_page.history_table.title') }}</th>
-                  <th class="px-6 pt-6 pb-4">{{ $t('reports_page.history_table.created_at') }}</th>
-                  <th class="px-6 pt-6 pb-4">{{ $t('reports_page.history_table.status') }}</th>
-                </tr>
-                <tr v-for="item in createdPetitions" :key="item.id" class="hover:bg-gray-100 focus-within:bg-gray-100">
-                  <td class="border-t px-6 py-4">{{ item.title }}</td>
-                  <td class="border-t px-6 py-4">{{ item.created_at_formatted }}</td>
-                  <td class="border-t px-6 py-4">{{ getTranslatedStatus(item) }}</td>
-                </tr>
-                <tr v-if="createdPetitions.length === 0">
-                  <td class="border-t px-6 py-4" colspan="3">{{ $t('reports_page.history_table.no_history') }}</td>
-                </tr>
+                <thead>
+                  <tr class="text-left font-bold">
+                    <th class="px-6 pt-6 pb-4">{{ $t('reports_page.history_table.title') }}</th>
+                    <th class="px-6 pt-6 pb-4">{{ $t('reports_page.history_table.created_at') }}</th>
+                    <th class="px-6 pt-6 pb-4">{{ $t('reports_page.history_table.status') }}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="item in createdPetitions" :key="item.id" class="hover:bg-gray-100 focus-within:bg-gray-100">
+                    <td class="border-t px-6 py-4">{{ item.title }}</td>
+                    <td class="border-t px-6 py-4">{{ item.created_at_formatted }}</td>
+                    <td class="border-t px-6 py-4">{{ getTranslatedStatus(item) }}</td>
+                  </tr>
+                  <tr v-if="createdPetitions.length === 0">
+                    <td class="border-t px-6 py-4" colspan="3">{{ $t('reports_page.history_table.no_history') }}</td>
+                  </tr>
+                </tbody>
               </table>
             </div>
           </div>
@@ -163,19 +171,23 @@
             </div>
             <div class="border-t border-gray-200 overflow-x-auto">
               <table class="w-full whitespace-nowrap">
-                <tr class="text-left font-bold">
-                  <th class="px-6 pt-6 pb-4">{{ $t('reports_page.history_table.title') }}</th>
-                  <th class="px-6 pt-6 pb-4">{{ $t('reports_page.history_table.created_at') }}</th>
-                  <th class="px-6 pt-6 pb-4">{{ $t('reports_page.history_table.status') }}</th>
-                </tr>
-                <tr v-for="item in participatedVotings" :key="item.id" class="hover:bg-gray-100 focus-within:bg-gray-100">
-                  <td class="border-t px-6 py-4">{{ item.title }}</td>
-                  <td class="border-t px-6 py-4">{{ item.created_at_formatted }}</td>
-                  <td class="border-t px-6 py-4">{{ getTranslatedStatus(item) }}</td>
-                </tr>
-                <tr v-if="participatedVotings.length === 0">
-                  <td class="border-t px-6 py-4" colspan="3">{{ $t('reports_page.history_table.no_history') }}</td>
-                </tr>
+                <thead>
+                  <tr class="text-left font-bold">
+                    <th class="px-6 pt-6 pb-4">{{ $t('reports_page.history_table.title') }}</th>
+                    <th class="px-6 pt-6 pb-4">{{ $t('reports_page.history_table.created_at') }}</th>
+                    <th class="px-6 pt-6 pb-4">{{ $t('reports_page.history_table.status') }}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="item in participatedVotings" :key="item.id" class="hover:bg-gray-100 focus-within:bg-gray-100">
+                    <td class="border-t px-6 py-4">{{ item.title }}</td>
+                    <td class="border-t px-6 py-4">{{ item.created_at_formatted }}</td>
+                    <td class="border-t px-6 py-4">{{ getTranslatedStatus(item) }}</td>
+                  </tr>
+                  <tr v-if="participatedVotings.length === 0">
+                    <td class="border-t px-6 py-4" colspan="3">{{ $t('reports_page.history_table.no_history') }}</td>
+                  </tr>
+                </tbody>
               </table>
             </div>
           </div>
@@ -195,19 +207,23 @@
             </div>
             <div class="border-t border-gray-200 overflow-x-auto">
               <table class="w-full whitespace-nowrap">
-                <tr class="text-left font-bold">
-                  <th class="px-6 pt-6 pb-4">{{ $t('reports_page.history_table.title') }}</th>
-                  <th class="px-6 pt-6 pb-4">{{ $t('reports_page.history_table.created_at') }}</th>
-                  <th class="px-6 pt-6 pb-4">{{ $t('reports_page.history_table.status') }}</th>
-                </tr>
-                <tr v-for="item in participatedPetitions" :key="item.id" class="hover:bg-gray-100 focus-within:bg-gray-100">
-                  <td class="border-t px-6 py-4">{{ item.title }}</td>
-                  <td class="border-t px-6 py-4">{{ item.created_at_formatted }}</td>
-                  <td class="border-t px-6 py-4">{{ getTranslatedStatus(item) }}</td>
-                </tr>
-                <tr v-if="participatedPetitions.length === 0">
-                  <td class="border-t px-6 py-4" colspan="3">{{ $t('reports_page.history_table.no_history') }}</td>
-                </tr>
+                <thead>
+                  <tr class="text-left font-bold">
+                    <th class="px-6 pt-6 pb-4">{{ $t('reports_page.history_table.title') }}</th>
+                    <th class="px-6 pt-6 pb-4">{{ $t('reports_page.history_table.created_at') }}</th>
+                    <th class="px-6 pt-6 pb-4">{{ $t('reports_page.history_table.status') }}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="item in participatedPetitions" :key="item.id" class="hover:bg-gray-100 focus-within:bg-gray-100">
+                    <td class="border-t px-6 py-4">{{ item.title }}</td>
+                    <td class="border-t px-6 py-4">{{ item.created_at_formatted }}</td>
+                    <td class="border-t px-6 py-4">{{ getTranslatedStatus(item) }}</td>
+                  </tr>
+                  <tr v-if="participatedPetitions.length === 0">
+                    <td class="border-t px-6 py-4" colspan="3">{{ $t('reports_page.history_table.no_history') }}</td>
+                  </tr>
+                </tbody>
               </table>
             </div>
           </div>

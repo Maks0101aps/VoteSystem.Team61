@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\NewCommentAdded;
 use Illuminate\Http\Request;
 use App\Models\Petition;
 use App\Models\Comment;
@@ -20,10 +21,21 @@ class CommentController extends Controller
 
         $commentable = $commentable_type::findOrFail($commentable_id);
 
-        $commentable->comments()->create([
+        $comment = $commentable->comments()->create([
             'content' => $request->content,
             'user_id' => Auth::id(),
         ]);
+
+        // Загружаем пользователя для корректного отображения имени
+        $comment->load('user');
+
+        // Отправляем событие о новом комментарии
+        try {
+            event(new NewCommentAdded($comment));
+        } catch (\Exception $e) {
+            // Логируем ошибку, но не мешаем основному процессу
+            \Log::error('Ошибка отправки события комментария: ' . $e->getMessage());
+        }
 
         return back();
     }

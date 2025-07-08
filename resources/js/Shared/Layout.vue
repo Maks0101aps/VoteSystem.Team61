@@ -40,6 +40,9 @@
         </transition>
       </main>
     </div>
+
+    <!-- Компонент уведомлений -->
+    <notifications v-if="auth.user" />
   </div>
 </template>
 
@@ -50,6 +53,7 @@ import Logo from '@/Shared/Logo.vue'
 import Dropdown from '@/Shared/Dropdown.vue'
 import MainMenu from '@/Shared/MainMenu.vue'
 import FlashMessages from '@/Shared/FlashMessages.vue'
+import Notifications from '@/Shared/Notifications.vue'
 
 export default {
   components: {
@@ -59,6 +63,7 @@ export default {
     Link,
     Logo,
     MainMenu,
+    Notifications,
   },
   props: {
     auth: Object,

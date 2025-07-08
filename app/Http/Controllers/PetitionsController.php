@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\NewPetitionCreated;
 use App\Models\Petition;
 use App\Models\PetitionSignature;
 use App\Models\SchoolClass;
@@ -118,6 +119,17 @@ class PetitionsController extends Controller
             'duration' => $request->duration,
             'school_class_id' => $school_class_id,
         ]);
+
+        // Загружаем связанные данные перед отправкой события
+        $petition->load(['user', 'schoolClass']);
+        
+        // Отправляем событие о создании новой петиции
+        try {
+            event(new NewPetitionCreated($petition));
+        } catch (\Exception $e) {
+            // Логируем ошибку, но не мешаем основному процессу
+            \Log::error('Ошибка отправки события петиции: ' . $e->getMessage());
+        }
 
         return Redirect::route('petitions')->with('success', 'Петицію успішно створено.');
     }

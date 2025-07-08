@@ -151,6 +151,7 @@
 
 <script>
 import { Head, Link, usePage, useForm, router } from '@inertiajs/vue3'
+import { ref, onMounted, onUnmounted } from 'vue';
 import Layout from '@/Shared/Layout.vue'
 import ConfirmationModal from '@/Shared/ConfirmationModal.vue';
 
@@ -278,6 +279,76 @@ export default {
     filterPetitions(filter) {
       this.currentFilter = filter;
       router.get('/petitions', { filter: filter }, { preserveState: true });
+    }
+  },
+  
+  mounted() {
+    // Подписываемся на канал для получения уведомлений о новых петициях
+    this.echoChannel = window.Echo.channel('all-users');
+    
+    // При получении события о новой петиции, обновляем страницу
+    this.echoChannel.listen('.petition.created', (data) => {
+      console.log('Получено событие новой петиции:', data);
+      // Перезагружаем страницу для получения актуальных данных
+      router.reload();
+    });
+
+    // Прослушиваем события комментариев
+    this.echoChannel.listen('.comment.created', (data) => {
+      console.log('Получено событие нового комментария:', data);
+      
+      // Если комментарий относится к петиции
+      if (data.commentable_type === 'App\\Models\\Petition') {
+        // Находим петицию, к которой относится комментарий
+        const petitionIndex = this.petitions.findIndex(p => p.id === data.commentable_id);
+        
+        if (petitionIndex !== -1) {
+          // Добавляем новый комментарий к петиции
+          const newComment = {
+            id: data.id,
+            content: data.content,
+            created_at: data.created_at,
+            user_name: data.user_name
+          };
+          
+          // Создаем копию массива, чтобы вызвать реактивное обновление
+          const updatedPetitions = [...this.petitions];
+          
+          // Если комментариев еще нет, создаем массив
+          if (!updatedPetitions[petitionIndex].comments) {
+            updatedPetitions[petitionIndex].comments = [];
+          }
+          
+          // Добавляем новый комментарий
+          updatedPetitions[petitionIndex].comments.push(newComment);
+          
+          // Увеличиваем счетчик комментариев
+          updatedPetitions[petitionIndex].comments_count += 1;
+          
+          // Обновляем петиции
+          this.petitions = updatedPetitions;
+          
+          // Автоматически раскрываем комментарии, если они не были открыты
+          if (!this.isCommentsVisible(data.commentable_id)) {
+            this.toggleComments(data.commentable_id);
+          }
+        }
+      }
+    });
+
+    // Подписываемся на каналы каждой петиции для комментариев
+    this.petitions.forEach(petition => {
+      const channelName = `App\\Models\\Petition.${petition.id}`;
+      window.Echo.channel(channelName).listen('.comment.created', (data) => {
+        console.log(`Получено событие комментария для петиции ${petition.id}:`, data);
+      });
+    });
+  },
+
+  beforeUnmount() {
+    // Отписываемся от канала при размонтировании компонента
+    if (this.echoChannel) {
+      window.Echo.leaveChannel('all-users');
     }
   }
 }

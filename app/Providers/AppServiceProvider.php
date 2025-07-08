@@ -27,6 +27,9 @@ class AppServiceProvider extends ServiceProvider
     public function register(): void
     {
         Model::unguard();
+        
+        // Регистрируем BroadcastServiceProvider
+        $this->app->register(BroadcastServiceProvider::class);
     }
 
     /**

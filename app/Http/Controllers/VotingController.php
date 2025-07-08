@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\NewVotingCreated;
 use App\Models\Voting;
 use App\Models\VotingVisibility;
 use Illuminate\Http\Request;
@@ -71,6 +72,17 @@ class VotingController extends Controller
                 'class_number' => $user->schoolClass->class_number,
                 'class_letter' => $user->schoolClass->class_letter,
             ]);
+        }
+
+        // Загружаем связанные данные перед отправкой события
+        $voting->load(['user', 'visibilities']);
+        
+        // Отправляем событие о создании нового голосования
+        try {
+            event(new NewVotingCreated($voting));
+        } catch (\Exception $e) {
+            // Логируем ошибку, но не мешаем основному процессу
+            \Log::error('Ошибка отправки события: ' . $e->getMessage());
         }
 
         return Redirect::route('voting.index')->with('success', 'Голосування успішно створено.');

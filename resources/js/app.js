@@ -3,6 +3,32 @@ import { createApp, h } from 'vue'
 import { createInertiaApp } from '@inertiajs/vue3'
 import i18n from './i18n';
 import { ZiggyVue } from 'ziggy-js';
+import Echo from 'laravel-echo';
+import Pusher from 'pusher-js';
+
+// Включаем отладку для Pusher
+Pusher.logToConsole = true;
+
+// Инициализация Laravel Echo
+window.Pusher = Pusher;
+window.Echo = new Echo({
+  broadcaster: 'pusher',
+  key: import.meta.env.VITE_PUSHER_APP_KEY || 'your_app_key',
+  cluster: import.meta.env.VITE_PUSHER_APP_CLUSTER || 'mt1',
+  forceTLS: true
+});
+
+console.log('Pusher ключ:', import.meta.env.VITE_PUSHER_APP_KEY);
+console.log('Pusher кластер:', import.meta.env.VITE_PUSHER_APP_CLUSTER);
+
+// Проверяем соединение
+window.Echo.connector.pusher.connection.bind('connected', () => {
+  console.log('✅ Pusher успешно подключен!');
+});
+
+window.Echo.connector.pusher.connection.bind('error', (err) => {
+  console.error('❌ Ошибка Pusher:', err);
+});
 
 createInertiaApp({
   resolve: name => {

@@ -12,42 +12,14 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        // Очищаем таблицы
         \DB::statement('DELETE FROM users');
         \DB::statement('UPDATE SQLITE_SEQUENCE SET SEQ=0 WHERE NAME="users"');
+        \DB::statement('DELETE FROM accounts');
+        \DB::statement('UPDATE SQLITE_SEQUENCE SET SEQ=0 WHERE NAME="accounts"');
         
+        // Запускаем сидеры
         $this->call(SchoolClassSeeder::class);
-
-        User::factory()->create([
-            'first_name' => 'John',
-            'last_name' => 'Doe',
-            'email' => 'johndoe@example.com',
-            'password' => 'secret',
-            'role' => 'director',
-        ]);
-
-        User::factory()->create([
-            'first_name' => 'Jane',
-            'last_name' => 'Smith',
-            'email' => 'teacher@example.com',
-            'password' => 'secret',
-            'role' => 'teacher',
-        ]);
-
-        User::factory()->create([
-            'first_name' => 'Peter',
-            'last_name' => 'Jones',
-            'email' => 'parent@example.com',
-            'password' => 'secret',
-            'role' => 'parent',
-        ]);
-
-        User::factory()->create([
-            'first_name' => 'Sam',
-            'last_name' => 'Wilson',
-            'email' => 'student@example.com',
-            'password' => 'secret',
-            'role' => 'student',
-            'school_class_id' => 1,
-        ]);
+        $this->call(UsersSeeder::class);
     }
 }

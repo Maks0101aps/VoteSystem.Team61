@@ -198,7 +198,7 @@
 
 <script>
 import { Head, Link, useForm, router } from '@inertiajs/vue3';
-import { ref, watch } from 'vue';
+import { ref, watch, onMounted, onUnmounted } from 'vue';
 import ConfirmationModal from '@/Shared/ConfirmationModal.vue';
 import Layout from '@/Shared/Layout.vue';
 import Icon from '@/Shared/Icon.vue';
@@ -220,14 +220,95 @@ export default {
   setup(props) {
     const visibleComments = ref([]);
     const commentForms = ref({});
+    const localVotings = ref([...props.votings]);
+    let echoChannel;
+
+    // Обновляем массив голосований из props
+    watch(() => props.votings, () => {
+      localVotings.value = [...props.votings];
+      initializeCommentForms();
+    });
 
     const initializeCommentForms = () => {
-      props.votings.forEach(voting => {
-        commentForms.value[voting.id] = useForm({ content: '', commentable_type: 'App\Models\Voting' });
+      localVotings.value.forEach(voting => {
+        if (!commentForms.value[voting.id]) {
+          commentForms.value[voting.id] = useForm({ content: '', commentable_type: 'App\Models\Voting' });
+        }
       });
     };
 
-    watch(() => props.votings, initializeCommentForms, { immediate: true });
+    // Инициализируем формы комментариев сразу
+    initializeCommentForms();
+
+    // Подписываемся на обновления от Pusher
+    onMounted(() => {
+      echoChannel = window.Echo.channel('all-users');
+      
+      // При получении события о новом голосовании, обновляем страницу
+      echoChannel.listen('.voting.created', (data) => {
+        console.log('Получено событие нового голосования:', data);
+        // Перезагружаем страницу для получения актуальных данных
+        router.reload();
+      });
+
+      // Прослушиваем события комментариев
+      echoChannel.listen('.comment.created', (data) => {
+        console.log('Получено событие нового комментария:', data);
+        
+        // Если комментарий относится к голосованию
+        if (data.commentable_type === 'App\\Models\\Voting') {
+          // Находим голосование, к которому относится комментарий
+          const votingIndex = localVotings.value.findIndex(v => v.id === data.commentable_id);
+          
+          if (votingIndex !== -1) {
+            // Создаем новый комментарий
+            const newComment = {
+              id: data.id,
+              content: data.content,
+              created_at: data.created_at,
+              user_name: data.user_name
+            };
+            
+            // Создаем копию голосования
+            const updatedVoting = { ...localVotings.value[votingIndex] };
+            
+            // Если комментариев еще нет, создаем массив
+            if (!updatedVoting.comments) {
+              updatedVoting.comments = [];
+            }
+            
+            // Добавляем новый комментарий
+            updatedVoting.comments.push(newComment);
+            
+            // Увеличиваем счетчик комментариев
+            updatedVoting.comments_count = (updatedVoting.comments_count || 0) + 1;
+            
+            // Обновляем голосование в массиве
+            localVotings.value[votingIndex] = updatedVoting;
+            
+            // Автоматически раскрываем комментарии, если они не были открыты
+            if (!visibleComments.value.includes(data.commentable_id)) {
+              toggleComments(data.commentable_id);
+            }
+          }
+        }
+      });
+
+      // Подписываемся на каналы каждого голосования для комментариев
+      props.votings.forEach(voting => {
+        const channelName = `App\\Models\\Voting.${voting.id}`;
+        window.Echo.channel(channelName).listen('.comment.created', (data) => {
+          console.log(`Получено событие комментария для голосования ${voting.id}:`, data);
+        });
+      });
+    });
+
+    // Отписываемся при размонтировании
+    onUnmounted(() => {
+      if (echoChannel) {
+        window.Echo.leaveChannel('all-users');
+      }
+    });
 
     const toggleComments = (votingId) => {
       const index = visibleComments.value.indexOf(votingId);
