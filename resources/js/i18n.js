@@ -10,6 +10,8 @@ import votingPageEn from '../../lang/en/voting_page.json';
 import votingPageUk from '../../lang/uk/voting_page.json';
 import commentsEn from '../../lang/en/comments.json';
 import commentsUk from '../../lang/uk/comments.json';
+import mainMenuEn from '../../lang/en/main_menu.json';
+import mainMenuUk from '../../lang/uk/main_menu.json';
 
 import reportsPageEn from '../../lang/en/reports_page.json';
 import reportsPageUk from '../../lang/uk/reports_page.json';
@@ -28,6 +30,10 @@ const i18n = createI18n({
         comments: commentsEn,
         reports_page: reportsPageEn,
         director_petitions: directorPetitionsEn,
+        main_menu: {
+            ...en.main_menu,
+            ...mainMenuEn
+        }
     },
     uk: {
         ...uk,
@@ -37,6 +43,10 @@ const i18n = createI18n({
         comments: commentsUk,
         reports_page: reportsPageUk,
         director_petitions: directorPetitionsUk,
+        main_menu: {
+            ...uk.main_menu,
+            ...mainMenuUk
+        }
     },
   },
   legacy: false, // you must set `false`, to use Composition API

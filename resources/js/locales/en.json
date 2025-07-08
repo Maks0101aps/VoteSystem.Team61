@@ -1,6 +1,14 @@
 {
+  "Головна": "Home",
   "Голосування": "Voting",
   "Вхід": "Login",
+  "Петиції": "Petitions",
+  "Розгляд петицій": "Petition Review",
+  "Тільки студенти можуть створювати голосування.": "Only students can create votings.",
+  "messages": {
+    "one_form_error": "There is one form error",
+    "form_errors": "There are {count} form errors"
+  },
   "main_menu": {
     "home": "Home",
     "petitions": "Petitions",
@@ -9,6 +17,7 @@
     "logout": "Logout",
     "voting": "Voting",
     "reports": "Reports",
+    "messages": "Messages",
     "switch_language": "Switch Language"
   },
   "petitions_page": {
