@@ -30,7 +30,7 @@ class Voting extends Model
         return $this->hasMany(VotingVisibility::class);
     }
 
-    public function options(): HasMany
+    public function voteOptions(): HasMany
     {
         return $this->hasMany(VoteOption::class);
     }
@@ -47,5 +47,36 @@ class Voting extends Model
     public function votes(): HasMany
     {
         return $this->hasMany(Vote::class);
+    }
+
+    /**
+     * Определяет, активно ли голосование
+     *
+     * @return bool
+     */
+    public function isActive()
+    {
+        return now()->lt($this->ends_at);
+    }
+
+    /**
+     * Проверяет, голосовал ли пользователь
+     *
+     * @param \App\Models\User $user
+     * @return bool
+     */
+    public function hasUserVoted(User $user)
+    {
+        return $this->votes()->where('user_id', $user->id)->exists();
+    }
+    
+    /**
+     * Count the total number of votes for this voting
+     *
+     * @return int
+     */
+    public function countTotalVotes(): int
+    {
+        return $this->votes()->count();
     }
 }

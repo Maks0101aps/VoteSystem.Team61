@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -134,7 +135,7 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->where($field ?? 'id', $value)->withTrashed()->firstOrFail();
     }
 
-    public function comments()
+    public function comments(): HasMany
     {
         return $this->hasMany(Comment::class);
     }
@@ -144,9 +145,14 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->belongsTo(SchoolClass::class);
     }
 
-    public function user_votes()
+    public function user_votes(): HasMany
     {
         return $this->hasMany(UserVote::class);
+    }
+
+    public function votes(): HasMany
+    {
+        return $this->hasMany(Vote::class);
     }
 
     public function account(): BelongsTo
@@ -154,22 +160,37 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->belongsTo(Account::class);
     }
 
-    public function petitions()
+    public function organizations(): HasMany
+    {
+        return $this->hasMany(Organization::class, 'account_id');
+    }
+
+    public function petitions(): HasMany
     {
         return $this->hasMany(Petition::class);
     }
 
-    public function signatures()
+    public function petitionSignatures(): HasMany
     {
         return $this->hasMany(PetitionSignature::class);
     }
 
-    public function verificationCodes()
+    public function signatures(): HasMany
+    {
+        return $this->hasMany(PetitionSignature::class);
+    }
+
+    public function votings(): HasMany
+    {
+        return $this->hasMany(Voting::class);
+    }
+
+    public function verificationCodes(): HasMany
     {
         return $this->hasMany(EmailVerificationCode::class);
     }
 
-    public function loginCodes()
+    public function loginCodes(): HasMany
     {
         return $this->hasMany(LoginCode::class);
     }
