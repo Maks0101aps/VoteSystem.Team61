@@ -13,13 +13,13 @@ Pusher.logToConsole = true;
 window.Pusher = Pusher;
 window.Echo = new Echo({
   broadcaster: 'pusher',
-  key: import.meta.env.VITE_PUSHER_APP_KEY || 'your_app_key',
-  cluster: import.meta.env.VITE_PUSHER_APP_CLUSTER || 'mt1',
+  key: import.meta.env.VITE_PUSHER_APP_KEY || '9dc4872fd4678abf41ef',
+  cluster: 'eu',
   forceTLS: true
 });
 
-console.log('Pusher ключ:', import.meta.env.VITE_PUSHER_APP_KEY);
-console.log('Pusher кластер:', import.meta.env.VITE_PUSHER_APP_CLUSTER);
+console.log('Pusher ключ:', import.meta.env.VITE_PUSHER_APP_KEY || '9dc4872fd4678abf41ef');
+console.log('Pusher кластер:', 'mt1');
 
 // Проверяем соединение
 window.Echo.connector.pusher.connection.bind('connected', () => {
