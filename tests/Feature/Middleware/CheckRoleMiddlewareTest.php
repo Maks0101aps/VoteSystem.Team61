@@ -35,11 +35,11 @@ class CheckRoleMiddlewareTest extends TestCase
     /** @test */
     public function it_denies_access_to_unauthenticated_users()
     {
-        // Не аутентифицируем пользователя
+        // no auth user
         $response = $this->get('/director/petitions');
         
-        // Должен быть редирект на страницу логина или ошибка 403
-        $response->assertStatus(403);
+        // ==login _= or error 403
+        $response->assertRedirect('/login');
     }
 
     /** @test */
@@ -52,7 +52,7 @@ class CheckRoleMiddlewareTest extends TestCase
         // Создадим такой маршрут для теста
         \Route::get('/test-teacher-route', function () {
             return 'Teacher Route';
-        })->middleware('check.role:teacher');
+        })->middleware('role:teacher');
         
         // Студент не должен иметь доступ
         $response = $this->actingAs($student)->get('/test-teacher-route');

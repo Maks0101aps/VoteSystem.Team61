@@ -18,6 +18,7 @@ class Petition extends Model
         'user_id',
         'duration',
         'school_class_id',
+        'status',
     ];
 
     protected $appends = [
@@ -58,5 +59,17 @@ class Petition extends Model
     public function isSignedByUser(User $user)
     {
         return $this->signatures()->where('user_id', $user->id)->exists();
+    }
+    
+    /**
+     * Scope a query to only include petitions of a given status.
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param string $status
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeStatus($query, $status)
+    {
+        return $query->where('status', $status);
     }
 } 

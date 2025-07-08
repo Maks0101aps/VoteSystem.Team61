@@ -78,6 +78,10 @@ Route::get('/', [DashboardController::class, 'index'])
     ->name('dashboard')
     ->middleware('auth');
 
+Route::get('/dashboard', [DashboardController::class, 'index'])
+    ->name('dashboard.index')
+    ->middleware('auth');
+
 // Voting
 
 Route::get('/votings/create', [VotingController::class, 'create'])

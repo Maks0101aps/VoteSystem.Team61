@@ -34,7 +34,7 @@ class PetitionsController extends Controller
             $petitionsQuery->where('status', 'active')->where('ends_at', '>', now());
         } elseif ($filterValue === 'completed') {
             $petitionsQuery->where(function ($query) {
-                $query->whereIn('status', ['pending_review', 'approved', 'rejected'])
+                $query->whereIn('status', ['pending', 'approved', 'rejected'])
                     ->orWhere('ends_at', '<=', now());
             });
         }
@@ -142,7 +142,7 @@ class PetitionsController extends Controller
             $signaturesCount = PetitionSignature::where('petition_id', $petition->id)->count();
 
             if ($signaturesCount >= $petition->signatures_required) {
-                $petition->update(['status' => 'pending_review']);
+                $petition->update(['status' => 'pending']);
             }
 
             return Redirect::back()->with('success', 'Ви успішно підписали петицію.');

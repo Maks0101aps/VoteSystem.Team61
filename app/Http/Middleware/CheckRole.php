@@ -18,7 +18,11 @@ class CheckRole
      */
     public function handle(Request $request, Closure $next, $role)
     {
-        if (!Auth::check() || Auth::user()->role !== $role) {
+        if (!Auth::check()) {
+            return redirect()->route('login');
+        }
+        
+        if (Auth::user()->role !== $role) {
             abort(403, 'THIS ACTION IS UNAUTHORIZED.');
         }
 

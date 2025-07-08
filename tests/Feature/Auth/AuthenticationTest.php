@@ -52,7 +52,7 @@ class AuthenticationTest extends TestCase
             'code' => '123456',
         ]);
 
-        $response->assertRedirect('/');
+        $response->assertRedirect('/dashboard');
         $this->assertAuthenticated();
     }
 

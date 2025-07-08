@@ -17,7 +17,7 @@ class LoginVerificationController extends Controller
     /**
      * Show the login verification form.
      */
-    public function show(): Response
+    public function show(): Response|RedirectResponse
     {
         $userId = session()->get('login_user_id');
         if (!$userId) {
@@ -75,6 +75,6 @@ class LoginVerificationController extends Controller
 
         $request->session()->forget('login_user_id');
 
-        return redirect()->intended(AppServiceProvider::HOME);
+        return redirect()->intended(route('dashboard.index'));
     }
 }

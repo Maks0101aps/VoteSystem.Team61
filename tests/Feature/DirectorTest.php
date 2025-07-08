@@ -19,7 +19,7 @@ class DirectorTest extends TestCase
         
         $petition = Petition::factory()->create([
             'title' => 'Pending Petition',
-            'status' => 'pending_review',
+            'status' => 'pending',
         ]);
 
         $response = $this->actingAs($director)->get('/director/petitions');
@@ -44,7 +44,7 @@ class DirectorTest extends TestCase
         $director = User::factory()->create(['role' => 'director']);
         
         $petition = Petition::factory()->create([
-            'status' => 'pending_review',
+            'status' => 'pending',
         ]);
 
         $response = $this->actingAs($director)->post("/director/petitions/{$petition->id}/approve");
@@ -64,7 +64,7 @@ class DirectorTest extends TestCase
         $director = User::factory()->create(['role' => 'director']);
         
         $petition = Petition::factory()->create([
-            'status' => 'pending_review',
+            'status' => 'pending',
         ]);
 
         $response = $this->actingAs($director)->post("/director/petitions/{$petition->id}/reject");
@@ -90,7 +90,7 @@ class DirectorTest extends TestCase
         ]);
         
         $petition = Petition::factory()->create([
-            'status' => 'pending_review',
+            'status' => 'pending',
             'user_id' => $student->id,
             'school_class_id' => $class->id,
         ]);

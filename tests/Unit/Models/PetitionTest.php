@@ -36,6 +36,7 @@ class PetitionTest extends TestCase
             'user_id',
             'duration',
             'school_class_id',
+            'status',
         ];
 
         $this->assertEquals($fillable, $petition->getFillable());

@@ -25,7 +25,7 @@ class TwoFactorAuthTest extends TestCase
             'password' => 'password',
         ]);
 
-        $response->assertRedirect('/verify-login');
+        $response->assertRedirect('/login/verify');
         $this->assertNotNull(session('login_user_id'));
         $this->assertEquals($user->id, session('login_user_id'));
     }
@@ -36,7 +36,7 @@ class TwoFactorAuthTest extends TestCase
         $user = User::factory()->create();
         
         $this->withSession(['login_user_id' => $user->id])
-            ->get('/verify-login')
+            ->get('/login/verify')
             ->assertStatus(200)
             ->assertInertia(fn ($page) => $page->component('Auth/VerifyLoginCode'));
     }
@@ -51,7 +51,7 @@ class TwoFactorAuthTest extends TestCase
         
         // Attempt with invalid code
         $response = $this->withSession(['login_user_id' => $user->id])
-            ->post('/verify-login', [
+            ->post('/login/verify', [
                 'code' => '000000', // Wrong code
             ]);
         
@@ -74,7 +74,7 @@ class TwoFactorAuthTest extends TestCase
         
         // Attempt with valid code
         $response = $this->withSession(['login_user_id' => $user->id])
-            ->post('/verify-login', [
+            ->post('/login/verify', [
                 'code' => '123456',
             ]);
         
@@ -97,7 +97,7 @@ class TwoFactorAuthTest extends TestCase
         
         // Attempt with expired code
         $response = $this->withSession(['login_user_id' => $user->id])
-            ->post('/verify-login', [
+            ->post('/login/verify', [
                 'code' => '123456',
             ]);
         
@@ -109,7 +109,7 @@ class TwoFactorAuthTest extends TestCase
     /** @test */
     public function access_is_denied_without_login_user_id_in_session()
     {
-        $response = $this->get('/verify-login');
+        $response = $this->get('/login/verify');
         
         $response->assertRedirect('/login');
     }
@@ -117,7 +117,7 @@ class TwoFactorAuthTest extends TestCase
     /** @test */
     public function access_is_denied_when_submitting_code_without_login_user_id_in_session()
     {
-        $response = $this->post('/verify-login', [
+        $response = $this->post('/login/verify', [
             'code' => '123456',
         ]);
         
@@ -147,7 +147,7 @@ class TwoFactorAuthTest extends TestCase
         
         // Attempt with valid code
         $response = $this->withSession(['login_user_id' => $user->id])
-            ->post('/verify-login', [
+            ->post('/login/verify', [
                 'code' => '123456',
             ]);
         

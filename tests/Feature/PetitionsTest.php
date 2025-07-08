@@ -155,10 +155,10 @@ class PetitionsTest extends TestCase
         
         $response->assertRedirect();
         
-        // Verify petition status was updated to pending review
+        // Verify petition status was updated to pending
         $this->assertDatabaseHas('petitions', [
             'id' => $petition->id,
-            'status' => 'pending_review',
+            'status' => 'pending',
         ]);
     }
 
