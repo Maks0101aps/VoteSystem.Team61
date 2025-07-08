@@ -26,7 +26,7 @@ class UsersSeeder extends Seeder
             'last_name' => 'Doe',
             'email' => 'johndoe@example.com',
             'email_verified_at' => now(),
-            'password' => Hash::make('password'),
+            'password' => Hash::make('secret'),
             'role' => 'director',
         ]);
 
@@ -37,7 +37,7 @@ class UsersSeeder extends Seeder
             'last_name' => 'Smith',
             'email' => 'teacher@example.com',
             'email_verified_at' => now(),
-            'password' => Hash::make('password'),
+            'password' => Hash::make('secret'),
             'role' => 'teacher',
         ]);
 
@@ -48,7 +48,7 @@ class UsersSeeder extends Seeder
             'last_name' => 'Jones',
             'email' => 'parent@example.com',
             'email_verified_at' => now(),
-            'password' => Hash::make('password'),
+            'password' => Hash::make('secret'),
             'role' => 'parent',
         ]);
 
@@ -59,7 +59,7 @@ class UsersSeeder extends Seeder
             'last_name' => 'Wilson',
             'email' => 'student@example.com',
             'email_verified_at' => now(),
-            'password' => Hash::make('password'),
+            'password' => Hash::make('secret'),
             'role' => 'student',
         ]);
     }

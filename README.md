@@ -5,10 +5,14 @@
 ![Static Badge](https://img.shields.io/badge/Vue.js-3-green)
 ![Static Badge](https://img.shields.io/badge/Inertia.js-1.0-purple)
 ![Static Badge](https://img.shields.io/badge/Tests-126%20passed-success)
+![Static Badge](https://img.shields.io/badge/Pusher-Ready-orange)
+![Static Badge](https://img.shields.io/badge/Echo-Integrated-lightblue)
 
 A complete voting and petition system for schools and educational institutions, built with Laravel and Vue.js.
 
 Повна система голосування та петицій для шкіл та навчальних закладів, побудована з використанням Laravel та Vue.js.
+
+![School Voting](https://img.shields.io/badge/📊-School%20Voting%20System-blue?style=for-the-badge)
 
 ## 🌟 Features / Особливості
 
@@ -20,6 +24,7 @@ A complete voting and petition system for schools and educational institutions, 
 - Comment system for petitions and votings
 - Dashboard with statistics and reports
 - Responsive design for desktop and mobile
+- Real-time notifications with Pusher and Laravel Echo
 
 **Українська:**
 - Аутентифікація з верифікацією електронної пошти та двофакторною аутентифікацією
@@ -29,6 +34,7 @@ A complete voting and petition system for schools and educational institutions, 
 - Система коментарів для петицій та голосувань
 - Інформаційна панель зі статистикою та звітами
 - Адаптивний дизайн для комп'ютерів та мобільних пристроїв
+- Сповіщення в реальному часі за допомогою Pusher та Laravel Echo
 
 ## 🚀 Technologies / Технології
 
@@ -40,6 +46,7 @@ A complete voting and petition system for schools and educational institutions, 
 - **Authentication:** Laravel Sanctum
 - **Email:** Mailtrap (for testing)
 - **Localization:** Laravel localization with Ukrainian and English support
+- **Real-time:** Pusher and Laravel Echo for WebSockets
 
 **Українська:**
 - **Бекенд:** Laravel 10, PHP 8.1+
@@ -49,6 +56,9 @@ A complete voting and petition system for schools and educational institutions, 
 - **Аутентифікація:** Laravel Sanctum
 - **Електронна пошта:** Mailtrap (для тестування)
 - **Локалізація:** Laravel локалізація з підтримкою української та англійської мов
+- **Реальний час:** Pusher та Laravel Echo для WebSockets
+
+![Tech Stack](https://img.shields.io/badge/⚙️-Tech%20Stack-blueviolet?style=for-the-badge)
 
 ## 📋 Project Structure / Структура проекту
 
@@ -242,6 +252,76 @@ MAIL_FROM_ADDRESS="noreply@votesystem.example"
 MAIL_FROM_NAME="${APP_NAME}"
 ```
 
+## 🔔 Setting up Pusher and Laravel Echo / Налаштування Pusher та Laravel Echo
+
+**English:**
+The application uses Pusher and Laravel Echo for real-time notifications and events:
+
+1. Create a free account at [Pusher.com](https://pusher.com/)
+2. Create a new Channels app
+3. Get your app credentials
+4. Update your `.env` file with Pusher settings:
+
+**Українська:**
+Додаток використовує Pusher та Laravel Echo для сповіщень та подій в реальному часі:
+
+1. Створіть безкоштовний обліковий запис на [Pusher.com](https://pusher.com/)
+2. Створіть новий додаток у розділі Channels
+3. Отримайте облікові дані додатку
+4. Оновіть ваш файл `.env` з налаштуваннями Pusher:
+
+```env
+BROADCAST_DRIVER=pusher
+PUSHER_APP_ID=your_app_id
+PUSHER_APP_KEY=your_app_key
+PUSHER_APP_SECRET=your_app_secret
+PUSHER_HOST=
+PUSHER_PORT=443
+PUSHER_SCHEME=https
+PUSHER_APP_CLUSTER=your_app_cluster
+
+# For development/testing with Laravel Echo Server instead of Pusher:
+# BROADCAST_DRIVER=redis
+# REDIS_HOST=127.0.0.1
+# REDIS_PASSWORD=null
+# REDIS_PORT=6379
+```
+
+**English:**
+5. Make sure your JavaScript resources are correctly configured:
+
+**Українська:**
+5. Переконайтеся, що ваші JavaScript-ресурси налаштовані правильно:
+
+```javascript
+// resources/js/bootstrap.js or app.js
+import Echo from 'laravel-echo';
+import Pusher from 'pusher-js';
+
+window.Pusher = Pusher;
+
+window.Echo = new Echo({
+    broadcaster: 'pusher',
+    key: import.meta.env.VITE_PUSHER_APP_KEY,
+    cluster: import.meta.env.VITE_PUSHER_APP_CLUSTER,
+    forceTLS: true
+});
+
+// Example of subscribing to a channel
+Echo.channel('notifications')
+    .listen('NewCommentAdded', (e) => {
+        console.log(e);
+    });
+```
+
+**English:**
+6. To test locally, you can also use Laravel Echo Server with Redis as a Pusher alternative
+
+**Українська:**
+6. Для локального тестування ви також можете використовувати Laravel Echo Server з Redis як альтернативу Pusher
+
+![Real-time Events](https://img.shields.io/badge/🔄-Real--time%20Events-brightgreen?style=for-the-badge)
+
 ## 🧪 Testing / Тестування
 
 **English:**
@@ -286,6 +366,8 @@ The system includes these test accounts (password for all is `secret`):
 | teacher@example.com | teacher / вчитель | Jane Smith |
 | parent@example.com | parent / батько | Peter Jones |
 | student@example.com | student / учень | Sam Wilson |
+
+![Secure Access](https://img.shields.io/badge/🔐-Secure%20Access-red?style=for-the-badge)
 
 ## 🌐 Localization / Локалізація
 
