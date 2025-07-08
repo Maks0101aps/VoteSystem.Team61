@@ -14,34 +14,28 @@ class VotingController extends Controller
 {
     public function create()
     {
-        if (Auth::user()->role !== 'student') {
-            return Redirect::route('voting.index')->with('error', 'Тільки студенти можуть створювати голосування.');
-        }
+        // Using direct string instead of translation key
+        $locale = app()->getLocale();
+        $title = $locale === 'uk' ? 'Створити голосування' : 'Create Voting';
 
         return Inertia::render('Voting/Create', [
-            'title' => __('voting.create_title'),
+            'title' => $title,
             'duration_options' => [
-                2 => '2 хвилини',
-                5 => '5 хвилин',
-                15 => '15 хвилин',
-                30 => '30 хвилин',
-                60 => '1 година',
-                300 => '5 годин',
+                120 => '2 години',
+                360 => '6 годин',
+                720 => '12 годин',
                 1440 => '1 день',
+                4320 => '3 дні',
             ],
         ]);
     }
 
     public function store(Request $request)
     {
-        if (Auth::user()->role !== 'student') {
-            abort(403, 'У вас немає прав для створення голосувань.');
-        }
-
         $request->validate([
             'title' => ['required', 'max:255'],
             'description' => ['required'],
-            'duration' => ['required', 'integer', 'in:2,5,15,30,60,300,1440'],
+            'duration' => ['required', 'integer', 'in:120,360,720,1440,4320'],
             'target_type' => ['required', 'string', 'in:school,class'],
         ]);
 

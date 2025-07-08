@@ -338,7 +338,7 @@ export default {
 
     // Подписываемся на каналы каждой петиции для комментариев
     this.petitions.forEach(petition => {
-      const channelName = `App\\Models\\Petition.${petition.id}`;
+      const channelName = `petition.${petition.id}`;
       window.Echo.channel(channelName).listen('.comment.created', (data) => {
         console.log(`Получено событие комментария для петиции ${petition.id}:`, data);
       });

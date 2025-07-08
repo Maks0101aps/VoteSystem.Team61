@@ -6,5 +6,6 @@
     "total_votes": "Всього голосів",
     "vote": "Голосувати",
     "your_vote": "Ваш голос",
-    "vote_registered": "Ваш голос зараховано"
+    "vote_registered": "Ваш голос зараховано",
+    "create_title": "Створити голосування"
 }

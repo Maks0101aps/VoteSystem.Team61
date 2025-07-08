@@ -35,7 +35,12 @@ createInertiaApp({
     const pages = import.meta.glob('./Pages/**/*.vue', { eager: true })
     return pages[`./Pages/${name}.vue`]
   },
-  title: title => title ? `${i18n.global.t(title)} - VoteSystem` : 'VoteSystem',
+  title: title => {
+    if (!title) return 'VoteSystem';
+    
+    // Just use the title directly without translation
+    return `${title} - VoteSystem`;
+  },
   setup({ el, App, props, plugin }) {
     createApp({ render: () => h(App, props) })
       .use(plugin)

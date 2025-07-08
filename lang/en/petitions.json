@@ -2,5 +2,16 @@
     "comments": "Comments",
     "no_comments": "No comments yet.",
     "add_comment_placeholder": "Add your comment...",
-    "add_comment_button": "Add Comment"
+    "add_comment_button": "Add Comment",
+    "create_petition": "Create Petition",
+    "petition_title": "Petition Title",
+    "petition_description": "Petition Description",
+    "required_signatures": "Required Signatures",
+    "petition_duration": "Petition Duration (hours)",
+    "hours": "hours",
+    "target_audience": "Who is this petition for?",
+    "for_my_class": "Only for my class",
+    "for_whole_school": "For the whole school",
+    "cancel": "Cancel",
+    "create": "Create"
 }

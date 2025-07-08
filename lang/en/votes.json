@@ -6,5 +6,6 @@
     "total_votes": "Total votes",
     "vote": "Vote",
     "your_vote": "Your vote",
-    "vote_registered": "Your vote has been registered"
+    "vote_registered": "Your vote has been registered",
+    "create_title": "Create Voting"
 }

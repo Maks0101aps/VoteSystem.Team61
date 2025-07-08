@@ -17,5 +17,6 @@
     },
     "filters": {
         "my_votings": "My Votings"
-    }
+    },
+    "create_title": "Create Voting"
 }

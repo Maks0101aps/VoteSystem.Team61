@@ -42,6 +42,7 @@
     "statuses": {
       "active": "In Progress",
       "pending_review": "Pending Review",
+      "pending": "Pending",
       "approved": "Approved",
       "rejected": "Rejected",
       "unknown": "Unknown"
@@ -134,7 +135,8 @@
     "you_voted": "You voted",
     "active": "Active",
     "closed": "Closed",
-    "archived": "Archived"
+    "archived": "Archived",
+    "create_title": "Create Voting"
   },
   "users_page": {
     "title": "Users",

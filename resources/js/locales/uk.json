@@ -41,6 +41,7 @@
     "statuses": {
       "active": "В процесі",
       "pending_review": "На розгляді",
+      "pending": "В очікуванні",
       "approved": "Прийнята",
       "rejected": "Відхилена",
       "unknown": "Невідомо"
@@ -139,7 +140,8 @@
     "you_voted": "Ви проголосували",
     "active": "Активне",
     "closed": "Завершене",
-    "archived": "Архівоване"
+    "archived": "Архівоване",
+    "create_title": "Створити голосування"
   },
   "users_page": {
     "title": "Користувачі",

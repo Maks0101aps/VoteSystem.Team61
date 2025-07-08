@@ -24,8 +24,8 @@ const i18n = createI18n({
   messages: {
     en: {
         ...en,
-        ...votesEn,
-        ...petitionsEn,
+        votes: votesEn,
+        petitions: petitionsEn,
         voting_page: votingPageEn,
         comments: commentsEn,
         reports_page: reportsPageEn,
@@ -37,8 +37,8 @@ const i18n = createI18n({
     },
     uk: {
         ...uk,
-        ...votesUk,
-        ...petitionsUk,
+        votes: votesUk,
+        petitions: petitionsUk,
         voting_page: votingPageUk,
         comments: commentsUk,
         reports_page: reportsPageUk,

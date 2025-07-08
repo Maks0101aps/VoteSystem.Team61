@@ -15,7 +15,7 @@
 
       <form @submit.prevent="submit" class="bg-white p-8 rounded-xl shadow-md backdrop-blur-sm bg-opacity-90">
         <div class="mb-6">
-          <label class="block text-green-700 font-medium mb-2" for="title">Назва петиції</label>
+          <label class="block text-green-700 font-medium mb-2" for="title">{{ $t('petitions.petition_title') }}</label>
           <TextInput
             id="title"
             v-model="form.title"
@@ -26,7 +26,7 @@
         </div>
         
         <div class="mb-6">
-          <label class="block text-green-700 font-medium mb-2" for="description">Опис петиції</label>
+          <label class="block text-green-700 font-medium mb-2" for="description">{{ $t('petitions.petition_description') }}</label>
           <TextareaInput
             id="description"
             v-model="form.description"
@@ -38,49 +38,49 @@
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
             <div>
-                <label class="block text-green-700 font-medium mb-2" for="signatures_required">Необхідна кількість підписів</label>
+                <label class="block text-green-700 font-medium mb-2" for="signatures_required">{{ $t('petitions.required_signatures') }}</label>
                 <TextInput
                     id="signatures_required"
                     v-model="form.signatures_required"
                     :error="form.errors.signatures_required"
                     class="w-full"
                     type="number"
-                    min="1"
+                    min="15"
                 />
             </div>
             <div>
-                <label class="block text-green-700 font-medium mb-2" for="duration">Тривалість петиції (годин)</label>
+                <label class="block text-green-700 font-medium mb-2" for="duration">{{ $t('petitions.petition_duration') }}</label>
                 <select
                     id="duration"
                     v-model="form.duration"
                     class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
                 >
-                    <option value="24">24 години</option>
-                    <option value="48">48 годин</option>
-                    <option value="72">72 години</option>
+                    <option value="24">24 {{ $t('petitions.hours') }}</option>
+                    <option value="48">48 {{ $t('petitions.hours') }}</option>
+                    <option value="72">72 {{ $t('petitions.hours') }}</option>
                 </select>
             </div>
         </div>
 
         <div class="mb-6">
-            <label class="block text-green-700 font-medium mb-2">Для кого ця петиція?</label>
+            <label class="block text-green-700 font-medium mb-2">{{ $t('petitions.target_audience') }}</label>
             <div class="flex items-center space-x-6">
                 <label class="flex items-center">
                     <input type="radio" v-model="form.target_type" value="class" class="form-radio text-green-500 h-5 w-5">
-                    <span class="ml-2 text-gray-700">Тільки для мого класу</span>
+                    <span class="ml-2 text-gray-700">{{ $t('petitions.for_my_class') }}</span>
                 </label>
                 <label class="flex items-center">
                     <input type="radio" v-model="form.target_type" value="school" class="form-radio text-green-500 h-5 w-5">
-                    <span class="ml-2 text-gray-700">Для всієї школи</span>
+                    <span class="ml-2 text-gray-700">{{ $t('petitions.for_whole_school') }}</span>
                 </label>
             </div>
             <InputError :message="form.errors.target_type" class="mt-2"/>
         </div>
 
         <div class="flex items-center justify-end">
-          <Link href="/petitions" class="text-green-700 hover:text-green-900 mr-4">Скасувати</Link>
+          <Link href="/petitions" class="text-green-700 hover:text-green-900 mr-4">{{ $t('petitions.cancel') }}</Link>
           <LoadingButton :loading="form.processing" class="bg-green-500 hover:bg-green-600 text-white px-6 py-2 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2">
-            Створити
+            {{ $t('petitions.create') }}
           </LoadingButton>
         </div>
       </form>
@@ -121,7 +121,7 @@ export default {
       title: '',
       description: '',
       target_type: 'class',
-      signatures_required: 1,
+      signatures_required: 15,
       duration: 24,
     });
 

@@ -82,8 +82,12 @@ class PetitionsController extends Controller
             return Redirect::route('petitions')->with('error', 'Тільки студенти можуть створювати петиції.');
         }
 
+        // Using direct string instead of translation key
+        $locale = app()->getLocale();
+        $title = $locale === 'uk' ? 'Створити петицію' : 'Create Petition';
+
         return Inertia::render('Petitions/Create', [
-            'title' => 'Створити петицію',
+            'title' => $title,
         ]);
     }
 
@@ -96,7 +100,7 @@ class PetitionsController extends Controller
         $request->validate([
             'title' => ['required', 'max:100'],
             'description' => ['required'],
-            'signatures_required' => ['required', 'integer', 'min:1'],
+            'signatures_required' => ['required', 'integer', 'min:15'],
             'duration' => ['required', 'integer', 'in:24,48,72'],
             'target_type' => ['required', 'string', 'in:school,class'],
         ]);

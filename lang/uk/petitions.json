@@ -2,5 +2,16 @@
     "comments": "Коментарі",
     "no_comments": "Коментарів ще немає.",
     "add_comment_placeholder": "Додайте свій коментар...",
-    "add_comment_button": "Додати коментар"
+    "add_comment_button": "Додати коментар",
+    "create_petition": "Створити петицію",
+    "petition_title": "Назва петиції",
+    "petition_description": "Опис петиції",
+    "required_signatures": "Необхідна кількість підписів",
+    "petition_duration": "Тривалість петиції (годин)",
+    "hours": "години",
+    "target_audience": "Для кого ця петиція?",
+    "for_my_class": "Тільки для мого класу",
+    "for_whole_school": "Для всієї школи",
+    "cancel": "Скасувати",
+    "create": "Створити"
 }

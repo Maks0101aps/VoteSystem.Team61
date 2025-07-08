@@ -49,7 +49,7 @@ class VotingTest extends TestCase
         $response = $this->actingAs($user)->post('/votings', [
             'title' => 'New Voting',
             'description' => 'Voting Description',
-            'duration' => 60, // 1 час
+            'duration' => 120, // 2 години
             'target_type' => 'class',
         ]);
 
